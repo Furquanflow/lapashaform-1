@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 //Router Dom
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 //Local Components
 import LapashaRoutes from "./routes/LapashaRoutes";
@@ -16,7 +16,7 @@ import "./App.css";
 import axios from "axios";
 
 //Server Url
-let baseUrl = "http://13.59.177.230:8000";
+let baseUrl = "http://localhost:8000";
 
 
 const App = () => {
@@ -122,6 +122,10 @@ const App = () => {
     {/*Nested Routes*/}
     <Routes>
     <Route path="/admin/*" element={<SideNavbar loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} />} />
+    <Route
+    path="/admin"
+    element={<Navigate replace to="/admin/login" />}
+  />
     <Route path="/admin/login" element={<Login  onLogin={onAdminLoginClick} authFunc={authAdminFunc} registerPage={"/admin/register"}  email={authAdminEmail}
     password={authAdminPassword} />} />
     <Route path="/admin/register" element={<Register  registerForm={onAdminRegister}

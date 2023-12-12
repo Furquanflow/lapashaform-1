@@ -19,7 +19,7 @@ import Register from "../pages/Register";
 import axios from "axios";
 
 //Server Url
-let baseUrl = "http://13.59.177.230:8000";
+let baseUrl = "http://localhost:8000";
 
 const LapashaRoutes = ({ pdfCount }) => {
   const [addStep, setAddStep] = useState(0);

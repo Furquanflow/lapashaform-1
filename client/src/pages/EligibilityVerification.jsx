@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 //Router Dom
 import { Link, useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ import {
   Button,
   Radio,
   RadioGroup,
-  FormControl
+  FormControl,
 } from "@mui/material";
 
 //Images
@@ -33,7 +33,7 @@ const EligibilityVerification = ({
   canvaVerificationPreState,
   canvaVerificationEmpSBState,
   formDataFunc,
-  formData
+  formData,
 }) => {
   const navigate = useNavigate();
 
@@ -44,6 +44,32 @@ const EligibilityVerification = ({
     formDataFunc();
     navigate("/stepform", { replace: true });
   };
+
+  const signatureRef = useRef();
+  const signatureEmpSBStateRef = useRef();
+  const verificationState = useRef();
+  const verificationEmpState = useRef();
+
+  const clearSignature = e => {
+    e.preventDefault();
+    signatureRef.current.clear();
+  };
+
+  const clearEmpSBStateSignature = e => {
+    e.preventDefault();
+    signatureEmpSBStateRef.current.clear();
+  };
+
+  const clearverificationStateSignature = e => {
+    e.preventDefault();
+    verificationState.current.clear();
+  };
+
+  const clearEmpStateSignature = e => {
+    e.preventDefault();
+    verificationEmpState.current.clear();
+  };
+
 
   return (
     <Grid>
@@ -141,7 +167,6 @@ const EligibilityVerification = ({
                   <Grid item xs={6}>
                     <TextField
                       className="txt-width"
-
                       value={data.middle}
                       name="middle"
                       onChange={formChange3}
@@ -153,7 +178,6 @@ const EligibilityVerification = ({
                   <Grid item xs={6}>
                     <TextField
                       className="txt-width"
-
                       value={data.otheLn}
                       name="otheLn"
                       onChange={formChange3}
@@ -179,7 +203,6 @@ const EligibilityVerification = ({
                   <Grid item xs={6}>
                     <TextField
                       className="txt-width"
-
                       value={data.aptNo}
                       name="aptNo"
                       onChange={formChange3}
@@ -428,7 +451,10 @@ const EligibilityVerification = ({
                       <label>
                         Signature
                         <SignatureCanvas
-                          ref={ref => canvaVerificationState(ref, "signOfEmp")}
+                          ref={(ref) => {
+                            verificationState.current = ref;
+                            canvaVerificationState(ref, 'signOfEmp');
+                          }}
                           name="signOfEmp"
                           onChange={formChange3}
                           penColor="black"
@@ -436,10 +462,11 @@ const EligibilityVerification = ({
                           canvasProps={{
                             width: 500,
                             height: 200,
-                            className: "sigCanvas txt-width"
+                            className: "sigCanvas txt-width",
                           }}
                         />
                       </label>
+                      <button onClick={clearverificationStateSignature}>Clear Signature</button>
                     </Grid>
                     <Grid item xs={6}>
                       <TextField
@@ -511,7 +538,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.docNo}
                       name="docNo"
                       onChange={formChange3}
@@ -524,7 +550,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.expDate}
                       name="expDate"
                       onChange={formChange3}
@@ -537,7 +562,6 @@ const EligibilityVerification = ({
                   <Grid item xs={12}>
                     <TextField
                       className="txt-width"
-
                       value={data.docTitle2}
                       name="docTitle2"
                       onChange={formChange3}
@@ -561,7 +585,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.docNo2}
                       name="docNo2"
                       onChange={formChange3}
@@ -574,7 +597,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.expDate2}
                       name="expDate2"
                       onChange={formChange3}
@@ -587,7 +609,6 @@ const EligibilityVerification = ({
                   <Grid item xs={12}>
                     <TextField
                       className="txt-width"
-
                       value={data.docTitle3}
                       name="docTitle3"
                       onChange={formChange3}
@@ -611,7 +632,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.docNo3}
                       name="docNo3"
                       onChange={formChange3}
@@ -624,7 +644,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.expdate3}
                       name="expdate3"
                       onChange={formChange3}
@@ -667,7 +686,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.docNo4}
                       name="docNo4"
                       onChange={formChange3}
@@ -680,7 +698,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.expdate4}
                       name="expdate4"
                       onChange={formChange3}
@@ -723,7 +740,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.docNoC}
                       name="docNoC"
                       onChange={formChange3}
@@ -736,7 +752,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.expdateC}
                       name="expdateC"
                       onChange={formChange3}
@@ -810,8 +825,10 @@ const EligibilityVerification = ({
                     <label>
                       Signature
                       <SignatureCanvas
-                        ref={ref =>
-                          canvaVerificationEmpState(ref, "signOfEmpRep")}
+                      ref={(ref) => {
+                        verificationEmpState.current = ref;
+                        canvaVerificationEmpState(ref, 'signOfEmpRep');
+                      }}
                         name="signOfEmpRep"
                         onChange={formChange3}
                         penColor="black"
@@ -819,10 +836,11 @@ const EligibilityVerification = ({
                         canvasProps={{
                           width: 500,
                           height: 200,
-                          className: "sigCanvas txt-width"
+                          className: "sigCanvas txt-width",
                         }}
                       />
                     </label>
+                    <button onClick={clearEmpStateSignature}>Clear Signature</button>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -1211,7 +1229,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.middleNamesec1}
                       name="middleNamesec1"
                       onChange={formChange3}
@@ -1245,11 +1262,14 @@ const EligibilityVerification = ({
                 </h3>
 
                 <Grid container spacing={3} columns={12} className="flx-box">
-                  <Grid item xs={8}>
+                  <Grid item xs={6}>
                     <label>
                       Signature
                       <SignatureCanvas
-                        ref={ref => canvaVerificationPreState(ref, "signOfPre")}
+                        ref={ref => {
+                          signatureRef.current = ref;
+                          canvaVerificationPreState(ref, "signOfPre");
+                        }}
                         name="signOfPre"
                         onChange={formChange3}
                         penColor="black"
@@ -1257,12 +1277,13 @@ const EligibilityVerification = ({
                         canvasProps={{
                           width: 500,
                           height: 200,
-                          className: "sigCanvas txt-width"
+                          className: "sigCanvas txt-width",
                         }}
                       />
                     </label>
+                    <button onClick={clearSignature}>Clear Signature</button>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <TextField
                       className="txt-width"
                       required
@@ -1665,7 +1686,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.docNoSB}
                       name="docNoSB"
                       onChange={formChange3}
@@ -1678,7 +1698,6 @@ const EligibilityVerification = ({
                   <Grid item xs={4}>
                     <TextField
                       className="txt-width"
-
                       value={data.ExpDateSB}
                       name="ExpDateSB"
                       onChange={formChange3}
@@ -1697,7 +1716,7 @@ const EligibilityVerification = ({
                       genuine and to relate to the individual who presented it.
                     </Typography>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TextField
                       className="txt-width"
                       required
@@ -1709,12 +1728,14 @@ const EligibilityVerification = ({
                       variant="standard"
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <label>
                       Signature
                       <SignatureCanvas
-                        ref={ref =>
-                          canvaVerificationEmpSBState(ref, "signOfEmpSB")}
+                        ref={ref => {
+                          signatureEmpSBStateRef.current = ref;
+                          canvaVerificationPreState(ref, "signOfEmpSB");
+                        }}
                         name="signOfEmpSB"
                         onChange={formChange3}
                         penColor="black"
@@ -1722,12 +1743,15 @@ const EligibilityVerification = ({
                         canvasProps={{
                           width: 500,
                           height: 200,
-                          className: "sigCanvas txt-width"
+                          className: "sigCanvas txt-width",
                         }}
                       />
                     </label>
+                    <button onClick={clearEmpSBStateSignature}>
+                      Clear Signature
+                    </button>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
                     <TextField
                       className="txt-width"
                       required

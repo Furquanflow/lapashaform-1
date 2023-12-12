@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 //material Ui Design Component
 import {
@@ -12,23 +12,23 @@ import {
   TableContainer,
   Table,
   TableBody,
-  Typography
+  Typography,
 } from "@mui/material";
 
 //Spare Functions
 import {
   StyledTableRow,
-  StyledTableCell
+  StyledTableCell,
 } from "../../../functions/SpareFunctions";
 
 const LapashaFormData = ({ lapashaData, title, empolymentFunc }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredData = lapashaData.filter((item) =>
+  const filteredData = lapashaData.filter(item =>
     item.fNamePerInfo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -39,8 +39,14 @@ const LapashaFormData = ({ lapashaData, title, empolymentFunc }) => {
           {title}
         </Typography>
       </Grid>
-      <TextField fullWidth label="Search ..." id="fullWidth" value={searchTerm} onChange={handleSearch}
-      type="text" />
+      <TextField
+        fullWidth
+        label="Search ..."
+        id="fullWidth"
+        value={searchTerm}
+        onChange={handleSearch}
+        type="text"
+      />
       <Grid mt={5}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -77,8 +83,8 @@ const LapashaFormData = ({ lapashaData, title, empolymentFunc }) => {
                           background: "#b49a53",
                           margin: "5px",
                           "&:hover": {
-                            background: "#b49a53"
-                          }
+                            background: "#b49a53",
+                          },
                         }}
                         onClick={empolymentFunc}
                       >

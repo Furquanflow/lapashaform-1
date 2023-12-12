@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useRef} from "react";
 
 //React Router Dom
 import { Link, useNavigate } from "react-router-dom";
@@ -35,6 +35,13 @@ const EmploymentInformationForm = ({
     navigate("/stepform", { replace: true });
     // window.history.pushState("/stepform");
     console.log(addData);
+  };
+
+  const updatedState = useRef();
+
+  const clearUpdatedStateSignature = e => {
+    e.preventDefault();
+    updatedState.current.clear();
   };
 
   return (
@@ -606,7 +613,10 @@ const EmploymentInformationForm = ({
                     <label>
                       Signature
                       <SignatureCanvas
-                        ref={ref => canvaUpdatedState(ref, "conFormsign")}
+                        ref={ref => {
+                          updatedState.current = ref;
+                          canvaUpdatedState(ref, "conFormsign");
+                        }}
                         name="conFormsign"
                         onChange={formChange}
                         penColor="black"
@@ -618,6 +628,9 @@ const EmploymentInformationForm = ({
                         }}
                       />
                     </label>
+                    <button onClick={clearUpdatedStateSignature}>
+                      Clear Signature
+                    </button>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField

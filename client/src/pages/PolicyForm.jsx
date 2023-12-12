@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 
 //Mui Design Library
 import {
@@ -11,7 +11,7 @@ import {
   Button,
   Radio,
   RadioGroup,
-  FormControl
+  FormControl,
 } from "@mui/material";
 
 // images
@@ -31,7 +31,7 @@ const PolicyForm = ({
   formChange1,
   updatePolicySignature,
   updateTransPolicySignature,
-  updateEmployeePolicySignature
+  updateEmployeePolicySignature,
 }) => {
   const navigate = useNavigate();
   const policySubmit = e => {
@@ -39,6 +39,26 @@ const PolicyForm = ({
     navigate("/stepform", { replace: true });
     onStep1();
   };
+
+  const signaturePolicySignature = useRef();
+  const employeePolicySignature = useRef();
+  const transPolicySignature = useRef();
+
+  const clearSignaturePolicySignature = e => {
+    e.preventDefault();
+    signaturePolicySignature.current.clear();
+  };
+
+  const clearEmployeePolicySignature = e => {
+    e.preventDefault();
+    employeePolicySignature.current.clear();
+
+  };
+
+  const clearTransPolicySignature = (e) => {
+    e.preventDefault();
+    transPolicySignature.current.clear();
+  }
 
   return (
     <Grid>
@@ -4538,7 +4558,10 @@ const PolicyForm = ({
                   <label>
                     Signature
                     <SignatureCanvas
-                      ref={ref => updatePolicySignature(ref)}
+                      ref={ref => {
+                        signaturePolicySignature.current = ref;
+                        updatePolicySignature(ref, "empSigPolicy");
+                      }}
                       name="empSigPolicy"
                       onChange={formChange1}
                       penColor="black"
@@ -4546,10 +4569,13 @@ const PolicyForm = ({
                       canvasProps={{
                         width: 500,
                         height: 200,
-                        className: "sigCanvas txt-width"
+                        className: "sigCanvas txt-width",
                       }}
                     />
                   </label>
+                  <button onClick={clearSignaturePolicySignature}>
+                    Clear Signature
+                  </button>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -4661,16 +4687,22 @@ const PolicyForm = ({
                 </Grid>
                 <Grid item xs={6}>
                   <SignatureCanvas
-                    ref={ref => updateEmployeePolicySignature(ref)}
+                    ref={ref => {
+                      employeePolicySignature.current = ref;
+                      updateEmployeePolicySignature(ref, "empSignPolicy");
+                    }}
                     name="empSignPolicy"
                     onChange={formChange1}
                     penColor="black"
                     canvasProps={{
                       width: 500,
                       height: 200,
-                      className: "sigCanvas txt-width"
+                      className: "sigCanvas txt-width",
                     }}
                   />
+                  <button onClick={clearEmployeePolicySignature}>
+                    Clear Signature
+                  </button>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -4686,16 +4718,22 @@ const PolicyForm = ({
                 </Grid>
                 <Grid item xs={6}>
                   <SignatureCanvas
-                    ref={ref => updateTransPolicySignature(ref)}
+                  ref={ref => {
+                    transPolicySignature.current = ref;
+                    updateTransPolicySignature(ref, "transSignPolicy");
+                  }}
                     name="transSignPolicy"
                     onChange={formChange1}
                     penColor="black"
                     canvasProps={{
                       width: 500,
                       height: 200,
-                      className: "sigCanvas txt-width"
+                      className: "sigCanvas txt-width",
                     }}
                   />
+                  <button onClick={clearTransPolicySignature}>
+                      Clear Signature
+                    </button>
                 </Grid>
               </Grid>
 
@@ -4714,7 +4752,11 @@ const PolicyForm = ({
                         Cancel
                       </Link>
                     </Button>
-                    <Button variant="contained" type="submit" className="save-btn">
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="save-btn"
+                    >
                       Save
                     </Button>
                   </Grid>

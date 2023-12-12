@@ -7,7 +7,7 @@ import LapashaFormData from "../components/lapasha form data/LapashaFormData";
 import axios from "axios";
 
 //Server Url
-let baseUrl = "http://13.59.177.230:8000";
+let baseUrl = "http://localhost:8000";
 
 const Patio = ({ patioEditFunc }) => {
   const [adminPatioData, setAdminPatioData] = React.useState([]);

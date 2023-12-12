@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 //Mui Design Library
 import {
@@ -32,6 +32,18 @@ const ContractForm = ({
     e.preventDefault();
     onStep2();
     navigate("/stepform", { replace: true });
+  };
+
+  const employeeContactSignature = useRef();
+  const transContactSignature = useRef();
+
+  const clearEmployeeContactSignature = e => {
+    e.preventDefault();
+    employeeContactSignature.current.clear();
+  };
+  const clearTransContactSignature = e => {
+    e.preventDefault();
+    transContactSignature.current.clear();
   };
 
   return (
@@ -272,8 +284,10 @@ const ContractForm = ({
                   <label>
                     Signature
                     <SignatureCanvas
-                      ref={ref =>
-                        updateEmployeeContactSignature(ref, "empSign")}
+                      ref={ref => {
+                        employeeContactSignature.current = ref;
+                        updateEmployeeContactSignature(ref, "empSign");
+                      }}
                       name="empSign"
                       onChange={formChange2}
                       penColor="black"
@@ -285,6 +299,9 @@ const ContractForm = ({
                       }}
                     />
                   </label>
+                  <button onClick={clearEmployeeContactSignature}>
+                    Clear Signature
+                  </button>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -303,8 +320,10 @@ const ContractForm = ({
                   <label>
                     Signature
                     <SignatureCanvas
-                      ref={ref =>
-                        updateTransContactSignature(ref, "transSignName")}
+                      ref={ref => {
+                        transContactSignature.current = ref;
+                        updateTransContactSignature(ref, "transSignName");
+                      }}
                       name="transSignName"
                       onChange={formChange2}
                       penColor="black"
@@ -316,6 +335,9 @@ const ContractForm = ({
                       }}
                     />
                   </label>
+                  <button onClick={clearTransContactSignature}>
+                    Clear Signature
+                  </button>
                 </Grid>
               </Grid>
 
@@ -334,7 +356,11 @@ const ContractForm = ({
                         Cancel
                       </Link>
                     </Button>
-                    <Button variant="contained" type="submit" className="save-btn">
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="save-btn"
+                    >
                       Save
                     </Button>
                   </Grid>

@@ -10,7 +10,7 @@ import { Button, Grid } from "@mui/material";
 import axios from "axios";
 
 //Server Url
-const baseUrl = "http://13.59.177.230:8000";
+const baseUrl = "http://localhost:8000";
 
 const GeneratePDFButton = ({ formData, pdfCount }) => {
   // let navigate = useNavigate();
