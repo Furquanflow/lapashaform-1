@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 // const httpProxy = require('http-proxy');
 
-let baseUrl = "http://localhost:3000";
+let baseUrl = "http://localhost:8000";
 // const proxy = httpProxy.createProxyServer();
 
 //Admin Authentication and Authorization
@@ -25,7 +25,7 @@ module.exports.postAdminRegisterData = async (req, res) => {
     await adminModel.create({
       name: req.body.authAdminName,
       email: req.body.authAdminEmail,
-      password: newPassword
+      password: newPassword,
     });
     res.json({ status: "ok" });
   } catch (err) {
@@ -36,7 +36,7 @@ module.exports.postAdminRegisterData = async (req, res) => {
 module.exports.postAdminLoginData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const adminUser = await adminModel.findOne({
-    authAdminEmail: req.body.email
+    authAdminEmail: req.body.email,
   });
   if (!adminUser) {
     return { status: "error", error: "Invalid login" };
@@ -49,7 +49,7 @@ module.exports.postAdminLoginData = async (req, res) => {
     const token = jwt.sign(
       {
         name: adminUser.authAdminName,
-        email: adminUser.authAdminEmail
+        email: adminUser.authAdminEmail,
       },
       "secret123"
     );
@@ -104,7 +104,7 @@ module.exports.postRegisterData = async (req, res) => {
     await User.create({
       name: req.body.authName,
       email: req.body.authEmail,
-      password: newPassword
+      password: newPassword,
     });
     res.json({ status: "ok" });
   } catch (err) {
@@ -115,7 +115,7 @@ module.exports.postRegisterData = async (req, res) => {
 module.exports.postLoginData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const user = await User.findOne({
-    authEmail: req.body.email
+    authEmail: req.body.email,
   });
   if (!user) {
     return { status: "error", error: "Invalid login" };
@@ -128,7 +128,7 @@ module.exports.postLoginData = async (req, res) => {
     const token = jwt.sign(
       {
         name: user.authName,
-        email: user.authEmail
+        email: user.authEmail,
       },
       "secret123"
     );
@@ -304,7 +304,7 @@ module.exports.saveFormData = async (req, res) => {
     nameOfEmpSB,
     signOfEmpSB,
     todayDateSB,
-    clickhereSB
+    clickhereSB,
   } = req.body;
   formModel
     .create({
@@ -432,7 +432,7 @@ module.exports.saveFormData = async (req, res) => {
       nameOfEmpSB,
       signOfEmpSB,
       todayDateSB,
-      clickhereSB
+      clickhereSB,
     })
     .then(data => {
       console.log("Added Succesfully");
@@ -839,7 +839,7 @@ module.exports.saveLoungeAndGrillData = async (req, res) => {
     nameOfEmpSB,
     signOfEmpSB,
     todayDateSB,
-    clickhereSB
+    clickhereSB,
   } = req.body;
   loungeAndGril
     .create({
@@ -967,7 +967,7 @@ module.exports.saveLoungeAndGrillData = async (req, res) => {
       nameOfEmpSB,
       signOfEmpSB,
       todayDateSB,
-      clickhereSB
+      clickhereSB,
     })
     .then(data => {
       console.log("Added Succesfully");
@@ -1111,7 +1111,7 @@ module.exports.saveNaraCafeData = async (req, res) => {
     nameOfEmpSB,
     signOfEmpSB,
     todayDateSB,
-    clickhereSB
+    clickhereSB,
   } = req.body;
   naraCafe
     .create({
@@ -1239,7 +1239,7 @@ module.exports.saveNaraCafeData = async (req, res) => {
       nameOfEmpSB,
       signOfEmpSB,
       todayDateSB,
-      clickhereSB
+      clickhereSB,
     })
     .then(data => {
       console.log("Added Succesfully");
@@ -1254,8 +1254,8 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: "furqan.rahim@flowtechnologies.io",
-    pass: "Furqan@123@@@"
-  }
+    pass: "Furqan@123@@@",
+  },
 });
 
 module.exports.postPdf = async (req, res) => {
@@ -1291,19 +1291,19 @@ module.exports.postEmployerPdf = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const formData = req.body.data;
   try {
-    // const browser = await puppeteer.launch({ headless: "new" });
-    // const page = await browser.newPage();
-
-    const browser = await puppeteer.launch({
-      headless: true,
-      devtools: true,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-web-security"
-      ]
-    });
+    const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
+
+    // const browser = await puppeteer.launch({
+    //   headless: true,
+    //   devtools: true,
+    //   args: [
+    //     "--no-sandbox",
+    //     "--disable-setuid-sandbox",
+    //     "--disable-web-security"
+    //   ]
+    // });
+    // const page = await browser.newPage();
 
     await page.goto(`${baseUrl}/eligibilityverificationview`);
     // await page.waitForTimeout(8000);
@@ -1317,7 +1317,7 @@ module.exports.postEmployerPdf = async (req, res) => {
     const emailAddresses = [
       "thefurquanrahim@gmail.com",
       "furquan.rahim124@gmail.com",
-      "thefurqanrahim@gmail.com"
+      "thefurqanrahim@gmail.com",
     ];
     const attachments = [{ filename: "generated.pdf", content: pdfBuffer }];
 
@@ -1327,14 +1327,14 @@ module.exports.postEmployerPdf = async (req, res) => {
         to: email,
         subject: "PDF Attachment",
         text: "Attached is the PDF you requested.",
-        attachments
+        attachments,
       };
 
       const operation = retry.operation({
         retries: 3,
         factor: 2,
         minTimeout: 1000,
-        maxTimeout: 30000
+        maxTimeout: 30000,
       });
 
       operation.attempt(currentAttempt => {
