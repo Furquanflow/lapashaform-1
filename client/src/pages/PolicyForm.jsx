@@ -23,6 +23,7 @@ import companyLogo03 from "../assets/images/logo03.png";
 import { Link, useNavigate } from "react-router-dom";
 
 import SignatureCanvas from "react-signature-canvas";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const PolicyForm = ({
   data,
@@ -4554,7 +4555,7 @@ const PolicyForm = ({
               </Grid>
 
               <Grid container spacing={3} columns={12} className="flx-box">
-                <Grid item xs={6}>
+                <Grid item xs={6} className="signature-area">
                   <label>
                     Signature
                     <SignatureCanvas
@@ -4573,9 +4574,9 @@ const PolicyForm = ({
                       }}
                     />
                   </label>
-                  <button onClick={clearSignaturePolicySignature}>
-                    Clear Signature
-                  </button>
+                  <Button variant="text" className="clear-btn" onClick={clearSignaturePolicySignature}>
+                  <HighlightOffIcon />
+                  </Button>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -4685,7 +4686,7 @@ const PolicyForm = ({
                     variant="standard"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} className="signature-area">
                   <SignatureCanvas
                     ref={ref => {
                       employeePolicySignature.current = ref;
@@ -4700,9 +4701,9 @@ const PolicyForm = ({
                       className: "sigCanvas txt-width",
                     }}
                   />
-                  <button onClick={clearEmployeePolicySignature}>
-                    Clear Signature
-                  </button>
+                  <Button variant="text" className="clear-btn clear-btn-lbl" onClick={clearEmployeePolicySignature}>
+                  <HighlightOffIcon />
+                  </Button>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -4716,7 +4717,7 @@ const PolicyForm = ({
                     variant="standard"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} className="signature-area">
                   <SignatureCanvas
                   ref={ref => {
                     transPolicySignature.current = ref;
@@ -4731,9 +4732,9 @@ const PolicyForm = ({
                       className: "sigCanvas txt-width",
                     }}
                   />
-                  <button onClick={clearTransPolicySignature}>
-                      Clear Signature
-                    </button>
+                  <Button variant="text" className="clear-btn clear-btn-lbl" onClick={clearTransPolicySignature}>
+                  <HighlightOffIcon />
+                    </Button>
                 </Grid>
               </Grid>
 

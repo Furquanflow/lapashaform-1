@@ -22,6 +22,7 @@ import {
 import mainLogo from "../assets/images/logo.png";
 
 import SignatureCanvas from "react-signature-canvas";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const EligibilityVerification = ({
   data,
@@ -447,7 +448,7 @@ const EligibilityVerification = ({
                         variant="standard"
                       />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} className="signature-area">
                       <label>
                         Signature
                         <SignatureCanvas
@@ -466,7 +467,7 @@ const EligibilityVerification = ({
                           }}
                         />
                       </label>
-                      <button onClick={clearverificationStateSignature}>Clear Signature</button>
+                      <Button variant="text" className="clear-btn" onClick={clearverificationStateSignature}><HighlightOffIcon /></Button>
                     </Grid>
                     <Grid item xs={6}>
                       <TextField
@@ -821,7 +822,7 @@ const EligibilityVerification = ({
                       variant="standard"
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} className="signature-area">
                     <label>
                       Signature
                       <SignatureCanvas
@@ -840,7 +841,7 @@ const EligibilityVerification = ({
                         }}
                       />
                     </label>
-                    <button onClick={clearEmpStateSignature}>Clear Signature</button>
+                    <Button variant="text" className="clear-btn" onClick={clearEmpStateSignature}><HighlightOffIcon /></Button>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -1262,7 +1263,7 @@ const EligibilityVerification = ({
                 </h3>
 
                 <Grid container spacing={3} columns={12} className="flx-box">
-                  <Grid item xs={6}>
+                  <Grid item xs={6} className="signature-area">
                     <label>
                       Signature
                       <SignatureCanvas
@@ -1281,7 +1282,7 @@ const EligibilityVerification = ({
                         }}
                       />
                     </label>
-                    <button onClick={clearSignature}>Clear Signature</button>
+                    <Button variant="text" className="clear-btn" onClick={clearSignature}><HighlightOffIcon /></Button>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -1728,7 +1729,7 @@ const EligibilityVerification = ({
                       variant="standard"
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} className="signature-area">
                     <label>
                       Signature
                       <SignatureCanvas
@@ -1747,9 +1748,9 @@ const EligibilityVerification = ({
                         }}
                       />
                     </label>
-                    <button onClick={clearEmpSBStateSignature}>
-                      Clear Signature
-                    </button>
+                    <Button variant="text" className="clear-btn" onClick={clearEmpSBStateSignature}>
+                    <HighlightOffIcon />
+                    </Button>
                   </Grid>
                   <Grid item xs={3}>
                     <TextField

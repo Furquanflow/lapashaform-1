@@ -1,15 +1,15 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const adminData = new mongoose.Schema(
-	{
-		name: { type: String, required: true },
-		email: { type: String, required: true, unique: true },
-		password: { type: String, required: true },
-		quote: { type: String },
-	},	
-	{ collection: 'AdminData' }
-)
+  {
+    authAdminName: { type: String, required: true },
+    authAdminEmail: { type: String, required: true },
+    // email: { type: String, required: true, unique: true },
+    authAdminPassword: { type: String, required: true }
+  },
+  { collection: "Admin-data" }
+);
 
-const adminModel = mongoose.model('AdminData', adminData)
+const adminModel = mongoose.model("AdminData", adminData);
 
-module.exports = adminModel
+module.exports = adminModel;

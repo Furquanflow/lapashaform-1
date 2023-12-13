@@ -16,6 +16,8 @@ import {
   FormControl,
 } from "@mui/material";
 
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 //Images
 import mainLogo from "../assets/images/logo.png";
 
@@ -609,7 +611,7 @@ const EmploymentInformationForm = ({
                       </FormControl>
                     </FormGroup>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} className="signature-area">
                     <label>
                       Signature
                       <SignatureCanvas
@@ -628,9 +630,9 @@ const EmploymentInformationForm = ({
                         }}
                       />
                     </label>
-                    <button onClick={clearUpdatedStateSignature}>
-                      Clear Signature
-                    </button>
+                    <Button variant="text" className="clear-btn" onClick={clearUpdatedStateSignature}>
+                      <HighlightOffIcon />
+                    </Button>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField

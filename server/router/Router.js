@@ -23,14 +23,10 @@ const router = express.Router();
 //Admin Authentication and Authorization
 router.post("/admin/register", postAdminRegisterData);
 router.post("/admin/login", postAdminLoginData);
-router.post("/admin/quote", postAdminQuoteData);
-router.get("/admin/quote", getAdminQuoteData);
 
 //User Authentication and Authorization
 router.post("/register", postRegisterData);
 router.post("/login", postLoginData);
-router.post("/quote", postQuoteData);
-router.get("/quote", getQuoteData);
 
 //Patio endpoints
 router.get("/formdata", getFormData);

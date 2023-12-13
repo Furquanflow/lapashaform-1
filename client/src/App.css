@@ -27,6 +27,21 @@ h3,
 h4 {
   font-family: "itc-avant-garde-gothic-std-bold" !important;
 }
+
+.signature-area {
+  position: relative;
+}
+.clear-btn {
+  position: absolute !important;
+  top: 58px;
+  right: 8px;
+  padding: 0 !important;
+  justify-content: end !important;
+  min-width: 0 !important;
+}
+.clear-btn-lbl {
+  top: 34px !important;
+}
 .form-section {
   padding: 50px 0;
 }
@@ -381,6 +396,7 @@ a.finish-btn {
 .form-btns {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .form-btns a {
   margin-left: 10px;

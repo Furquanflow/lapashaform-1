@@ -18,6 +18,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import SignatureCanvas from "react-signature-canvas";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const ContractForm = ({
   data,
@@ -280,7 +281,7 @@ const ContractForm = ({
                     variant="standard"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} className="signature-area">
                   <label>
                     Signature
                     <SignatureCanvas
@@ -299,9 +300,9 @@ const ContractForm = ({
                       }}
                     />
                   </label>
-                  <button onClick={clearEmployeeContactSignature}>
-                    Clear Signature
-                  </button>
+                  <Button variant="text" className="clear-btn" onClick={clearEmployeeContactSignature}>
+                  <HighlightOffIcon />
+                  </Button>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -316,7 +317,7 @@ const ContractForm = ({
                     variant="standard"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} className="signature-area">
                   <label>
                     Signature
                     <SignatureCanvas
@@ -335,9 +336,9 @@ const ContractForm = ({
                       }}
                     />
                   </label>
-                  <button onClick={clearTransContactSignature}>
-                    Clear Signature
-                  </button>
+                  <Button variant="text" className="clear-btn" onClick={clearTransContactSignature}>
+                  <HighlightOffIcon />
+                  </Button>
                 </Grid>
               </Grid>
 

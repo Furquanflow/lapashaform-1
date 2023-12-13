@@ -19,13 +19,13 @@ let baseUrl = "http://localhost:3000";
 
 module.exports.postAdminRegisterData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  console.log(req.body);
   try {
-    const newPassword = await bcrypt.hash(req.body.authAdminPassword, 10);
+    console.log(req.body);
+    const newAdminPassword = await bcrypt.hash(req.body.authAdminPassword, 10);
     await adminModel.create({
-      name: req.body.authAdminName,
-      email: req.body.authAdminEmail,
-      password: newPassword,
+      authAdminName: req.body.authAdminName,
+      authAdminEmail: req.body.authAdminEmail,
+      authAdminPassword: newAdminPassword
     });
     res.json({ status: "ok" });
   } catch (err) {
@@ -36,20 +36,23 @@ module.exports.postAdminRegisterData = async (req, res) => {
 module.exports.postAdminLoginData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const adminUser = await adminModel.findOne({
-    authAdminEmail: req.body.email,
+    authAdminEmail: req.body.authAdminEmail
   });
+
   if (!adminUser) {
-    return { status: "error", error: "Invalid login" };
+    return res.json({ status: "error", error: "Invalid login" });
   }
-  const isPasswordValid = await bcrypt.compare(
+
+  const isAdminPasswordValid = await bcrypt.compare(
     req.body.authAdminPassword,
-    adminUser.password
+    adminUser.authAdminPassword
   );
-  if (isPasswordValid) {
+
+  if (isAdminPasswordValid) {
     const token = jwt.sign(
       {
         name: adminUser.authAdminName,
-        email: adminUser.authAdminEmail,
+        email: adminUser.authAdminEmail
       },
       "secret123"
     );
@@ -60,51 +63,16 @@ module.exports.postAdminLoginData = async (req, res) => {
   }
 };
 
-module.exports.getAdminQuoteData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const token = req.headers["x-access-token"];
-
-  try {
-    const decoded = jwt.verify(token, "secret123");
-    const email = decoded.email;
-    const user = await adminModel.findOne({ email: email });
-    return res.json({ status: "ok", qquote: user.quote });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error: "invalid token" });
-  }
-};
-
-module.exports.postAdminQuoteData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const token = req.headers["x-access-token"];
-
-  try {
-    const decoded = jwt.verify(token, "secret123");
-    const email = decoded.email;
-    await adminModel.updateOne(
-      { email: email },
-      { $set: { quote: req.body.quote } }
-    );
-
-    return res.json({ status: "ok" });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error: "invalid token" });
-  }
-};
-
 // User Authentication and Authorization
 
 module.exports.postRegisterData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  console.log(req.body);
   try {
+    console.log(req.body);
     const newPassword = await bcrypt.hash(req.body.authPassword, 10);
     await User.create({
-      name: req.body.authName,
-      email: req.body.authEmail,
-      password: newPassword,
+      authName: req.body.authName,
+      authEmail: req.body.authEmail,
+      authPassword: newPassword
     });
     res.json({ status: "ok" });
   } catch (err) {
@@ -113,22 +81,24 @@ module.exports.postRegisterData = async (req, res) => {
 };
 
 module.exports.postLoginData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const user = await User.findOne({
-    authEmail: req.body.email,
+    authEmail: req.body.authEmail
   });
+
   if (!user) {
-    return { status: "error", error: "Invalid login" };
+    return res.json({ status: "error", error: "Invalid login" });
   }
+
   const isPasswordValid = await bcrypt.compare(
     req.body.authPassword,
-    user.password
+    user.authPassword
   );
+
   if (isPasswordValid) {
     const token = jwt.sign(
       {
         name: user.authName,
-        email: user.authEmail,
+        email: user.authEmail
       },
       "secret123"
     );
@@ -136,37 +106,6 @@ module.exports.postLoginData = async (req, res) => {
     return res.json({ status: "ok", user: token });
   } else {
     return res.json({ status: "error", user: false });
-  }
-};
-
-module.exports.getQuoteData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const token = req.headers["x-access-token"];
-
-  try {
-    const decoded = jwt.verify(token, "secret123");
-    const email = decoded.email;
-    const user = await User.findOne({ email: email });
-    return res.json({ status: "ok", quote: user.quote });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error: "invalid token" });
-  }
-};
-
-module.exports.postQuoteData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const token = req.headers["x-access-token"];
-
-  try {
-    const decoded = jwt.verify(token, "secret123");
-    const email = decoded.email;
-    await User.updateOne({ email: email }, { $set: { quote: req.body.quote } });
-
-    return res.json({ status: "ok" });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: "error", error: "invalid token" });
   }
 };
 
@@ -304,7 +243,7 @@ module.exports.saveFormData = async (req, res) => {
     nameOfEmpSB,
     signOfEmpSB,
     todayDateSB,
-    clickhereSB,
+    clickhereSB
   } = req.body;
   formModel
     .create({
@@ -432,7 +371,7 @@ module.exports.saveFormData = async (req, res) => {
       nameOfEmpSB,
       signOfEmpSB,
       todayDateSB,
-      clickhereSB,
+      clickhereSB
     })
     .then(data => {
       console.log("Added Succesfully");
@@ -839,7 +778,7 @@ module.exports.saveLoungeAndGrillData = async (req, res) => {
     nameOfEmpSB,
     signOfEmpSB,
     todayDateSB,
-    clickhereSB,
+    clickhereSB
   } = req.body;
   loungeAndGril
     .create({
@@ -967,7 +906,7 @@ module.exports.saveLoungeAndGrillData = async (req, res) => {
       nameOfEmpSB,
       signOfEmpSB,
       todayDateSB,
-      clickhereSB,
+      clickhereSB
     })
     .then(data => {
       console.log("Added Succesfully");
@@ -1111,7 +1050,7 @@ module.exports.saveNaraCafeData = async (req, res) => {
     nameOfEmpSB,
     signOfEmpSB,
     todayDateSB,
-    clickhereSB,
+    clickhereSB
   } = req.body;
   naraCafe
     .create({
@@ -1239,7 +1178,7 @@ module.exports.saveNaraCafeData = async (req, res) => {
       nameOfEmpSB,
       signOfEmpSB,
       todayDateSB,
-      clickhereSB,
+      clickhereSB
     })
     .then(data => {
       console.log("Added Succesfully");
@@ -1254,8 +1193,8 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: "furqan.rahim@flowtechnologies.io",
-    pass: "Furqan@123@@@",
-  },
+    pass: "Furqan@123@@@"
+  }
 });
 
 module.exports.postPdf = async (req, res) => {
@@ -1317,7 +1256,7 @@ module.exports.postEmployerPdf = async (req, res) => {
     const emailAddresses = [
       "thefurquanrahim@gmail.com",
       "furquan.rahim124@gmail.com",
-      "thefurqanrahim@gmail.com",
+      "thefurqanrahim@gmail.com"
     ];
     const attachments = [{ filename: "generated.pdf", content: pdfBuffer }];
 
@@ -1327,14 +1266,14 @@ module.exports.postEmployerPdf = async (req, res) => {
         to: email,
         subject: "PDF Attachment",
         text: "Attached is the PDF you requested.",
-        attachments,
+        attachments
       };
 
       const operation = retry.operation({
         retries: 3,
         factor: 2,
         minTimeout: 1000,
-        maxTimeout: 30000,
+        maxTimeout: 30000
       });
 
       operation.attempt(currentAttempt => {
