@@ -16,7 +16,9 @@ const {
   postAdminRegisterData,
   postAdminLoginData,
   postAdminQuoteData,
-  getAdminQuoteData
+  getAdminQuoteData,
+  authenticateToken,
+  protected
 } = require("../controller/Controller");
 const router = express.Router();
 
@@ -30,6 +32,7 @@ router.post("/login", postLoginData);
 
 //Patio endpoints
 router.get("/formdata", getFormData);
+router.get('/protected', protected);
 router.post("/formdatapost", saveFormData);
 
 //Lounge And Grill endpoints
