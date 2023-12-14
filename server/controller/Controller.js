@@ -174,6 +174,43 @@ module.exports.saveFormData = authenticateToken, (req, res) => {
   }
 };
 
+
+
+
+//update function
+
+module.exports.updateFormData = async (req, res) => {
+  try {
+    await authenticateToken(req, res);
+    const { id, newData } = req.body;
+
+    // Ensure the provided ID is valid
+    if (!id || typeof id !== 'string') {
+      return res.status(400).json({ status: 'error', error: 'Invalid ID' });
+    }
+
+    // Find the existing record
+    const existingRecord = await patioModel.findOne({ _id: id, userId: req.user.id });
+
+    // If the record doesn't exist or doesn't belong to the authenticated user
+    if (!existingRecord) {
+      return res.status(404).json({ status: 'error', error: 'Record not found' });
+    }
+
+    // Update the existing record with new data
+    Object.assign(existingRecord, newData);
+
+    // Save the updated record
+    const updatedRecord = await existingRecord.save();
+
+    res.json({ status: 'ok', data: updatedRecord });
+  } catch (err) {
+    console.error('Error in updateFormData:', err);
+    res.status(500).json({ status: 'error', error: 'An error occurred during form update' });
+  }
+};
+
+
 //Lapasha Lounge And Grill
 
 // module.exports.saveLoungeAndGrillData = async (req, res) => {
