@@ -16,6 +16,9 @@ app.use(
   })
 );
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({ limit: '20mb' }));
+
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(buildPath, "index.html"));
 // });
