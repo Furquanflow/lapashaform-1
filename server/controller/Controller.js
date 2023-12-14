@@ -10,11 +10,12 @@ const User = require("../models/UserModel");
 const adminModel = require("../models/AdminAuth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { authenticateToken } = require("../middle ware/authMiddleware");
+const crypto = require('crypto');
 // const httpProxy = require('http-proxy');
 
 let baseUrl = "http://localhost:3000";
 // const proxy = httpProxy.createProxyServer();
+
 
 //Admin Authentication and Authorization
 
@@ -64,7 +65,41 @@ module.exports.postAdminLoginData = async (req, res) => {
   }
 };
 
+
+
 // User Authentication and Authorization
+
+const generateRandomString = () => {
+  return crypto.randomBytes(32).toString('hex');
+};
+
+let SECRET_KEY = generateRandomString();
+console.log('Initial SECRET_KEY:', SECRET_KEY);
+
+// Function to refresh the secret key periodically (for example, every 24 hours)
+const refreshSecretKey = () => {
+  SECRET_KEY = generateRandomString();
+  console.log('New SECRET_KEY:', SECRET_KEY);
+};
+
+// Refresh the secret key every 24 hours (86400000 milliseconds)
+setInterval(refreshSecretKey, 86400000);
+
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) {
+    return res.sendStatus(401);
+  }
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) {
+      return res.sendStatus(401);
+    }
+    req.user = user;
+    next();
+  });
+};
+
 
 module.exports.postRegisterData = async (req, res) => {
   try {
@@ -101,7 +136,8 @@ module.exports.postLoginData = async (req, res) => {
         name: user.authName,
         email: user.authEmail
       },
-      "secret123"
+      SECRET_KEY,
+      { expiresIn: '1h' }
     );
 
     return res.json({ status: "ok", user: token });
@@ -110,281 +146,166 @@ module.exports.postLoginData = async (req, res) => {
   }
 };
 
-//Lapasha
-module.exports.getFormData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const userData = await patioModel.find();
-  res.send(userData);
+module.exports.protected = (authenticateToken, (req, res) => {
+  res.json({ status: 'ok', message: 'This is a protected route.' });
+});
+
+//Lapash 
+module.exports.getFormData = authenticateToken, (req, res) => {
+  try {
+    const userData = patioModel.find({ userId: req.user.id });
+    res.send(userData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', error: 'An error occurred while fetching form data' });
+  }
 };
 
-module.exports.saveFormData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const {
-    fNamePerInfo,
-    lnamePerInfo,
-    statePerInfo,
-    zipcodePerInfo,
-    phoneNoPerInfo,
-    emailAddPerInfo,
-    addPerInfo,
-    emrCnoPerInfo,
-    relaPerInfo,
-    emrPhoneNoPerInfo,
-    startDateEmpDet,
-    deptEmpDet,
-    managerEmpDet,
-    empIdEmpDet,
-    ssNoTaxInfo,
-    depTaxInfo,
-    taxInfo,
-    bankNameDDinfo,
-    routNoDDinfo,
-    accNoDDinfo,
-    healthInsurance,
-    dentalInsurance,
-    visionInsurance,
-    retirementPlan,
-    medConyes,
-    medConNo,
-    conFormsign,
-    conFormDate,
-    polciStatement,
-    tipsCredit,
-    cardFee,
-    policyAgainst,
-    policyReg,
-    consent,
-    workPlace,
-    drugFee,
-    remoteWork,
-    elecSys,
-    alterDis,
-    empSigPolicy,
-    datePolicy,
-    ableReadPolicy,
-    empNamePolicy,
-    empSignPolicy,
-    tranNamePolicy,
-    transSignPolicy,
-    ableReadEng,
-    empName,
-    empSign,
-    transPrinName,
-    transSignName,
-    lastName,
-    firstName,
-    middle,
-    otheLn,
-    address,
-    aptNo,
-    city,
-    state,
-    zipCode,
-    dob,
-    socialSno,
-    empEmail,
-    empTno,
-    citizeOfUsa,
-    uscis,
-    formi94,
-    foreignPass,
-    signOfEmp,
-    todayDate,
-    lawFullPrTextFeild,
-    noncitizenAuthTextField,
-    docTitle1,
-    issueAuth,
-    docNo,
-    expdate,
-    docTitle2,
-    issueAuth2,
-    docNo2,
-    expDate2,
-    docTitle3,
-    issueAuth3,
-    docNo3,
-    expdate3,
-    docTitle4,
-    issueAuth4,
-    docNo4,
-    expdate4,
-    docTitleC,
-    issueAuthC,
-    docNoC,
-    expdateC,
-    addInfoC,
-    firstDayofEmp,
-    lastFirstNameOfEmp,
-    signOfEmpRep,
-    todaySDate,
-    empBuss,
-    empBusOrg,
-    lNamesec1,
-    fNamesec1,
-    middleNamesec1,
-    signOfPre,
-    DatePre,
-    lastNamePre,
-    firstNamePre,
-    middleNamePre,
-    addressPre,
-    cityPre,
-    statePre,
-    zipCodePre,
-    lastNameSBsec1,
-    firstNameSBsec1,
-    middleNameSBsec1,
-    dateOfRehireSB,
-    lastNameSb,
-    firstNameSB,
-    middleNameSB,
-    docTitleSB,
-    docNoSB,
-    expDateSB,
-    nameOfEmpSB,
-    signOfEmpSB,
-    todayDateSB,
-    clickhereSB
-  } = req.body;
-  patioModel
-    .create({
-      fNamePerInfo,
-      lnamePerInfo,
-      statePerInfo,
-      zipcodePerInfo,
-      phoneNoPerInfo,
-      emailAddPerInfo,
-      addPerInfo,
-      emrCnoPerInfo,
-      relaPerInfo,
-      emrPhoneNoPerInfo,
-      startDateEmpDet,
-      deptEmpDet,
-      managerEmpDet,
-      empIdEmpDet,
-      ssNoTaxInfo,
-      depTaxInfo,
-      taxInfo,
-      bankNameDDinfo,
-      routNoDDinfo,
-      accNoDDinfo,
-      healthInsurance,
-      dentalInsurance,
-      visionInsurance,
-      retirementPlan,
-      medConyes,
-      medConNo,
-      conFormsign,
-      conFormDate,
-      polciStatement,
-      tipsCredit,
-      cardFee,
-      policyAgainst,
-      policyReg,
-      consent,
-      workPlace,
-      drugFee,
-      remoteWork,
-      elecSys,
-      alterDis,
-      empSigPolicy,
-      datePolicy,
-      ableReadPolicy,
-      empNamePolicy,
-      empSignPolicy,
-      tranNamePolicy,
-      transSignPolicy,
-      ableReadEng,
-      empName,
-      empSign,
-      transPrinName,
-      transSignName,
-      lastName,
-      firstName,
-      middle,
-      otheLn,
-      address,
-      aptNo,
-      city,
-      state,
-      zipCode,
-      dob,
-      socialSno,
-      empEmail,
-      empTno,
-      citizeOfUsa,
-      uscis,
-      formi94,
-      foreignPass,
-      signOfEmp,
-      todayDate,
-      lawFullPrTextFeild,
-      noncitizenAuthTextField,
-      docTitle1,
-      issueAuth,
-      docNo,
-      expdate,
-      docTitle2,
-      issueAuth2,
-      docNo2,
-      expDate2,
-      docTitle3,
-      issueAuth3,
-      docNo3,
-      expdate3,
-      docTitle4,
-      issueAuth4,
-      docNo4,
-      expdate4,
-      docTitleC,
-      issueAuthC,
-      docNoC,
-      expdateC,
-      addInfoC,
-      firstDayofEmp,
-      lastFirstNameOfEmp,
-      signOfEmpRep,
-      todaySDate,
-      empBuss,
-      empBusOrg,
-      lNamesec1,
-      fNamesec1,
-      middleNamesec1,
-      signOfPre,
-      DatePre,
-      lastNamePre,
-      firstNamePre,
-      middleNamePre,
-      addressPre,
-      cityPre,
-      statePre,
-      zipCodePre,
-      lastNameSBsec1,
-      firstNameSBsec1,
-      middleNameSBsec1,
-      dateOfRehireSB,
-      lastNameSb,
-      firstNameSB,
-      middleNameSB,
-      docTitleSB,
-      docNoSB,
-      expDateSB,
-      nameOfEmpSB,
-      signOfEmpSB,
-      todayDateSB,
-      clickhereSB
-    })
-    .then(data => {
-      console.log("Added Succesfully");
-      console.log(data);
-      res.send(data);
-    });
+module.exports.saveFormData = authenticateToken, (req, res) => {
+  try {
+    
+    const formData = req.body;
+    formData.userId = req.user.id;
+    const savedForm =  patioModel.create(formData);
+    res.json({ status: 'ok', data: savedForm });
+  } catch (err) {
+    console.error('Error in saveFormData:', err);
+    res.status(500).json({ status: 'error', error: 'An error occurred during form submission' });
+  }
 };
 
 //Lapasha Lounge And Grill
 
 // module.exports.saveLoungeAndGrillData = async (req, res) => {
-//   const {
+// const {
+//   fNamePerInfo,
+//   lnamePerInfo,
+//   statePerInfo,
+//   zipcodePerInfo,
+//   phoneNoPerInfo,
+//   emailAddPerInfo,
+//   addPerInfo,
+//   emrCnoPerInfo,
+//   relaPerInfo,
+//   emrPhoneNoPerInfo,
+//   startDateEmpDet,
+//   deptEmpDet,
+//   managerEmpDet,
+//   empIdEmpDet,
+//   ssNoTaxInfo,
+//   depTaxInfo,
+//   taxInfo,
+//   bankNameDDinfo,
+//   routNoDDinfo,
+//   accNoDDinfo,
+//   healthInsurance,
+//   dentalInsurance,
+//   visionInsurance,
+//   retirementPlan,
+//   medConyes,
+//   medConNo,
+//   conFormsign,
+//   conFormDate,
+//   polciStatement,
+//   tipsCredit,
+//   cardFee,
+//   policyAgainst,
+//   policyReg,
+//   consent,
+//   workPlace,
+//   drugFee,
+//   remoteWork,
+//   elecSys,
+//   alterDis,
+//   empSigPolicy,
+//   datePolicy,
+//   ableReadPolicy,
+//   empNamePolicy,
+//   empSignPolicy,
+//   tranNamePolicy,
+//   transSignPolicy,
+//   ableReadEng,
+//   empName,
+//   empSign,
+//   transPrinName,
+//   transSignName,
+//   lastName,
+//   firstName,
+//   middle,
+//   otheLn,
+//   address,
+//   aptNo,
+//   city,
+//   state,
+//   zipCode,
+//   dob,
+//   socialSno,
+//   empEmail,
+//   empTno,
+//   citizeOfUsa,
+//   uscis,
+//   formi94,
+//   foreignPass,
+//   signOfEmp,
+//   todayDate,
+//   lawFullPrTextFeild,
+//   noncitizenAuthTextField,
+//   docTitle1,
+//   issueAuth,
+//   docNo,
+//   expdate,
+//   docTitle2,
+//   issueAuth2,
+//   docNo2,
+//   expDate2,
+//   docTitle3,
+//   issueAuth3,
+//   docNo3,
+//   expdate3,
+//   docTitle4,
+//   issueAuth4,
+//   docNo4,
+//   expdate4,
+//   docTitleC,
+//   issueAuthC,
+//   docNoC,
+//   expdateC,
+//   addInfoC,
+//   firstDayofEmp,
+//   lastFirstNameOfEmp,
+//   signOfEmpRep,
+//   todaySDate,
+//   empBuss,
+//   empBusOrg,
+//   lNamesec1,
+//   fNamesec1,
+//   middleNamesec1,
+//   signOfPre,
+//   DatePre,
+//   lastNamePre,
+//   firstNamePre,
+//   middleNamePre,
+//   addressPre,
+//   cityPre,
+//   statePre,
+//   zipCodePre,
+//   lastNameSBsec1,
+//   firstNameSBsec1,
+//   middleNameSBsec1,
+//   dateOfRehireSB,
+//   lastNameSb,
+//   firstNameSB,
+//   middleNameSB,
+//   docTitleSB,
+//   docNoSB,
+//   expDateSB,
+//   nameOfEmpSB,
+//   signOfEmpSB,
+//   todayDateSB,
+//   clickhereSB,
+// } = req.body;
+// loungeAndGril
+//   .create({
 //     fNamePerInfo,
 //     lnamePerInfo,
 //     statePerInfo,
@@ -509,136 +430,8 @@ module.exports.saveFormData = async (req, res) => {
 //     nameOfEmpSB,
 //     signOfEmpSB,
 //     todayDateSB,
-//     clickhereSB,
-//   } = req.body;
-//   loungeAndGril
-//     .create({
-//       fNamePerInfo,
-//       lnamePerInfo,
-//       statePerInfo,
-//       zipcodePerInfo,
-//       phoneNoPerInfo,
-//       emailAddPerInfo,
-//       addPerInfo,
-//       emrCnoPerInfo,
-//       relaPerInfo,
-//       emrPhoneNoPerInfo,
-//       startDateEmpDet,
-//       deptEmpDet,
-//       managerEmpDet,
-//       empIdEmpDet,
-//       ssNoTaxInfo,
-//       depTaxInfo,
-//       taxInfo,
-//       bankNameDDinfo,
-//       routNoDDinfo,
-//       accNoDDinfo,
-//       healthInsurance,
-//       dentalInsurance,
-//       visionInsurance,
-//       retirementPlan,
-//       medConyes,
-//       medConNo,
-//       conFormsign,
-//       conFormDate,
-//       polciStatement,
-//       tipsCredit,
-//       cardFee,
-//       policyAgainst,
-//       policyReg,
-//       consent,
-//       workPlace,
-//       drugFee,
-//       remoteWork,
-//       elecSys,
-//       alterDis,
-//       empSigPolicy,
-//       datePolicy,
-//       ableReadPolicy,
-//       empNamePolicy,
-//       empSignPolicy,
-//       tranNamePolicy,
-//       transSignPolicy,
-//       ableReadEng,
-//       empName,
-//       empSign,
-//       transPrinName,
-//       transSignName,
-//       lastName,
-//       firstName,
-//       middle,
-//       otheLn,
-//       address,
-//       aptNo,
-//       city,
-//       state,
-//       zipCode,
-//       dob,
-//       socialSno,
-//       empEmail,
-//       empTno,
-//       citizeOfUsa,
-//       uscis,
-//       formi94,
-//       foreignPass,
-//       signOfEmp,
-//       todayDate,
-//       lawFullPrTextFeild,
-//       noncitizenAuthTextField,
-//       docTitle1,
-//       issueAuth,
-//       docNo,
-//       expdate,
-//       docTitle2,
-//       issueAuth2,
-//       docNo2,
-//       expDate2,
-//       docTitle3,
-//       issueAuth3,
-//       docNo3,
-//       expdate3,
-//       docTitle4,
-//       issueAuth4,
-//       docNo4,
-//       expdate4,
-//       docTitleC,
-//       issueAuthC,
-//       docNoC,
-//       expdateC,
-//       addInfoC,
-//       firstDayofEmp,
-//       lastFirstNameOfEmp,
-//       signOfEmpRep,
-//       todaySDate,
-//       empBuss,
-//       empBusOrg,
-//       lNamesec1,
-//       fNamesec1,
-//       middleNamesec1,
-//       signOfPre,
-//       DatePre,
-//       lastNamePre,
-//       firstNamePre,
-//       middleNamePre,
-//       addressPre,
-//       cityPre,
-//       statePre,
-//       zipCodePre,
-//       lastNameSBsec1,
-//       firstNameSBsec1,
-//       middleNameSBsec1,
-//       dateOfRehireSB,
-//       lastNameSb,
-//       firstNameSB,
-//       middleNameSB,
-//       docTitleSB,
-//       docNoSB,
-//       expDateSB,
-//       nameOfEmpSB,
-//       signOfEmpSB,
-//       todayDateSB,
-//       clickhereSB
-//     })
+//     clickhereSB
+//   })
 //     .then(data => {
 //       console.log("Added Succesfully");
 //       console.log(data);
