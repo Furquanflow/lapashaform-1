@@ -501,6 +501,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-});
+  
+},
+{ collection: "patio-user" }
+);
 
 module.exports = mongoose.model("user", userSchema);

@@ -3,13 +3,14 @@ const fs = require("fs");
 const path = require("path");
 const retry = require("retry");
 const puppeteer = require("puppeteer");
-const formModel = require("../models/Model");
+const patioModel = require("../models/Model");
 const loungeAndGril = require("../models/LoungeAndGrill");
 const naraCafe = require("../models/NaraCafe");
 const User = require("../models/UserModel");
 const adminModel = require("../models/AdminAuth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { authenticateToken } = require("../middle ware/authMiddleware");
 // const httpProxy = require('http-proxy');
 
 let baseUrl = "http://localhost:3000";
@@ -112,7 +113,7 @@ module.exports.postLoginData = async (req, res) => {
 //Lapasha
 module.exports.getFormData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const userData = await formModel.find();
+  const userData = await patioModel.find();
   res.send(userData);
 };
 
@@ -245,7 +246,7 @@ module.exports.saveFormData = async (req, res) => {
     todayDateSB,
     clickhereSB
   } = req.body;
-  formModel
+  patioModel
     .create({
       fNamePerInfo,
       lnamePerInfo,

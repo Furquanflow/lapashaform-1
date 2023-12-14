@@ -10,13 +10,13 @@ import { Link, useNavigate } from "react-router-dom";
 import pdfImg from "../assets/images/pdf.png";
 import uploadImg from "../assets/images/upload.png";
 
-const StepForm = ({ addCount, dataString }) => {
+const StepForm = ({ addCount, dataString, authPassword }) => {
   const navigate = useNavigate();
   let newFormData = dataString && dataString.map(item => item.middleNameSB);
 
   const onEditClick = e => {
     e.preventDefault();
-    if (addCount >= 1 || newFormData != "") {
+    if (addCount >= 1 && authPassword || newFormData != "") {
       navigate("/policyform");
     } else {
       alert("Fill Employment information form First");
@@ -24,7 +24,7 @@ const StepForm = ({ addCount, dataString }) => {
   };
   const onEditClick1 = e => {
     e.preventDefault();
-    if (addCount >= 2 || newFormData != "") {
+    if (addCount >= 2 && authPassword || newFormData != "") {
       navigate("/contractform");
     } else {
       alert("Fill Policy 20223-06-12 Employee Manual First");
@@ -32,7 +32,7 @@ const StepForm = ({ addCount, dataString }) => {
   };
   const onEditClick2 = e => {
     e.preventDefault();
-    if (addCount >= 3 || newFormData != "") {
+    if (addCount >= 3 && authPassword || newFormData != "") {
       navigate("/eligibilityverification");
     } else {
       alert("Fill Contract 2023-04-12 Class Action Waiver Krikwood Ops First");
@@ -43,7 +43,7 @@ const StepForm = ({ addCount, dataString }) => {
   };
   const onPreview = e => {
     e.preventDefault();
-    if (addCount >= 4 || newFormData != "") {
+    if (addCount >= 4 && authPassword || newFormData != "") {
       navigate("/eligibilityverificationview");
     } else {
       alert("Fill i9 Form First");
@@ -57,7 +57,7 @@ const StepForm = ({ addCount, dataString }) => {
           <Grid className="step-bar">
             <Grid
               className={
-                addCount >= 1 || newFormData != "" ? "step-flx-red" : "step-flx"
+                addCount >= 1 && authPassword || newFormData != "" ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">01</Typography>
@@ -65,7 +65,7 @@ const StepForm = ({ addCount, dataString }) => {
             </Grid>
             <Grid
               className={
-                addCount >= 2 || newFormData != "" ? "step-flx-red" : "step-flx"
+                addCount >= 2 && authPassword || newFormData != "" ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">02</Typography>
@@ -73,7 +73,7 @@ const StepForm = ({ addCount, dataString }) => {
             </Grid>
             <Grid
               className={
-                addCount >= 3 || newFormData != "" ? "step-flx-red" : "step-flx"
+                addCount >= 3 && authPassword || newFormData != "" ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">03</Typography>
@@ -81,7 +81,7 @@ const StepForm = ({ addCount, dataString }) => {
             </Grid>
             <Grid
               className={
-                addCount >= 4 || newFormData != "" ? "step-flx-red" : "step-flx"
+                addCount >= 4 && authPassword || newFormData != "" ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">04</Typography>
@@ -104,7 +104,7 @@ const StepForm = ({ addCount, dataString }) => {
 
             <Grid
               className={
-                addCount >= 1 || newFormData != ""
+                addCount >= 1 && authPassword || newFormData != ""
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -126,7 +126,7 @@ const StepForm = ({ addCount, dataString }) => {
 
             <Grid
               className={
-                addCount >= 2 || newFormData != ""
+                addCount >= 2 && authPassword || newFormData != ""
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -144,7 +144,7 @@ const StepForm = ({ addCount, dataString }) => {
 
             <Grid
               className={
-                addCount >= 3 || newFormData != ""
+                addCount >= 3 && authPassword || newFormData != ""
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }

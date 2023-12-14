@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 //Mui Component
 import { useTheme } from "@mui/material/styles";
@@ -42,7 +42,12 @@ import {
   drawerWidth
 } from "../../functions/SpareFunctions";
 
-export default function PersistentDrawerLeft({ loungeGrillEditFunc, naraCafeFunc, patioFunc }) {
+export default function PersistentDrawerLeft({
+  loungeGrillEditFunc,
+  naraCafeFunc,
+  patioFunc,
+  adminPass
+}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -174,9 +179,32 @@ export default function PersistentDrawerLeft({ loungeGrillEditFunc, naraCafeFunc
           }}
         >
           <Routes>
-            <Route path="/lounge" element={<LapashaLoungeAndGrill loungeGrillEditFunc={loungeGrillEditFunc} />} />
-            <Route path="/patio" element={<Patio patioEditFunc={patioFunc} />} />
-            <Route path="/naracafe" element={<NaraCafe naraCafeEditFunc={naraCafeFunc} />} />
+            <Route
+              path="/lounge"
+              element={
+                adminPass
+                  ? <LapashaLoungeAndGrill
+                      loungeGrillEditFunc={loungeGrillEditFunc}
+                    />
+                  : <Navigate to="/admin/login" />
+              }
+            />
+            <Route
+              path="/patio"
+              element={
+                adminPass
+                  ? <Patio patioEditFunc={patioFunc} />
+                  : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/naracafe"
+              element={
+                adminPass
+                  ? <NaraCafe naraCafeEditFunc={naraCafeFunc} />
+                  : <Navigate to="/login" />
+              }
+            />
           </Routes>
         </Grid>
       </Main>

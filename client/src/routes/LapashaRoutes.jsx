@@ -353,6 +353,7 @@ const LapashaRoutes = ({ pdfCount }) => {
         element={
           <StepForm
             addCount={addStep}
+            authPassword={authPassword}
             onStep2={eve => onStepForm(eve)}
             dataString={formDataArr}
           />

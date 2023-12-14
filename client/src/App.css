@@ -777,3 +777,7 @@ td.bordernone {
 .MuiListItemIcon-root.css-cveggr-MuiListItemIcon-root {
   width: 0 !important;
 }
+.hide-content {
+  pointer-events: none;
+  opacity: 0.3;
+}

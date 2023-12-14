@@ -97,7 +97,10 @@ const EligibilityVerification = ({
                 </Grid>
               </Grid>
 
+              <Grid className="hide-content">
               <Grid className="text-box">
+            
+
                 <h1>Employment Eligibility Verification </h1>
                 <h4>Department of Homeland Security </h4>
                 <h6>U.S.Citizenship and Immigration Services </h6>
@@ -1189,7 +1192,9 @@ const EligibilityVerification = ({
                   </ul>
                 </Grid>
               </Grid>
+              </Grid>
 
+              <Grid className="hide-content">
               <Grid className="text-box">
                 <Typography variant="h1">
                   Supplement A<br />
@@ -1782,6 +1787,7 @@ const EligibilityVerification = ({
                     />
                   </Grid>
                 </Grid>
+              </Grid>
               </Grid>
 
               {/* These section are being used By supplement b form Page. same values aree being called by multiples times below thats why

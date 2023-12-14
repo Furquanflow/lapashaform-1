@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 //Router Dom
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
@@ -20,12 +20,14 @@ let baseUrl = "http://localhost:8000";
 
 
 const App = () => {
+
   const [pdfCount, setPdfCount] = useState(0)
   const [auth, setAuth] = useState({
     email: "",
     password: "",
     name: ""
   });
+  const [authentication, setAuthentication] = useState()
 
   const navigate = useNavigate();
 
@@ -73,6 +75,7 @@ const App = () => {
         }
       );
       const data = response.data;
+      setAuthentication(data.adminUser)
       if (data.adminUser) {
         localStorage.setItem("token", data);
         alert("Login successful");
@@ -121,7 +124,7 @@ const App = () => {
     <LapashaRoutes pdfCount={pdfCount}  />
     {/*Nested Routes*/}
     <Routes>
-    <Route path="/admin/*" element={<SideNavbar loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} />} />
+    <Route path="/admin/*" element={<SideNavbar loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
     <Route
     path="/admin"
     element={<Navigate replace to="/admin/login" />}
