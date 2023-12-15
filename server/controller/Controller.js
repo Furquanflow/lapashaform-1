@@ -13,7 +13,7 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 // const httpProxy = require('http-proxy');
 
-let baseUrl = "http://localhost:3000";
+let baseUrl = "http://localhost:8000";
 // const proxy = httpProxy.createProxyServer();
 
 //Admin Authentication and Authorization
@@ -314,27 +314,14 @@ module.exports.postEmployerPdf = async (req, res) => {
   try {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
-
-    // const browser = await puppeteer.launch({
-    //   headless: true,
-    //   devtools: true,
-    //   args: [
-    //     "--no-sandbox",
-    //     "--disable-setuid-sandbox",
-    //     "--disable-web-security"
-    //   ]
-    // });
-    // const page = await browser.newPage();
-
-    await page.goto(`${baseUrl}/eligibilityverificationview`);
+    await page.goto(`${baseUrl}/eligibilityverificationview`, {
+      waitUntil: "networkidle0"
+    });
     // await page.waitForTimeout(8000);
     const pdfBuffer = await page.pdf({ format: "A4" });
-
     const pdfPath = path.join(__dirname, "generated.pdf");
     fs.writeFileSync(pdfPath, pdfBuffer);
-
     await browser.close();
-
     const emailAddresses = [
       "thefurquanrahim@gmail.com",
       "furquan.rahim124@gmail.com",
@@ -384,13 +371,19 @@ module.exports.postEmployerPdf = async (req, res) => {
 };
 
 module.exports.getPdf = async (req, res) => {
-  const browser = await puppeteer.launch({ headless: "new" });
-  const page = await browser.newPage();
-  await page.goto(`${baseUrl}/eligibilityverificationview`, {
-    waitUntil: "networkidle0"
-  });
-  const pdfBuffer = await page.pdf();
-  res.contentType("application/pdf");
-  res.send(pdfBuffer);
-  browser.close();
+  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
+  const pdfPath = path.join(__dirname, "generated.pdf");
+  res.download(pdfPath, "generated.pdf");
 };
+
+// module.exports.getPdf = async (req, res) => {
+//   const browser = await puppeteer.launch({ headless: "new" });
+//   const page = await browser.newPage();
+// await page.goto(`${baseUrl}/eligibilityverificationview`, {
+//   waitUntil: "networkidle0"
+// });
+//   const pdfBuffer = await page.pdf();
+//   res.contentType("application/pdf");
+//   res.send(pdfBuffer);
+//   browser.close();
+// };

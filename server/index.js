@@ -8,7 +8,6 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200mb" }));
-app.use(cors())
 const PORT = process.env.port;
 app.use(routes);
 
@@ -17,21 +16,21 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log(err));
 
-// const _dirName = path.dirname("");
-// const buildPath = path.resolve(_dirName, "../client/build");
+const _dirName = path.dirname("");
+const buildPath = path.resolve(_dirName, "../client/build");
 
-// // Enable CORS for all routes
-// app.use(
-//   cors({
-//     origin: "http://localhost:8000",
-//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     credentials: true
-//   })
-// );
-// app.use(express.static(buildPath));
-// app.get("*/", (req, res) => {
-//   const indexPath = path.resolve(buildPath, "index.html");
-//   res.sendFile(indexPath);
-// });
+// Enable CORS for all routes
+app.use(
+  cors({
+    origin: "http://localhost:8000",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true
+  })
+);
+app.use(express.static(buildPath));
+app.get("*/", (req, res) => {
+  const indexPath = path.resolve(buildPath, "index.html");
+  res.sendFile(indexPath);
+});
 
 app.listen(PORT, () => console.log(`Port Running at ${PORT}`));

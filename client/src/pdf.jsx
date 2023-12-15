@@ -19,15 +19,11 @@ const GeneratePDFButton = ({ formData, pdfCount }) => {
       const formDataToSend = new FormData();
       formDataToSend.append("data", JSON.stringify(formData));
       const response = await axios.post(
-        `${baseUrl}/generate-and-send-pdf`,
+        `${baseUrl}/${pdfCount >= 1
+          ? "generate-and-send-pdf"
+          : "generate-and-send-pdf-employer"}`,
         formDataToSend
       );
-      // const response = await axios.post(
-      //   `${baseUrl}/${pdfCount >= 1
-      //     ? "generate-and-send-pdf"
-      //     : "generate-and-send-pdf-employer"}`,
-      //   formDataToSend
-      // );
       if (response.data && response.data.pdfPath) {
         alert("PDF generated and sent successfully.");
         window.open(`${baseUrl}/download-pdf`, "_blank");
