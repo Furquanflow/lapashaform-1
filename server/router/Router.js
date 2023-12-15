@@ -18,7 +18,9 @@ const {
   postAdminQuoteData,
   getAdminQuoteData,
   authenticateToken,
-  protected
+  protected,
+  updatesaveFormData
+
 } = require("../controller/Controller");
 const router = express.Router();
 
@@ -32,8 +34,12 @@ router.post("/login", postLoginData);
 
 //Patio endpoints
 router.get("/formdata", getFormData);
+// router.get("/formdata", authenticateToken, getFormData);
 // router.get('/protected', protected);
-router.post("/formdatapost", saveFormData);
+// router.post("/formdatapost", authenticateToken, saveFormData);
+router.post("/formdatapost",  saveFormData);
+// router.post("/updateformdata", authenticateToken, updatesaveFormData);
+router.post("/updateformdata", updatesaveFormData);
 
 //Lounge And Grill endpoints
 router.get("/loungeandgrilldata", getLoungeAndGrillData);
