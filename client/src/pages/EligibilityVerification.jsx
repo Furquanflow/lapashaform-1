@@ -23,6 +23,8 @@ import mainLogo from "../assets/images/logo.png";
 
 import SignatureCanvas from "react-signature-canvas";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import axios from "axios"
+let baseUrl = "http://localhost:8000";
 
 const EligibilityVerification = ({
   data,
@@ -35,10 +37,11 @@ const EligibilityVerification = ({
   canvaVerificationEmpSBState,
   formDataFunc,
   formData,
-  formShow
+  formShow,
+  dataUpdate,
+  idUser
 }) => {
   const navigate = useNavigate();
-
   const onEligbility = e => {
     e.preventDefault();
     // formData();
@@ -72,11 +75,20 @@ const EligibilityVerification = ({
     verificationEmpState.current.clear();
   };
 
+  const onEligbilityUpdate = () => {
+    axios.post(`${baseUrl}/update`, { _id: idUser})
+      .then((item) => {
+        console.log("data");
+        // setData("")
+        // setUpdate(false)
+      })
+  }
+
   return (
     <Grid>
       <Grid className="form-section">
         <Container>
-          <form onSubmit={e => onEligbility(e)}>
+          <form onSubmit={dataUpdate === true ? e => onEligbilityUpdate(e) :  e => onEligbility(e)}>
             <Grid className="form-inner">
               <Grid
                 container
@@ -1968,13 +1980,22 @@ below section are commented out */}
                         Cancel
                       </Link>
                     </Button>
+                    {
+                      dataUpdate === true ? 
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="save-btn"
+                    >
+                      Update
+                    </Button> : 
                     <Button
                       variant="contained"
                       type="submit"
                       className="save-btn"
                     >
                       Save
-                    </Button>
+                    </Button> }
                   </Grid>
                 </Grid>
               </Grid>
