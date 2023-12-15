@@ -21,7 +21,7 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const LapashaRoutes = ({ pdfCount, formShow }) => {
+const LapashaRoutes = ({ pdfCount, formShow, idUser, dataUpdate }) => {
   const [addStep, setAddStep] = useState(0);
   const [canvas, setCanvas] = useState(null);
   const [contactEmployeeCanvas, setContactEmployeeCanvas] = useState(null);
@@ -41,6 +41,7 @@ const LapashaRoutes = ({ pdfCount, formShow }) => {
     password: "",
     name: ""
   });
+  const [token, setToken] = useState("")
 
   let dataString = formData;
   const navigate = useNavigate();
@@ -126,7 +127,8 @@ const LapashaRoutes = ({ pdfCount, formShow }) => {
       );
       const data = response.data;
       if (data.user) {
-        localStorage.setItem("token", data);
+        // localStorage.setItem("token", data);
+        setToken(data.user)
         alert("Login successful");
         navigate("/home");
       } else {
@@ -186,6 +188,7 @@ const LapashaRoutes = ({ pdfCount, formShow }) => {
     }
   };
 
+
   const postFormData = async () => {
     const url = getPostUrl();
     if (!url) {
@@ -193,7 +196,16 @@ const LapashaRoutes = ({ pdfCount, formShow }) => {
       return;
     }
     try {
-      await axios.post(url, dataString);
+      await axios.post(
+        url,
+        dataString,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       console.error("Error posting data:", error);
     }
@@ -268,6 +280,8 @@ const LapashaRoutes = ({ pdfCount, formShow }) => {
             canvaVerificationPreState={setVerificationPreCanvas}
             canvaVerificationEmpSBState={setVerificationEmpSBCanvas}
             formDataFunc={postFormData}
+            idUser={idUser}
+            dataUpdate={dataUpdate}
           />
         }
       />
