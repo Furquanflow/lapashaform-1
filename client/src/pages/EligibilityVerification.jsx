@@ -84,7 +84,7 @@ const EligibilityVerification = ({
     //   // setData("")
     //   // setUpdate(false)
     // });
-    navigate("/eligibilityverificationview")
+    navigate("/eligibilityverificationview");
   };
 
   console.log(idUser);
@@ -94,11 +94,7 @@ const EligibilityVerification = ({
       <Grid className="form-section">
         <Container>
           <form
-            onSubmit={
-              dataUpdate === true
-                ? onEligbilityUpdate
-                : onEligbility
-            }
+            onSubmit={dataUpdate === true ? onEligbilityUpdate : onEligbility}
           >
             <Grid className="form-inner">
               <Grid
@@ -494,9 +490,9 @@ const EligibilityVerification = ({
                           <SignatureCanvas
                             ref={ref => {
                               verificationState.current = ref;
-                              canvaVerificationState(ref, "signOfEmp");
+                              canvaVerificationState(ref, "signOfEmpp");
                             }}
-                            name="signOfEmp"
+                            name="signOfEmpp"
                             onChange={formChange3}
                             penColor="black"
                             label="signature"
@@ -874,9 +870,9 @@ const EligibilityVerification = ({
                         <SignatureCanvas
                           ref={ref => {
                             verificationEmpState.current = ref;
-                            canvaVerificationEmpState(ref, "signOfEmpRep");
+                            canvaVerificationEmpState(ref, "signOfEmpRepp");
                           }}
-                          name="signOfEmpRep"
+                          name="signOfEmpRepp"
                           onChange={formChange3}
                           penColor="black"
                           label="signature"
@@ -1305,7 +1301,7 @@ const EligibilityVerification = ({
                         translator must complete, sign, and date a separate
                         certification area. Employers must retain completed
                         supplement sheets with the employee's completed Form
-                        I-9.{" "}
+                        I-9.
                       </p>
                     </Grid>
                   </Grid>
@@ -1800,9 +1796,9 @@ const EligibilityVerification = ({
                         <SignatureCanvas
                           ref={ref => {
                             signatureEmpSBStateRef.current = ref;
-                            canvaVerificationPreState(ref, "signOfEmpSB");
+                            canvaVerificationPreState(ref, "signOfEmpSb");
                           }}
-                          name="signOfEmpSB"
+                          name="signOfEmpSb"
                           onChange={formChange3}
                           penColor="black"
                           label="signature"

@@ -21,7 +21,14 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, dataUpdate }) => {
+const LapashaRoutes = ({
+  updateShow,
+  updateToShow,
+  pdfCount,
+  formShow,
+  idUser,
+  dataUpdate
+}) => {
   const [addStep, setAddStep] = useState(0);
   const [canvas, setCanvas] = useState(null);
   const [contactEmployeeCanvas, setContactEmployeeCanvas] = useState(null);
@@ -41,7 +48,7 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
     password: "",
     name: ""
   });
-  const [token, setToken] = useState("")
+  const [token, setToken] = useState("");
 
   let dataString = formData;
   const navigate = useNavigate();
@@ -94,7 +101,7 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
     }
     if (verificationPreCanvas) {
       const signatureVerificationPreData = verificationPreCanvas.toDataURL();
-      formDataChanges.signOfPre = signatureVerificationPreData;
+      formDataChanges.signOfPree = signatureVerificationPreData;
     }
     if (verificationEmpSBCanvas) {
       const signatureVerificationEmpSBData = verificationEmpSBCanvas.toDataURL();
@@ -128,7 +135,7 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
       const data = response.data;
       if (data.user) {
         // localStorage.setItem("token", data);
-        setToken(data.user)
+        setToken(data.user);
         alert("Login successful");
         navigate("/home");
       } else {
@@ -188,7 +195,6 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
     }
   };
 
-
   const postFormData = async () => {
     const url = getPostUrl();
     if (!url) {
@@ -196,16 +202,12 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
       return;
     }
     try {
-      await axios.post(
-        url,
-        dataString,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
+      await axios.post(url, dataString, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         }
-      );
+      });
     } catch (error) {
       console.error("Error posting data:", error);
     }
@@ -269,7 +271,7 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
         path="/eligibilityverification"
         element={
           <EligibilityVerification
-          updateToShow={updateToShow}
+            updateToShow={updateToShow}
             formShow={formShow}
             data={formData}
             formChange3={onForm}

@@ -6170,7 +6170,7 @@ const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => 
                           Signature of Employer or Authorized Representative
                         </Typography>
                         <Typography className="input-value" variant="body">
-                          <img src={value.signOfEmpRep} alt="signOfEmpRep" />
+                          <img src={value.signOfEmpRepp} alt="signOfEmpRepp" />
                         </Typography>
                       </Grid>
                       <Grid item xs={6}>
@@ -6596,7 +6596,7 @@ const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => 
                           Signature of Preparer or Translator
                         </Typography>
                         <Typography className="input-value" variant="body">
-                          <img src={value.signOfPre} alt="signOfPre" />
+                          <img src={value.signOfPree} alt="signOfPree" />
                         </Typography>
                       </Grid>
                       <Grid item xs={4}>
@@ -6841,7 +6841,7 @@ const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => 
                           Signature of Employer or Authorized Representative
                         </Typography>
                         <Typography className="input-value" variant="body">
-                          <img src={value.signOfEmpSb} alt="signOfEmpSB" />
+                          <img src={value.signOfEmpSb} alt="signOfEmpSb" />
                         </Typography>
                       </Grid>
                       <Grid item xs={4}>
