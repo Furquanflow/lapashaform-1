@@ -8,25 +8,7 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "200mb" }));
-const _dirName = path.dirname("");
-const buildPath = path.join(_dirName, "../client/build");
-app.use(express.static(buildPath));
-app.use(
-  cors({
-    origin: "*"
-  })
-);
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(buildPath, "index.html"));
-// });
-
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // Replace with your React app's address
-//   })
-// );
-
+app.use(cors())
 const PORT = process.env.port;
 app.use(routes);
 
@@ -34,5 +16,22 @@ mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log(err));
+
+// const _dirName = path.dirname("");
+// const buildPath = path.resolve(_dirName, "../client/build");
+
+// // Enable CORS for all routes
+// app.use(
+//   cors({
+//     origin: "http://localhost:8000",
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true
+//   })
+// );
+// app.use(express.static(buildPath));
+// app.get("*/", (req, res) => {
+//   const indexPath = path.resolve(buildPath, "index.html");
+//   res.sendFile(indexPath);
+// });
 
 app.listen(PORT, () => console.log(`Port Running at ${PORT}`));

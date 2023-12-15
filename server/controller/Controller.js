@@ -85,20 +85,20 @@ console.log("Initial SECRET_KEY:", SECRET_KEY);
 module.exports.authenticateToken = (req, res, next) => {
   const token = req.headers["Authentication"];
 
-  console.log('Received Token:', token);
+  console.log("Received Token:", token);
 
   if (!token) {
-    console.log('No Token Found');
-    return res.status(401).json({ error: 'Unauthorized' });
+    console.log("No Token Found");
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
-      console.log('Token Verification Error:', err);
-      return res.status(401).json({ error: 'Invalid token' });
+      console.log("Token Verification Error:", err);
+      return res.status(401).json({ error: "Invalid token" });
     }
 
-    console.log('Decoded Token:', decoded);
+    console.log("Decoded Token:", decoded);
 
     req.userId = decoded.id; // Assuming your token has a property 'id' representing the user ID
     next();
@@ -215,17 +215,17 @@ module.exports.saveFormData = (req, res) => {
   }
 };
 
-
 //update function
 
 module.exports.updatesaveFormData = async (req, res) => {
-  const formData = req.body
+  const formData = req.body;
   patioModel
     .findByIdAndUpdate(_id, ...formData)
     .then(() => {
-      res.send("Updated Successfully")
-    }).catch((err) => console.log(err))
-}
+      res.send("Updated Successfully");
+    })
+    .catch(err => console.log(err));
+};
 
 module.exports.getLoungeAndGrillData = async (req, res) => {
   const userData = await loungeAndGril.find();
@@ -384,7 +384,13 @@ module.exports.postEmployerPdf = async (req, res) => {
 };
 
 module.exports.getPdf = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const pdfPath = path.join(__dirname, "generated.pdf");
-  res.download(pdfPath, "generated.pdf");
+  const browser = await puppeteer.launch({ headless: "new" });
+  const page = await browser.newPage();
+  await page.goto(`${baseUrl}/eligibilityverificationview`, {
+    waitUntil: "networkidle0"
+  });
+  const pdfBuffer = await page.pdf();
+  res.contentType("application/pdf");
+  res.send(pdfBuffer);
+  browser.close();
 };
