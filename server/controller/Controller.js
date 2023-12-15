@@ -74,28 +74,38 @@ let SECRET_KEY = generateRandomString();
 console.log("Initial SECRET_KEY:", SECRET_KEY);
 
 // Function to refresh the secret key periodically (for example, every 24 hours)
-const refreshSecretKey = () => {
-  SECRET_KEY = generateRandomString();
-  console.log("New SECRET_KEY:", SECRET_KEY);
-};
+// const refreshSecretKey = () => {
+//   SECRET_KEY = generateRandomString();
+//   console.log("New SECRET_KEY:", SECRET_KEY);
+// };
 
-// Refresh the secret key every 24 hours (86400000 milliseconds)
-setInterval(refreshSecretKey, 86400000);
+// // Refresh the secret key every 24 hours (86400000 milliseconds)
+// setInterval(refreshSecretKey, 86400000);
 
-const authenticateToken = (req, res, next) => {
-  const token = req.headers["authorization"];
+module.exports.authenticateToken = (req, res, next) => {
+  const token = req.headers["Authentication"];
+
+  console.log('Received Token:', token);
+
   if (!token) {
-    return res.sendStatus(401);
+    console.log('No Token Found');
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
-      return res.sendStatus(401);
+      console.log('Token Verification Error:', err);
+      return res.status(401).json({ error: 'Invalid token' });
     }
-    req.user = user;
+
+    console.log('Decoded Token:', decoded);
+
+    req.userId = decoded.id; // Assuming your token has a property 'id' representing the user ID
     next();
   });
 };
+
+console.log(SECRET_KEY);
 
 module.exports.postRegisterData = async (req, res) => {
   try {
@@ -129,6 +139,7 @@ module.exports.postLoginData = async (req, res) => {
   if (isPasswordValid) {
     const token = jwt.sign(
       {
+        id: user.id,
         name: user.authName,
         email: user.authEmail
       },
@@ -147,17 +158,46 @@ module.exports.postLoginData = async (req, res) => {
 // });
 
 //Lapash
+// module.exports.getFormData = async (req, res) => {
+//   console.log(req.userId);
+//   try {
+//     // console.log(req.userId);
+//     // await authenticateToken(req, res);
+//     const userId = req.userId;
+//     const user = await User.findById(userId).populate('formsCompleted');
+//     const formDataArr = user.filledForms.map(form => form.toObject());
+//     res.send(formDataArr);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({
+//       status: 'error',
+//       error: 'An error occurred while fetching form data'
+//     });
+//   }
+// };
+
+// module.exports.saveFormData = async (req, res) => {
+//   try {
+//     // await authenticateToken(req, res);
+//     const formData = req.body;
+//     const userId = req.userId;
+//     const savedForm = await patioModel.create({
+//       ...formData,
+//       user: userId,
+//     });
+//     await User.findByIdAndUpdate(userId, {
+//       $push: { filledForms: savedForm._id },
+//     });
+
+//     res.json({ status: 'ok', data: savedForm });
+//   } catch (err) {
+//     console.error('Error in saveFormData:', err);
+//     res.status(500).json({ status: 'error', error: 'An error occurred during form submission' });
+//   }
+// };
 module.exports.getFormData = async (req, res) => {
-  try {
-    const userData = await patioModel.find();
-    res.send(userData);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      status: "error",
-      error: "An error occurred while fetching form data"
-    });
-  }
+  const userData = await patioModel.find();
+  res.send(userData);
 };
 
 module.exports.saveFormData = (req, res) => {
@@ -175,38 +215,17 @@ module.exports.saveFormData = (req, res) => {
   }
 };
 
+
 //update function
 
-// module.exports.updateFormData = async (req, res) => {
-//   try {
-//     await authenticateToken(req, res);
-//     const { id, newData } = req.body;
-
-//     // Ensure the provided ID is valid
-//     if (!id || typeof id !== 'string') {
-//       return res.status(400).json({ status: 'error', error: 'Invalid ID' });
-//     }
-
-//     // Find the existing record
-//     const existingRecord = await patioModel.findOne({ _id: id, userId: req.user.id });
-
-//     // If the record doesn't exist or doesn't belong to the authenticated user
-//     if (!existingRecord) {
-//       return res.status(404).json({ status: 'error', error: 'Record not found' });
-//     }
-
-//     // Update the existing record with new data
-//     Object.assign(existingRecord, newData);
-
-//     // Save the updated record
-//     const updatedRecord = await existingRecord.save();
-
-//     res.json({ status: 'ok', data: updatedRecord });
-//   } catch (err) {
-//     console.error('Error in updateFormData:', err);
-//     res.status(500).json({ status: 'error', error: 'An error occurred during form update' });
-//   }
-// };
+module.exports.updatesaveFormData = async (req, res) => {
+  const formData = req.body
+  patioModel
+    .findByIdAndUpdate(_id, ...formData)
+    .then(() => {
+      res.send("Updated Successfully")
+    }).catch((err) => console.log(err))
+}
 
 module.exports.getLoungeAndGrillData = async (req, res) => {
   const userData = await loungeAndGril.find();
