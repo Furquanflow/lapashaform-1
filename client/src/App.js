@@ -9,6 +9,7 @@ import SideNavbar from "./admin panel/side navbar/SideNavbar"
 import Login from "./pages/Login";
 import Register from "./pages/Register"
 
+
 //Css
 import "./App.css";
 
@@ -28,6 +29,7 @@ const App = () => {
     name: ""
   });
   const [authentication, setAuthentication] = useState()
+  const [formShow, setFormShow] = useState(false)
 
   const navigate = useNavigate();
 
@@ -40,6 +42,7 @@ const App = () => {
     e.preventDefault()
     navigate("/eligibilityverification");
     setPdfCount(countPdf)
+    setFormShow(true)
   };
 
   const naraCafeEditFunc = (e, countPdf) => {
@@ -121,10 +124,10 @@ const App = () => {
 
   return (
     <>
-    <LapashaRoutes pdfCount={pdfCount}  />
+    <LapashaRoutes pdfCount={pdfCount}  formShow={formShow} />
     {/*Nested Routes*/}
     <Routes>
-    <Route path="/admin/*" element={<SideNavbar loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
+    <Route path="/admin/*" element={<SideNavbar loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication}  />} />
     <Route
     path="/admin"
     element={<Navigate replace to="/admin/login" />}

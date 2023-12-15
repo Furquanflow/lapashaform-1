@@ -10,12 +10,11 @@ const User = require("../models/UserModel");
 const adminModel = require("../models/AdminAuth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const crypto = require('crypto');
+const crypto = require("crypto");
 // const httpProxy = require('http-proxy');
 
 let baseUrl = "http://localhost:3000";
 // const proxy = httpProxy.createProxyServer();
-
 
 //Admin Authentication and Authorization
 
@@ -65,28 +64,26 @@ module.exports.postAdminLoginData = async (req, res) => {
   }
 };
 
-
-
 // User Authentication and Authorization
 
 const generateRandomString = () => {
-  return crypto.randomBytes(32).toString('hex');
+  return crypto.randomBytes(32).toString("hex");
 };
 
 let SECRET_KEY = generateRandomString();
-console.log('Initial SECRET_KEY:', SECRET_KEY);
+console.log("Initial SECRET_KEY:", SECRET_KEY);
 
 // Function to refresh the secret key periodically (for example, every 24 hours)
 const refreshSecretKey = () => {
   SECRET_KEY = generateRandomString();
-  console.log('New SECRET_KEY:', SECRET_KEY);
+  console.log("New SECRET_KEY:", SECRET_KEY);
 };
 
 // Refresh the secret key every 24 hours (86400000 milliseconds)
 setInterval(refreshSecretKey, 86400000);
 
 const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization'];
+  const token = req.headers["authorization"];
   if (!token) {
     return res.sendStatus(401);
   }
@@ -99,7 +96,6 @@ const authenticateToken = (req, res, next) => {
     next();
   });
 };
-
 
 module.exports.postRegisterData = async (req, res) => {
   try {
@@ -137,7 +133,7 @@ module.exports.postLoginData = async (req, res) => {
         email: user.authEmail
       },
       SECRET_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: "1h" }
     );
 
     return res.json({ status: "ok", user: token });
@@ -146,876 +142,112 @@ module.exports.postLoginData = async (req, res) => {
   }
 };
 
-module.exports.protected = (authenticateToken, (req, res) => {
-  res.json({ status: 'ok', message: 'This is a protected route.' });
-});
+// module.exports.protected = (authenticateToken, (req, res) => {
+//   res.json({ status: 'ok', message: 'This is a protected route.' });
+// });
 
-//Lapash 
-module.exports.getFormData = authenticateToken, (req, res) => {
+//Lapash
+module.exports.getFormData = async (req, res) => {
   try {
-    const userData = patioModel.find({ userId: req.user.id });
+    const userData = await patioModel.find();
     res.send(userData);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ status: 'error', error: 'An error occurred while fetching form data' });
+    res.status(500).json({
+      status: "error",
+      error: "An error occurred while fetching form data"
+    });
   }
 };
 
-module.exports.saveFormData = authenticateToken, (req, res) => {
+module.exports.saveFormData = (req, res) => {
   try {
-    
     const formData = req.body;
-    formData.userId = req.user.id;
-    const savedForm =  patioModel.create(formData);
-    res.json({ status: 'ok', data: savedForm });
+    // formData.userId = req.user.id;
+    const savedForm = patioModel.create(formData);
+    res.json({ status: "ok", data: savedForm });
   } catch (err) {
-    console.error('Error in saveFormData:', err);
-    res.status(500).json({ status: 'error', error: 'An error occurred during form submission' });
+    console.error("Error in saveFormData:", err);
+    res.status(500).json({
+      status: "error",
+      error: "An error occurred during form submission"
+    });
   }
 };
-
-
-
 
 //update function
 
-module.exports.updateFormData = async (req, res) => {
-  try {
-    await authenticateToken(req, res);
-    const { id, newData } = req.body;
+// module.exports.updateFormData = async (req, res) => {
+//   try {
+//     await authenticateToken(req, res);
+//     const { id, newData } = req.body;
 
-    // Ensure the provided ID is valid
-    if (!id || typeof id !== 'string') {
-      return res.status(400).json({ status: 'error', error: 'Invalid ID' });
-    }
+//     // Ensure the provided ID is valid
+//     if (!id || typeof id !== 'string') {
+//       return res.status(400).json({ status: 'error', error: 'Invalid ID' });
+//     }
 
-    // Find the existing record
-    const existingRecord = await patioModel.findOne({ _id: id, userId: req.user.id });
+//     // Find the existing record
+//     const existingRecord = await patioModel.findOne({ _id: id, userId: req.user.id });
 
-    // If the record doesn't exist or doesn't belong to the authenticated user
-    if (!existingRecord) {
-      return res.status(404).json({ status: 'error', error: 'Record not found' });
-    }
+//     // If the record doesn't exist or doesn't belong to the authenticated user
+//     if (!existingRecord) {
+//       return res.status(404).json({ status: 'error', error: 'Record not found' });
+//     }
 
-    // Update the existing record with new data
-    Object.assign(existingRecord, newData);
+//     // Update the existing record with new data
+//     Object.assign(existingRecord, newData);
 
-    // Save the updated record
-    const updatedRecord = await existingRecord.save();
+//     // Save the updated record
+//     const updatedRecord = await existingRecord.save();
 
-    res.json({ status: 'ok', data: updatedRecord });
-  } catch (err) {
-    console.error('Error in updateFormData:', err);
-    res.status(500).json({ status: 'error', error: 'An error occurred during form update' });
-  }
-};
-
-
-//Lapasha Lounge And Grill
-
-// module.exports.saveLoungeAndGrillData = async (req, res) => {
-// const {
-//   fNamePerInfo,
-//   lnamePerInfo,
-//   statePerInfo,
-//   zipcodePerInfo,
-//   phoneNoPerInfo,
-//   emailAddPerInfo,
-//   addPerInfo,
-//   emrCnoPerInfo,
-//   relaPerInfo,
-//   emrPhoneNoPerInfo,
-//   startDateEmpDet,
-//   deptEmpDet,
-//   managerEmpDet,
-//   empIdEmpDet,
-//   ssNoTaxInfo,
-//   depTaxInfo,
-//   taxInfo,
-//   bankNameDDinfo,
-//   routNoDDinfo,
-//   accNoDDinfo,
-//   healthInsurance,
-//   dentalInsurance,
-//   visionInsurance,
-//   retirementPlan,
-//   medConyes,
-//   medConNo,
-//   conFormsign,
-//   conFormDate,
-//   polciStatement,
-//   tipsCredit,
-//   cardFee,
-//   policyAgainst,
-//   policyReg,
-//   consent,
-//   workPlace,
-//   drugFee,
-//   remoteWork,
-//   elecSys,
-//   alterDis,
-//   empSigPolicy,
-//   datePolicy,
-//   ableReadPolicy,
-//   empNamePolicy,
-//   empSignPolicy,
-//   tranNamePolicy,
-//   transSignPolicy,
-//   ableReadEng,
-//   empName,
-//   empSign,
-//   transPrinName,
-//   transSignName,
-//   lastName,
-//   firstName,
-//   middle,
-//   otheLn,
-//   address,
-//   aptNo,
-//   city,
-//   state,
-//   zipCode,
-//   dob,
-//   socialSno,
-//   empEmail,
-//   empTno,
-//   citizeOfUsa,
-//   uscis,
-//   formi94,
-//   foreignPass,
-//   signOfEmp,
-//   todayDate,
-//   lawFullPrTextFeild,
-//   noncitizenAuthTextField,
-//   docTitle1,
-//   issueAuth,
-//   docNo,
-//   expdate,
-//   docTitle2,
-//   issueAuth2,
-//   docNo2,
-//   expDate2,
-//   docTitle3,
-//   issueAuth3,
-//   docNo3,
-//   expdate3,
-//   docTitle4,
-//   issueAuth4,
-//   docNo4,
-//   expdate4,
-//   docTitleC,
-//   issueAuthC,
-//   docNoC,
-//   expdateC,
-//   addInfoC,
-//   firstDayofEmp,
-//   lastFirstNameOfEmp,
-//   signOfEmpRep,
-//   todaySDate,
-//   empBuss,
-//   empBusOrg,
-//   lNamesec1,
-//   fNamesec1,
-//   middleNamesec1,
-//   signOfPre,
-//   DatePre,
-//   lastNamePre,
-//   firstNamePre,
-//   middleNamePre,
-//   addressPre,
-//   cityPre,
-//   statePre,
-//   zipCodePre,
-//   lastNameSBsec1,
-//   firstNameSBsec1,
-//   middleNameSBsec1,
-//   dateOfRehireSB,
-//   lastNameSb,
-//   firstNameSB,
-//   middleNameSB,
-//   docTitleSB,
-//   docNoSB,
-//   expDateSB,
-//   nameOfEmpSB,
-//   signOfEmpSB,
-//   todayDateSB,
-//   clickhereSB,
-// } = req.body;
-// loungeAndGril
-//   .create({
-//     fNamePerInfo,
-//     lnamePerInfo,
-//     statePerInfo,
-//     zipcodePerInfo,
-//     phoneNoPerInfo,
-//     emailAddPerInfo,
-//     addPerInfo,
-//     emrCnoPerInfo,
-//     relaPerInfo,
-//     emrPhoneNoPerInfo,
-//     startDateEmpDet,
-//     deptEmpDet,
-//     managerEmpDet,
-//     empIdEmpDet,
-//     ssNoTaxInfo,
-//     depTaxInfo,
-//     taxInfo,
-//     bankNameDDinfo,
-//     routNoDDinfo,
-//     accNoDDinfo,
-//     healthInsurance,
-//     dentalInsurance,
-//     visionInsurance,
-//     retirementPlan,
-//     medConyes,
-//     medConNo,
-//     conFormsign,
-//     conFormDate,
-//     polciStatement,
-//     tipsCredit,
-//     cardFee,
-//     policyAgainst,
-//     policyReg,
-//     consent,
-//     workPlace,
-//     drugFee,
-//     remoteWork,
-//     elecSys,
-//     alterDis,
-//     empSigPolicy,
-//     datePolicy,
-//     ableReadPolicy,
-//     empNamePolicy,
-//     empSignPolicy,
-//     tranNamePolicy,
-//     transSignPolicy,
-//     ableReadEng,
-//     empName,
-//     empSign,
-//     transPrinName,
-//     transSignName,
-//     lastName,
-//     firstName,
-//     middle,
-//     otheLn,
-//     address,
-//     aptNo,
-//     city,
-//     state,
-//     zipCode,
-//     dob,
-//     socialSno,
-//     empEmail,
-//     empTno,
-//     citizeOfUsa,
-//     uscis,
-//     formi94,
-//     foreignPass,
-//     signOfEmp,
-//     todayDate,
-//     lawFullPrTextFeild,
-//     noncitizenAuthTextField,
-//     docTitle1,
-//     issueAuth,
-//     docNo,
-//     expdate,
-//     docTitle2,
-//     issueAuth2,
-//     docNo2,
-//     expDate2,
-//     docTitle3,
-//     issueAuth3,
-//     docNo3,
-//     expdate3,
-//     docTitle4,
-//     issueAuth4,
-//     docNo4,
-//     expdate4,
-//     docTitleC,
-//     issueAuthC,
-//     docNoC,
-//     expdateC,
-//     addInfoC,
-//     firstDayofEmp,
-//     lastFirstNameOfEmp,
-//     signOfEmpRep,
-//     todaySDate,
-//     empBuss,
-//     empBusOrg,
-//     lNamesec1,
-//     fNamesec1,
-//     middleNamesec1,
-//     signOfPre,
-//     DatePre,
-//     lastNamePre,
-//     firstNamePre,
-//     middleNamePre,
-//     addressPre,
-//     cityPre,
-//     statePre,
-//     zipCodePre,
-//     lastNameSBsec1,
-//     firstNameSBsec1,
-//     middleNameSBsec1,
-//     dateOfRehireSB,
-//     lastNameSb,
-//     firstNameSB,
-//     middleNameSB,
-//     docTitleSB,
-//     docNoSB,
-//     expDateSB,
-//     nameOfEmpSB,
-//     signOfEmpSB,
-//     todayDateSB,
-//     clickhereSB
-//   })
-//     .then(data => {
-//       console.log("Added Succesfully");
-//       console.log(data);
-//       res.send(data);
-//     });
+//     res.json({ status: 'ok', data: updatedRecord });
+//   } catch (err) {
+//     console.error('Error in updateFormData:', err);
+//     res.status(500).json({ status: 'error', error: 'An error occurred during form update' });
+//   }
 // };
 
 module.exports.getLoungeAndGrillData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const userData = await loungeAndGril.find();
   res.send(userData);
 };
 
 module.exports.saveLoungeAndGrillData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const {
-    fNamePerInfo,
-    lnamePerInfo,
-    statePerInfo,
-    zipcodePerInfo,
-    phoneNoPerInfo,
-    emailAddPerInfo,
-    addPerInfo,
-    emrCnoPerInfo,
-    relaPerInfo,
-    emrPhoneNoPerInfo,
-    startDateEmpDet,
-    deptEmpDet,
-    managerEmpDet,
-    empIdEmpDet,
-    ssNoTaxInfo,
-    depTaxInfo,
-    taxInfo,
-    bankNameDDinfo,
-    routNoDDinfo,
-    accNoDDinfo,
-    healthInsurance,
-    dentalInsurance,
-    visionInsurance,
-    retirementPlan,
-    medConyes,
-    medConNo,
-    conFormsign,
-    conFormDate,
-    polciStatement,
-    tipsCredit,
-    cardFee,
-    policyAgainst,
-    policyReg,
-    consent,
-    workPlace,
-    drugFee,
-    remoteWork,
-    elecSys,
-    alterDis,
-    empSigPolicy,
-    datePolicy,
-    ableReadPolicy,
-    empNamePolicy,
-    empSignPolicy,
-    tranNamePolicy,
-    transSignPolicy,
-    ableReadEng,
-    empName,
-    empSign,
-    transPrinName,
-    transSignName,
-    lastName,
-    firstName,
-    middle,
-    otheLn,
-    address,
-    aptNo,
-    city,
-    state,
-    zipCode,
-    dob,
-    socialSno,
-    empEmail,
-    empTno,
-    citizeOfUsa,
-    uscis,
-    formi94,
-    foreignPass,
-    signOfEmp,
-    todayDate,
-    lawFullPrTextFeild,
-    noncitizenAuthTextField,
-    docTitle1,
-    issueAuth,
-    docNo,
-    expdate,
-    docTitle2,
-    issueAuth2,
-    docNo2,
-    expDate2,
-    docTitle3,
-    issueAuth3,
-    docNo3,
-    expdate3,
-    docTitle4,
-    issueAuth4,
-    docNo4,
-    expdate4,
-    docTitleC,
-    issueAuthC,
-    docNoC,
-    expdateC,
-    addInfoC,
-    firstDayofEmp,
-    lastFirstNameOfEmp,
-    signOfEmpRep,
-    todaySDate,
-    empBuss,
-    empBusOrg,
-    lNamesec1,
-    fNamesec1,
-    middleNamesec1,
-    signOfPre,
-    DatePre,
-    lastNamePre,
-    firstNamePre,
-    middleNamePre,
-    addressPre,
-    cityPre,
-    statePre,
-    zipCodePre,
-    lastNameSBsec1,
-    firstNameSBsec1,
-    middleNameSBsec1,
-    dateOfRehireSB,
-    lastNameSb,
-    firstNameSB,
-    middleNameSB,
-    docTitleSB,
-    docNoSB,
-    expDateSB,
-    nameOfEmpSB,
-    signOfEmpSB,
-    todayDateSB,
-    clickhereSB
-  } = req.body;
-  loungeAndGril
-    .create({
-      fNamePerInfo,
-      lnamePerInfo,
-      statePerInfo,
-      zipcodePerInfo,
-      phoneNoPerInfo,
-      emailAddPerInfo,
-      addPerInfo,
-      emrCnoPerInfo,
-      relaPerInfo,
-      emrPhoneNoPerInfo,
-      startDateEmpDet,
-      deptEmpDet,
-      managerEmpDet,
-      empIdEmpDet,
-      ssNoTaxInfo,
-      depTaxInfo,
-      taxInfo,
-      bankNameDDinfo,
-      routNoDDinfo,
-      accNoDDinfo,
-      healthInsurance,
-      dentalInsurance,
-      visionInsurance,
-      retirementPlan,
-      medConyes,
-      medConNo,
-      conFormsign,
-      conFormDate,
-      polciStatement,
-      tipsCredit,
-      cardFee,
-      policyAgainst,
-      policyReg,
-      consent,
-      workPlace,
-      drugFee,
-      remoteWork,
-      elecSys,
-      alterDis,
-      empSigPolicy,
-      datePolicy,
-      ableReadPolicy,
-      empNamePolicy,
-      empSignPolicy,
-      tranNamePolicy,
-      transSignPolicy,
-      ableReadEng,
-      empName,
-      empSign,
-      transPrinName,
-      transSignName,
-      lastName,
-      firstName,
-      middle,
-      otheLn,
-      address,
-      aptNo,
-      city,
-      state,
-      zipCode,
-      dob,
-      socialSno,
-      empEmail,
-      empTno,
-      citizeOfUsa,
-      uscis,
-      formi94,
-      foreignPass,
-      signOfEmp,
-      todayDate,
-      lawFullPrTextFeild,
-      noncitizenAuthTextField,
-      docTitle1,
-      issueAuth,
-      docNo,
-      expdate,
-      docTitle2,
-      issueAuth2,
-      docNo2,
-      expDate2,
-      docTitle3,
-      issueAuth3,
-      docNo3,
-      expdate3,
-      docTitle4,
-      issueAuth4,
-      docNo4,
-      expdate4,
-      docTitleC,
-      issueAuthC,
-      docNoC,
-      expdateC,
-      addInfoC,
-      firstDayofEmp,
-      lastFirstNameOfEmp,
-      signOfEmpRep,
-      todaySDate,
-      empBuss,
-      empBusOrg,
-      lNamesec1,
-      fNamesec1,
-      middleNamesec1,
-      signOfPre,
-      DatePre,
-      lastNamePre,
-      firstNamePre,
-      middleNamePre,
-      addressPre,
-      cityPre,
-      statePre,
-      zipCodePre,
-      lastNameSBsec1,
-      firstNameSBsec1,
-      middleNameSBsec1,
-      dateOfRehireSB,
-      lastNameSb,
-      firstNameSB,
-      middleNameSB,
-      docTitleSB,
-      docNoSB,
-      expDateSB,
-      nameOfEmpSB,
-      signOfEmpSB,
-      todayDateSB,
-      clickhereSB
-    })
-    .then(data => {
-      console.log("Added Succesfully");
-      console.log(data);
-      res.send(data);
+  try {
+    const formData = req.body;
+    // formData.userId = req.user.id;
+    const savedForm = loungeAndGril.create(formData);
+    res.json({ status: "ok", data: savedForm });
+  } catch (err) {
+    console.error("Error in saveFormData:", err);
+    res.status(500).json({
+      status: "error",
+      error: "An error occurred during form submission"
     });
+  }
 };
 
 //Nara Cafe
 
 module.exports.getNaraCafeData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const userData = await naraCafe.find();
   res.send(userData);
 };
 
 module.exports.saveNaraCafeData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const {
-    fNamePerInfo,
-    lnamePerInfo,
-    statePerInfo,
-    zipcodePerInfo,
-    phoneNoPerInfo,
-    emailAddPerInfo,
-    addPerInfo,
-    emrCnoPerInfo,
-    relaPerInfo,
-    emrPhoneNoPerInfo,
-    startDateEmpDet,
-    deptEmpDet,
-    managerEmpDet,
-    empIdEmpDet,
-    ssNoTaxInfo,
-    depTaxInfo,
-    taxInfo,
-    bankNameDDinfo,
-    routNoDDinfo,
-    accNoDDinfo,
-    healthInsurance,
-    dentalInsurance,
-    visionInsurance,
-    retirementPlan,
-    medConyes,
-    medConNo,
-    conFormsign,
-    conFormDate,
-    polciStatement,
-    tipsCredit,
-    cardFee,
-    policyAgainst,
-    policyReg,
-    consent,
-    workPlace,
-    drugFee,
-    remoteWork,
-    elecSys,
-    alterDis,
-    empSigPolicy,
-    datePolicy,
-    ableReadPolicy,
-    empNamePolicy,
-    empSignPolicy,
-    tranNamePolicy,
-    transSignPolicy,
-    ableReadEng,
-    empName,
-    empSign,
-    transPrinName,
-    transSignName,
-    lastName,
-    firstName,
-    middle,
-    otheLn,
-    address,
-    aptNo,
-    city,
-    state,
-    zipCode,
-    dob,
-    socialSno,
-    empEmail,
-    empTno,
-    citizeOfUsa,
-    uscis,
-    formi94,
-    foreignPass,
-    signOfEmp,
-    todayDate,
-    lawFullPrTextFeild,
-    noncitizenAuthTextField,
-    docTitle1,
-    issueAuth,
-    docNo,
-    expdate,
-    docTitle2,
-    issueAuth2,
-    docNo2,
-    expDate2,
-    docTitle3,
-    issueAuth3,
-    docNo3,
-    expdate3,
-    docTitle4,
-    issueAuth4,
-    docNo4,
-    expdate4,
-    docTitleC,
-    issueAuthC,
-    docNoC,
-    expdateC,
-    addInfoC,
-    firstDayofEmp,
-    lastFirstNameOfEmp,
-    signOfEmpRep,
-    todaySDate,
-    empBuss,
-    empBusOrg,
-    lNamesec1,
-    fNamesec1,
-    middleNamesec1,
-    signOfPre,
-    DatePre,
-    lastNamePre,
-    firstNamePre,
-    middleNamePre,
-    addressPre,
-    cityPre,
-    statePre,
-    zipCodePre,
-    lastNameSBsec1,
-    firstNameSBsec1,
-    middleNameSBsec1,
-    dateOfRehireSB,
-    lastNameSb,
-    firstNameSB,
-    middleNameSB,
-    docTitleSB,
-    docNoSB,
-    expDateSB,
-    nameOfEmpSB,
-    signOfEmpSB,
-    todayDateSB,
-    clickhereSB
-  } = req.body;
-  naraCafe
-    .create({
-      fNamePerInfo,
-      lnamePerInfo,
-      statePerInfo,
-      zipcodePerInfo,
-      phoneNoPerInfo,
-      emailAddPerInfo,
-      addPerInfo,
-      emrCnoPerInfo,
-      relaPerInfo,
-      emrPhoneNoPerInfo,
-      startDateEmpDet,
-      deptEmpDet,
-      managerEmpDet,
-      empIdEmpDet,
-      ssNoTaxInfo,
-      depTaxInfo,
-      taxInfo,
-      bankNameDDinfo,
-      routNoDDinfo,
-      accNoDDinfo,
-      healthInsurance,
-      dentalInsurance,
-      visionInsurance,
-      retirementPlan,
-      medConyes,
-      medConNo,
-      conFormsign,
-      conFormDate,
-      polciStatement,
-      tipsCredit,
-      cardFee,
-      policyAgainst,
-      policyReg,
-      consent,
-      workPlace,
-      drugFee,
-      remoteWork,
-      elecSys,
-      alterDis,
-      empSigPolicy,
-      datePolicy,
-      ableReadPolicy,
-      empNamePolicy,
-      empSignPolicy,
-      tranNamePolicy,
-      transSignPolicy,
-      ableReadEng,
-      empName,
-      empSign,
-      transPrinName,
-      transSignName,
-      lastName,
-      firstName,
-      middle,
-      otheLn,
-      address,
-      aptNo,
-      city,
-      state,
-      zipCode,
-      dob,
-      socialSno,
-      empEmail,
-      empTno,
-      citizeOfUsa,
-      uscis,
-      formi94,
-      foreignPass,
-      signOfEmp,
-      todayDate,
-      lawFullPrTextFeild,
-      noncitizenAuthTextField,
-      docTitle1,
-      issueAuth,
-      docNo,
-      expdate,
-      docTitle2,
-      issueAuth2,
-      docNo2,
-      expDate2,
-      docTitle3,
-      issueAuth3,
-      docNo3,
-      expdate3,
-      docTitle4,
-      issueAuth4,
-      docNo4,
-      expdate4,
-      docTitleC,
-      issueAuthC,
-      docNoC,
-      expdateC,
-      addInfoC,
-      firstDayofEmp,
-      lastFirstNameOfEmp,
-      signOfEmpRep,
-      todaySDate,
-      empBuss,
-      empBusOrg,
-      lNamesec1,
-      fNamesec1,
-      middleNamesec1,
-      signOfPre,
-      DatePre,
-      lastNamePre,
-      firstNamePre,
-      middleNamePre,
-      addressPre,
-      cityPre,
-      statePre,
-      zipCodePre,
-      lastNameSBsec1,
-      firstNameSBsec1,
-      middleNameSBsec1,
-      dateOfRehireSB,
-      lastNameSb,
-      firstNameSB,
-      middleNameSB,
-      docTitleSB,
-      docNoSB,
-      expDateSB,
-      nameOfEmpSB,
-      signOfEmpSB,
-      todayDateSB,
-      clickhereSB
-    })
-    .then(data => {
-      console.log("Added Succesfully");
-      console.log(data);
-      res.send(data);
+  try {
+    const formData = req.body;
+    // formData.userId = req.user.id;
+    const savedForm = naraCafe.create(formData);
+    res.json({ status: "ok", data: savedForm });
+  } catch (err) {
+    console.error("Error in saveFormData:", err);
+    res.status(500).json({
+      status: "error",
+      error: "An error occurred during form submission"
     });
+  }
 };
 
 const transporter = nodemailer.createTransport({

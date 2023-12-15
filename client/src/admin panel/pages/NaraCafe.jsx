@@ -9,7 +9,7 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const NaraCafe = ({naraCafeEditFunc}) => {
+const NaraCafe = ({ naraCafeEditFunc }) => {
   const [naraAdminData, setNaraAdminData] = React.useState([]);
 
   const getFormData = () => {
@@ -26,7 +26,13 @@ const NaraCafe = ({naraCafeEditFunc}) => {
   React.useEffect(() => {
     getFormData();
   }, []);
-  return <LapashaFormData empolymentFunc={(e) => naraCafeEditFunc(e, 2)} lapashaData={naraAdminData} title={"Nara Cafe"} />;
+  return (
+    <LapashaFormData
+      empolymentFunc={e => naraCafeEditFunc(e, 2)}
+      lapashaData={naraAdminData}
+      title={"Nara Cafe"}
+    />
+  );
 };
 
 export default NaraCafe;

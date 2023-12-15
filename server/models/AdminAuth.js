@@ -7,7 +7,7 @@ const adminData = new mongoose.Schema(
     // email: { type: String, required: true, unique: true },
     authAdminPassword: { type: String, required: true }
   },
-  { collection: "Admin-data" }
+  { collection: "AdminData" }
 );
 
 const adminModel = mongoose.model("AdminData", adminData);

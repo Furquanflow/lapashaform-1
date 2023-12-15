@@ -7,17 +7,15 @@ const path = require("path");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true, limit: "200mb" }));
 const _dirName = path.dirname("");
 const buildPath = path.join(_dirName, "../client/build");
 app.use(express.static(buildPath));
 app.use(
   cors({
-    origin: "*",
+    origin: "*"
   })
 );
-
-const bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '20mb' }));
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(buildPath, "index.html"));

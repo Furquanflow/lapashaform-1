@@ -46,7 +46,7 @@ export default function PersistentDrawerLeft({
   loungeGrillEditFunc,
   naraCafeFunc,
   patioFunc,
-  adminPass
+  adminPass,
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -182,28 +182,18 @@ export default function PersistentDrawerLeft({
             <Route
               path="/lounge"
               element={
-                adminPass
-                  ? <LapashaLoungeAndGrill
-                      loungeGrillEditFunc={loungeGrillEditFunc}
-                    />
-                  : <Navigate to="/admin/login" />
+                <LapashaLoungeAndGrill
+                  loungeGrillEditFunc={loungeGrillEditFunc}
+                />
               }
             />
             <Route
               path="/patio"
-              element={
-                adminPass
-                  ? <Patio patioEditFunc={patioFunc} />
-                  : <Navigate to="/login" />
-              }
+              element={<Patio patioEditFunc={patioFunc} />}
             />
             <Route
               path="/naracafe"
-              element={
-                adminPass
-                  ? <NaraCafe naraCafeEditFunc={naraCafeFunc} />
-                  : <Navigate to="/login" />
-              }
+              element={<NaraCafe naraCafeEditFunc={naraCafeFunc} />}
             />
           </Routes>
         </Grid>

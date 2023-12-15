@@ -32,7 +32,7 @@ router.post("/login", postLoginData);
 
 //Patio endpoints
 router.get("/formdata", getFormData);
-router.get('/protected', protected);
+// router.get('/protected', protected);
 router.post("/formdatapost", saveFormData);
 
 //Lounge And Grill endpoints
