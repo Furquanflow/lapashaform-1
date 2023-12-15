@@ -86,7 +86,7 @@ const LapashaFormData = ({ lapashaData, title, empolymentFunc }) => {
                             background: "#b49a53",
                           },
                         }}
-                        onClick={empolymentFunc}
+                        onClick={() => empolymentFunc(row._id)}
                       >
                         Edit
                       </Button>
