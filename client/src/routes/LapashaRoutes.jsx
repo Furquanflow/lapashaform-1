@@ -86,11 +86,11 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
     }
     if (verificationCanvas) {
       const signatureVerificationData = verificationCanvas.toDataURL();
-      formDataChanges.signOfEmp = signatureVerificationData;
+      formDataChanges.signOfEmpp = signatureVerificationData;
     }
     if (verificationEmpCanvas) {
       const signatureVerificationEmpData = verificationEmpCanvas.toDataURL();
-      formDataChanges.signOfEmpRep = signatureVerificationEmpData;
+      formDataChanges.signOfEmpRepp = signatureVerificationEmpData;
     }
     if (verificationPreCanvas) {
       const signatureVerificationPreData = verificationPreCanvas.toDataURL();
@@ -98,7 +98,7 @@ const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, da
     }
     if (verificationEmpSBCanvas) {
       const signatureVerificationEmpSBData = verificationEmpSBCanvas.toDataURL();
-      formDataChanges.signOfEmpSB = signatureVerificationEmpSBData;
+      formDataChanges.signOfEmpSb = signatureVerificationEmpSBData;
     }
     setFormData(prevFormData => ({
       ...prevFormData,
