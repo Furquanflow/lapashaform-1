@@ -29,6 +29,8 @@ const App = () => {
     name: ""
   });
   const [authentication, setAuthentication] = useState()
+  const [userId, setUserId] = useState("")
+  const [updateData, setUpdateData] = useState(false)
   const [formShow, setFormShow] = useState(false)
 
   const navigate = useNavigate();
@@ -51,10 +53,12 @@ const App = () => {
     setPdfCount(countPdf)
   };
 
-  const patioEditFunc = (e, countPdf) => {
+  const patioEditFunc = (id, e, countPdf) => {
     e.preventDefault()
     navigate("/eligibilityverification");
     setPdfCount(countPdf)
+    setUserId(id)
+    setUpdateData(true)
   };
 
 
@@ -124,7 +128,7 @@ const App = () => {
 
   return (
     <>
-    <LapashaRoutes pdfCount={pdfCount}  formShow={formShow} />
+    <LapashaRoutes dataUpdate={updateData} idUser={userId} pdfCount={pdfCount}  formShow={formShow} />
     {/*Nested Routes*/}
     <Routes>
     <Route path="/admin/*" element={<SideNavbar loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication}  />} />
