@@ -23,12 +23,23 @@ const Patio = ({ patioEditFunc }) => {
       });
   };
 
+  //update function
+  const updateFormData = (userId, userName, amount, date, status, setUpdate, setData, setUser) => {
+    axios.post(`${baseUrl}/update`, { _id: userId, userName, amount, date, status })
+      .then((item) => {
+        console.log("data");
+        setData("")
+        setUpdate(false)
+      })
+  }
+
   React.useEffect(() => {
     getFormData();
   }, []);
 
   return (
     <LapashaFormData
+      updateFormData={updateFormData}
       empolymentFunc={e => patioEditFunc(e, 1)}
       lapashaData={adminPatioData}
       title={"Patio"}
