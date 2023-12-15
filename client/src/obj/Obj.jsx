@@ -84,7 +84,7 @@ const data = {
   uscis: "",
   formi94: "",
   foreignPass: "",
-  signOfEmp: "",
+  signOfEmpp: "",
   todayDate: "",
   lawFullPrTextFeild: "",
   noncitizenAuthTextField: "",
@@ -111,7 +111,7 @@ const data = {
   addInfoC: "",
   firstDayofEmp: "",
   lastFirstNameOfEmp: "",
-  signOfEmpRep: "",
+  signOfEmpRepp: "",
   todaySDate: "",
   empBuss: "",
   empBusOrg: "",
@@ -136,10 +136,10 @@ const data = {
   middleNameSB: "",
   docTitleSB: "",
   docNoSB: "",
-  expDateSB: "",
+  expDateSb: "",
   nameOfEmpSB: "",
-  signOfEmpSB: "",
+  signOfEmpSb: "",
   todayDateSB: "",
-  clickHereSB: "",
+  clickHereSB: ""
 };
 export { data };

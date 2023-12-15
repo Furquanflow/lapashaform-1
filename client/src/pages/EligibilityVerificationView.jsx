@@ -5900,7 +5900,7 @@ const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => 
                             Signature of Employee
                           </Typography>
                           <Typography className="input-value" variant="body">
-                            <img src={value.signOfEmp} alt="signOfEmp" />
+                            <img src={value.signOfEmpp} alt="signOfEmpp" />
                           </Typography>
                         </Grid>
                         <Grid item xs={6}>
@@ -6815,7 +6815,7 @@ const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => 
                           Expiration Date
                         </Typography>
                         <Typography className="input-value" variant="body">
-                          {value.expDateSB}
+                          {value.expDateSb}
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
@@ -6841,7 +6841,7 @@ const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => 
                           Signature of Employer or Authorized Representative
                         </Typography>
                         <Typography className="input-value" variant="body">
-                          <img src={value.signOfEmpSB} alt="signOfEmpSB" />
+                          <img src={value.signOfEmpSb} alt="signOfEmpSB" />
                         </Typography>
                       </Grid>
                       <Grid item xs={4}>

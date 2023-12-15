@@ -23,7 +23,7 @@ import mainLogo from "../assets/images/logo.png";
 
 import SignatureCanvas from "react-signature-canvas";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import axios from "axios"
+import axios from "axios";
 let baseUrl = "http://localhost:8000";
 
 const EligibilityVerification = ({
@@ -39,11 +39,13 @@ const EligibilityVerification = ({
   formData,
   formShow,
   dataUpdate,
-  idUser
+  idUser,
+  updateToShow
 }) => {
   const navigate = useNavigate();
   const onEligbility = e => {
     e.preventDefault();
+    updateToShow(false);
     // formData();
     onStep3();
     formDataFunc();
@@ -75,20 +77,29 @@ const EligibilityVerification = ({
     verificationEmpState.current.clear();
   };
 
-  const onEligbilityUpdate = () => {
-    axios.post(`${baseUrl}/update`, { _id: idUser})
-      .then((item) => {
-        console.log("data");
-        // setData("")
-        // setUpdate(false)
-      })
-  }
+  const onEligbilityUpdate = e => {
+    e.preventDefault();
+    // axios.post(`${baseUrl}/updateformdata`, { _id: idUser }).then(item => {
+    //   console.log("data");
+    //   // setData("")
+    //   // setUpdate(false)
+    // });
+    navigate("/eligibilityverificationview")
+  };
+
+  console.log(idUser);
 
   return (
     <Grid>
       <Grid className="form-section">
         <Container>
-          <form onSubmit={dataUpdate === true ? e => onEligbilityUpdate(e) :  e => onEligbility(e)}>
+          <form
+            onSubmit={
+              dataUpdate === true
+                ? onEligbilityUpdate
+                : onEligbility
+            }
+          >
             <Grid className="form-inner">
               <Grid
                 container
@@ -109,7 +120,7 @@ const EligibilityVerification = ({
                 </Grid>
               </Grid>
 
-              <Grid className={formShow === false ? "hide-content" : ""}>
+              <Grid className={dataUpdate === true && "hide-content"}>
                 <Grid className="text-box">
                   <h1>Employment Eligibility Verification </h1>
                   <h4>Department of Homeland Security </h4>
@@ -155,7 +166,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.lastName}
                         name="lastName"
                         onChange={formChange3}
@@ -167,7 +178,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.firstName}
                         name="firstName"
                         onChange={formChange3}
@@ -205,7 +216,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.address}
                         name="address"
                         onChange={formChange3}
@@ -231,7 +242,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.city}
                         name="city"
                         onChange={formChange3}
@@ -243,7 +254,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.state}
                         name="state"
                         onChange={formChange3}
@@ -255,7 +266,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.zipCode}
                         name="zipCode"
                         onChange={formChange3}
@@ -270,7 +281,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.dob}
                         name="dob"
                         onChange={formChange3}
@@ -283,7 +294,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.socialSno}
                         name="socialSno"
                         onChange={formChange3}
@@ -298,7 +309,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.empEmail}
                         name="empEmail"
                         onChange={formChange3}
@@ -311,7 +322,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.empTno}
                         name="empTno"
                         onChange={formChange3}
@@ -358,7 +369,11 @@ const EligibilityVerification = ({
                             <FormControlLabel
                               value={"1. A citizen of the United States"}
                               name="citizeOfUsa"
-                              control={<Radio required = {formShow === false ? false : true} />}
+                              control={
+                                <Radio
+                                  required={dataUpdate === true ? false : true}
+                                />
+                              }
                               label="1. A citizen of the United States"
                             />
                           </Grid>
@@ -367,7 +382,11 @@ const EligibilityVerification = ({
                             <FormControlLabel
                               value="2. A noncitizen national of the United States (See Instructions.)"
                               name="citizeOfUsa"
-                              control={<Radio required = {formShow === false ? false : true} />}
+                              control={
+                                <Radio
+                                  required={dataUpdate === true ? false : true}
+                                />
+                              }
                               label="2. A noncitizen national of the United States (See Instructions.)"
                             />
                           </Grid>
@@ -376,7 +395,11 @@ const EligibilityVerification = ({
                             <FormControlLabel
                               value="3. A lawful permanent resident (Enter USCIS or A-Number.)"
                               name="citizeOfUsa"
-                              control={<Radio required = {formShow === false ? false : true} />}
+                              control={
+                                <Radio
+                                  required={dataUpdate === true ? false : true}
+                                />
+                              }
                               label="3. A lawful permanent resident (Enter USCIS or A-Number.)"
                             />
                           </Grid>
@@ -495,7 +518,7 @@ const EligibilityVerification = ({
                       <Grid item xs={6}>
                         <TextField
                           className="txt-width"
-                          required = {formShow === false ? false : true}
+                          required={dataUpdate === true ? false : true}
                           value={data.todayDate}
                           name="todayDate"
                           onChange={formChange3}
@@ -538,7 +561,7 @@ const EligibilityVerification = ({
                     <Grid item xs={12}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.docTitle1}
                         name="docTitle1"
                         onChange={formChange3}
@@ -550,7 +573,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.issueAuth}
                         name="issueAuth"
                         onChange={formChange3}
@@ -597,7 +620,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.issueAuth2}
                         name="issueAuth2"
                         onChange={formChange3}
@@ -644,7 +667,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.issueAuth3}
                         name="issueAuth3"
                         onChange={formChange3}
@@ -686,7 +709,7 @@ const EligibilityVerification = ({
                     <Grid item xs={12}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.docTitle4}
                         name="docTitle4"
                         onChange={formChange3}
@@ -698,7 +721,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.issueAuth4}
                         name="issueAuth4"
                         onChange={formChange3}
@@ -740,7 +763,7 @@ const EligibilityVerification = ({
                     <Grid item xs={12}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.docTitleC}
                         name="docTitleC"
                         onChange={formChange3}
@@ -752,7 +775,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.issueAuthC}
                         name="issueAuthC"
                         onChange={formChange3}
@@ -788,7 +811,7 @@ const EligibilityVerification = ({
                     <Grid item xs={12}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.addInfoC}
                         name="addInfoC"
                         onChange={formChange3}
@@ -823,7 +846,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.firstDayofEmp}
                         name="firstDayofEmp"
                         onChange={formChange3}
@@ -836,7 +859,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.lastFirstNameOfEmp}
                         name="lastFirstNameOfEmp"
                         onChange={formChange3}
@@ -875,7 +898,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.todaySDate}
                         name="todaySDate"
                         onChange={formChange3}
@@ -888,7 +911,7 @@ const EligibilityVerification = ({
                     <Grid item xs={12}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.empBuss}
                         name="empBuss"
                         onChange={formChange3}
@@ -900,7 +923,7 @@ const EligibilityVerification = ({
                     <Grid item xs={12}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === true ? false : true}
                         value={data.empBusOrg}
                         name="empBusOrg"
                         onChange={formChange3}
@@ -1223,7 +1246,7 @@ const EligibilityVerification = ({
                 </Grid>
               </Grid>
 
-              <Grid className={formShow === true ? "hide-content" : ""}>
+              <Grid className={dataUpdate === false && "hide-content"}>
                 <Grid className="text-box">
                   <Typography variant="h1">
                     Supplement A<br />
@@ -1240,7 +1263,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.lNamesec1}
                         name="lNamesec1"
                         onChange={formChange3}
@@ -1252,7 +1275,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.fNamesec1}
                         name="fNamesec1"
                         onChange={formChange3}
@@ -1328,7 +1351,7 @@ const EligibilityVerification = ({
                     <Grid item xs={6}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.DatePre}
                         name="DatePre"
                         onChange={formChange3}
@@ -1341,7 +1364,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.lastNamePre}
                         name="lastNamePre"
                         onChange={formChange3}
@@ -1353,7 +1376,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.firstNamePre}
                         name="firstNamePre"
                         onChange={formChange3}
@@ -1376,7 +1399,7 @@ const EligibilityVerification = ({
                     <Grid item xs={5}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.addressPre}
                         name="addressPre"
                         onChange={formChange3}
@@ -1388,7 +1411,7 @@ const EligibilityVerification = ({
                     <Grid item xs={3}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.cityPre}
                         name="cityPre"
                         onChange={formChange3}
@@ -1400,7 +1423,7 @@ const EligibilityVerification = ({
                     <Grid item xs={2}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.statePre}
                         name="statePre"
                         onChange={formChange3}
@@ -1412,7 +1435,7 @@ const EligibilityVerification = ({
                     <Grid item xs={2}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.zipCodePre}
                         name="zipCodePre"
                         onChange={formChange3}
@@ -1433,39 +1456,39 @@ const EligibilityVerification = ({
 
        <Grid container spacing={3} columns={12} className='flx-box'>
        <Grid item xs={8}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Signature of Preparer or Translator" variant="standard" />
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Date (mm/dd/yyyy)" variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Last Name (Family Name)  " variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt
+       required = {dataUpdate === false ? false : true}<TextField className='txt
        value={data.} onChange={formChange3} id="standard-basic" label="First Name (Given Name) " variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Middle Initial (if any)" variant="standard" />
        </Grid>
        <Grid item xs={5}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Address (Street Number and Name) " variant="standard" /> 
        </Grid>
        <Grid item xs={3}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="City or Town " variant="standard" /> 
        </Grid>
        <Grid item xs={2}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="State" variant="standard" /> 
        </Grid>
        <Grid item xs={2}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="ZIP Code " variant="standard" />
        </Grid>
 
@@ -1481,39 +1504,39 @@ const EligibilityVerification = ({
 
        <Grid container spacing={3} columns={12} className='flx-box'>
        <Grid item xs={8}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Signature of Preparer or Translator" variant="standard" />
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Date (mm/dd/yyyy)" variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Last Name (Family Name)  " variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt
+       required = {dataUpdate === false ? false : true}<TextField className='txt
        value={data.} onChange={formChange3} id="standard-basic" label="First Name (Given Name) " variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Middle Initial (if any)" variant="standard" />
        </Grid>
        <Grid item xs={5}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Address (Street Number and Name) " variant="standard" /> 
        </Grid>
        <Grid item xs={3}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="City or Town " variant="standard" /> 
        </Grid>
        <Grid item xs={2}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="State" variant="standard" /> 
        </Grid>
        <Grid item xs={2}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="ZIP Code " variant="standard" />
        </Grid>
 
@@ -1529,39 +1552,39 @@ const EligibilityVerification = ({
 
        <Grid container spacing={3} columns={12} className='flx-box'>
        <Grid item xs={8}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Signature of Preparer or Translator" variant="standard" />
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Date (mm/dd/yyyy)" variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Last Name (Family Name)  " variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt
+       required = {dataUpdate === false ? false : true}<TextField className='txt
        value={data.} onChange={formChange3} id="standard-basic" label="First Name (Given Name) " variant="standard" /> 
        </Grid>
        <Grid item xs={4}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Middle Initial (if any)" variant="standard" />
        </Grid>
        <Grid item xs={5}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="Address (Street Number and Name) " variant="standard" /> 
        </Grid>
        <Grid item xs={3}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="City or Town " variant="standard" /> 
        </Grid>
        <Grid item xs={2}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="State" variant="standard" /> 
        </Grid>
        <Grid item xs={2}>
-       required = {formShow === false ? false : true}<TextField className='txt-width' 
+       required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
        value={data.} onChange={formChange3} id="standard-basic" label="ZIP Code " variant="standard" />
        </Grid>
 
@@ -1599,7 +1622,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.lastNameSBsec1}
                         name="lastNameSBsec1"
                         onChange={formChange3}
@@ -1611,7 +1634,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.firstNameSBsec1}
                         name="firstNameSBsec1"
                         onChange={formChange3}
@@ -1659,7 +1682,7 @@ const EligibilityVerification = ({
                     <Grid item xs={2}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.dateOfRehireSB}
                         name="dateOfRehireSB"
                         onChange={formChange3}
@@ -1672,7 +1695,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.lastNameSb}
                         name="lastNameSb"
                         onChange={formChange3}
@@ -1684,7 +1707,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.firstNameSB}
                         name="firstNameSB"
                         onChange={formChange3}
@@ -1716,7 +1739,7 @@ const EligibilityVerification = ({
                     <Grid item xs={4}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.docTitleSB}
                         name="docTitleSB"
                         onChange={formChange3}
@@ -1762,7 +1785,7 @@ const EligibilityVerification = ({
                     <Grid item xs={3}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={dataUpdate === false ? false : true}
                         value={data.nameOfEmpSB}
                         name="nameOfEmpSB"
                         onChange={formChange3}
@@ -1801,7 +1824,7 @@ const EligibilityVerification = ({
                     <Grid item xs={3}>
                       <TextField
                         className="txt-width"
-                        required = {formShow === false ? false : true}
+                        required={formShow === false ? false : true}
                         value={data.todayDateSB}
                         name="todayDateSB"
                         onChange={formChange3}
@@ -1820,7 +1843,7 @@ const EligibilityVerification = ({
                     <Grid item xs={12}>
                       <FormControlLabel
                         control={<Checkbox />}
-                        required = {formShow === false ? false : true}
+                        required={formShow === false ? false : true}
                         value={data.clickHereSB}
                         name="clickHereSB"
                         onChange={formChange3}
@@ -1980,22 +2003,21 @@ below section are commented out */}
                         Cancel
                       </Link>
                     </Button>
-                    {
-                      dataUpdate === true ? 
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className="save-btn"
-                    >
-                      Update
-                    </Button> : 
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className="save-btn"
-                    >
-                      Save
-                    </Button> }
+                    {dataUpdate === true
+                      ? <Button
+                          variant="contained"
+                          type="submit"
+                          className="save-btn"
+                        >
+                          Update
+                        </Button>
+                      : <Button
+                          variant="contained"
+                          type="submit"
+                          className="save-btn"
+                        >
+                          Save
+                        </Button>}
                   </Grid>
                 </Grid>
               </Grid>

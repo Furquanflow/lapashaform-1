@@ -781,3 +781,11 @@ td.bordernone {
   pointer-events: none;
   opacity: 0.3;
 }
+.show-content {
+  pointer-events: fill;
+  /* opacity: 0.3; */
+}
+.hide-content-1 {
+  pointer-events: none;
+  opacity: 0.3;
+}

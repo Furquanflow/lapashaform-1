@@ -38,7 +38,7 @@ router.get("/formdata", getFormData);
 // router.get('/protected', protected);
 // router.post("/formdatapost", authenticateToken, saveFormData);
 router.post("/formdatapost",  saveFormData);
-// router.post("/updateformdata", authenticateToken, updatesaveFormData);
+router.post("/updateformdata", updatesaveFormData);
 router.post("/updateformdata", updatesaveFormData);
 
 //Lounge And Grill endpoints

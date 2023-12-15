@@ -278,7 +278,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  signOfEmp: {
+  signOfEmpp: {
     type: String,
     require: true,
   },
@@ -386,7 +386,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  signOfEmpRep: {
+  signOfEmpRepp: {
     type: String,
     require: true,
   },
@@ -414,7 +414,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  signOfPre: {
+  signOfPree: {
     type: String,
     require: true,
   },
@@ -486,7 +486,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  expDateSB: {
+  expDateSb: {
     type: String,
     require: true,
   },
@@ -494,7 +494,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  signOfEmpSB: {
+  signOfEmpSb: {
     type: String,
     require: true,
   },

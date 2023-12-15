@@ -21,7 +21,7 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const LapashaRoutes = ({ pdfCount, formShow, idUser, dataUpdate }) => {
+const LapashaRoutes = ({updateShow, updateToShow, pdfCount, formShow, idUser, dataUpdate }) => {
   const [addStep, setAddStep] = useState(0);
   const [canvas, setCanvas] = useState(null);
   const [contactEmployeeCanvas, setContactEmployeeCanvas] = useState(null);
@@ -269,6 +269,7 @@ const LapashaRoutes = ({ pdfCount, formShow, idUser, dataUpdate }) => {
         path="/eligibilityverification"
         element={
           <EligibilityVerification
+          updateToShow={updateToShow}
             formShow={formShow}
             data={formData}
             formChange3={onForm}
@@ -282,6 +283,7 @@ const LapashaRoutes = ({ pdfCount, formShow, idUser, dataUpdate }) => {
             formDataFunc={postFormData}
             idUser={idUser}
             dataUpdate={dataUpdate}
+            updateShow={updateShow}
           />
         }
       />
