@@ -22,11 +22,17 @@ const buildPath = path.resolve(_dirName, "../client/build");
 // Enable CORS for all routes
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true
+    origin: "*",
   })
 );
+
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true
+//   })
+// );
 app.use(express.static(buildPath));
 app.get("*/", (req, res) => {
   const indexPath = path.resolve(buildPath, "index.html");
