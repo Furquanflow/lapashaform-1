@@ -22,7 +22,7 @@ const buildPath = path.resolve(_dirName, "../client/build");
 // Enable CORS for all routes
 app.use(
   cors({
-    origin: "http://localhost:8000",
+    origin: "http://localhost:3000",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true
   })
