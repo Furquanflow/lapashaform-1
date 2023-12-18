@@ -323,6 +323,19 @@ const LapashaRoutes = ({
     [dataString, addStep]
   );
 
+
+  //update function use this for later
+// const updateLoungeAndGrillData = async (id, formData) => {
+//   try {
+//     const response = await axios.put(`/api/loungeAndGrill/${id}`, formData);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error updating lounge and grill data:", error);
+//     throw error;
+//   }
+// };
+
+
   return (
     <Routes>
       <Route path="/home" element={<Home callData={onCompany} />} />
