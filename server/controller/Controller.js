@@ -12,12 +12,11 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 // const httpProxy = require('http-proxy');
-
-let baseUrl = "http://localhost:8000";
 // const proxy = httpProxy.createProxyServer();
 
-//Admin Authentication and Authorization
+let baseUrl = "http://localhost:8000";
 
+//Admin Authentication and Authorization
 module.exports.postAdminRegisterData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   try {
@@ -65,7 +64,6 @@ module.exports.postAdminLoginData = async (req, res) => {
 };
 
 // User Authentication and Authorization
-
 const generateRandomString = () => {
   return crypto.randomBytes(32).toString("hex");
 };
@@ -73,50 +71,50 @@ const generateRandomString = () => {
 let SECRET_KEY = generateRandomString();
 console.log("Initial SECRET_KEY:", SECRET_KEY);
 
-// Function to refresh the secret key periodically (for example, every 24 hours)
-// const refreshSecretKey = () => {
-//   SECRET_KEY = generateRandomString();
-//   console.log("New SECRET_KEY:", SECRET_KEY);
-// };
-
-// // Refresh the secret key every 24 hours (86400000 milliseconds)
-// setInterval(refreshSecretKey, 86400000);
-
 module.exports.authenticateToken = (req, res, next) => {
-  const token = req.headers["Authentication"];
+  console.log(SECRET_KEY);
 
-  console.log("Received Token:", token);
+  try {
+    const tokenHeader = req.headers.authorization;
 
-  if (!token) {
-    console.log("No Token Found");
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err) {
-      console.log("Token Verification Error:", err);
-      return res.status(401).json({ error: "Invalid token" });
+    if (tokenHeader) {
+      const token = tokenHeader.split(" ")[1];
+      let user = jwt.verify(token, SECRET_KEY);
+      console.log(SECRET_KEY);
+      req.userId = user.id;
+      next();
+    } else {
+      return res.status(401).json({ message: "Unauthorized" });
     }
-
-    console.log("Decoded Token:", decoded);
-
-    req.userId = decoded.id; // Assuming your token has a property 'id' representing the user ID
-    next();
-  });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 };
-
-console.log(SECRET_KEY);
 
 module.exports.postRegisterData = async (req, res) => {
   try {
     console.log(req.body);
+    const existingUser = await User.findOne({ authEmail: req.body.authEmail })
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exist" })
+    }
     const newPassword = await bcrypt.hash(req.body.authPassword, 10);
-    await User.create({
+    const user = await User.create({
       authName: req.body.authName,
       authEmail: req.body.authEmail,
       authPassword: newPassword
     });
-    res.json({ status: "ok" });
+    // res.json({ status: "ok" });
+    const token = jwt.sign(
+      {
+        id: user._id,
+        name: user.authName,
+        email: user.authEmail
+      },
+      SECRET_KEY,
+    );
+    res.status(201).json({ status: "ok", user: user, token: token });
   } catch (err) {
     res.json({ status: "error", error: "Duplicate email" });
   }
@@ -130,81 +128,37 @@ module.exports.postLoginData = async (req, res) => {
   if (!user) {
     return res.json({ status: "error", error: "Invalid login" });
   }
-
   const isPasswordValid = await bcrypt.compare(
     req.body.authPassword,
     user.authPassword
   );
-
   if (isPasswordValid) {
     const token = jwt.sign(
       {
-        id: user.id,
+        id: user._id,
         name: user.authName,
         email: user.authEmail
       },
-      SECRET_KEY,
-      { expiresIn: "1h" }
+      SECRET_KEY
     );
-
-    return res.json({ status: "ok", user: token });
-  } else {
-    return res.json({ status: "error", user: false });
+    res.status(201).json({ status: "ok", user: user, token: token });
   }
 };
 
-// module.exports.protected = (authenticateToken, (req, res) => {
-//   res.json({ status: 'ok', message: 'This is a protected route.' });
-// });
 
-//Lapash
-// module.exports.getFormData = async (req, res) => {
-//   console.log(req.userId);
-//   try {
-//     // console.log(req.userId);
-//     // await authenticateToken(req, res);
-//     const userId = req.userId;
-//     const user = await User.findById(userId).populate('formsCompleted');
-//     const formDataArr = user.filledForms.map(form => form.toObject());
-//     res.send(formDataArr);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({
-//       status: 'error',
-//       error: 'An error occurred while fetching form data'
-//     });
-//   }
-// };
-
-// module.exports.saveFormData = async (req, res) => {
-//   try {
-//     // await authenticateToken(req, res);
-//     const formData = req.body;
-//     const userId = req.userId;
-//     const savedForm = await patioModel.create({
-//       ...formData,
-//       user: userId,
-//     });
-//     await User.findByIdAndUpdate(userId, {
-//       $push: { filledForms: savedForm._id },
-//     });
-
-//     res.json({ status: 'ok', data: savedForm });
-//   } catch (err) {
-//     console.error('Error in saveFormData:', err);
-//     res.status(500).json({ status: 'error', error: 'An error occurred during form submission' });
-//   }
-// };
+//Patio 
 module.exports.getFormData = async (req, res) => {
   const userData = await patioModel.find();
   res.send(userData);
+  // const userData = await patioModel.find({ userId: req.userId });
+  // res.status(200).json(userData)
 };
 
-module.exports.saveFormData = (req, res) => {
+module.exports.saveFormData = async (req, res) => {
   try {
     const formData = req.body;
-    // formData.userId = req.user.id;
-    const savedForm = patioModel.create(formData);
+    const newForm = new patioModel(formData);
+    const savedForm = await newForm.save();
     res.json({ status: "ok", data: savedForm });
   } catch (err) {
     console.error("Error in saveFormData:", err);
@@ -215,28 +169,34 @@ module.exports.saveFormData = (req, res) => {
   }
 };
 
-//update function
-
-module.exports.updatesaveFormData = async (req, res) => {
+module.exports.updateSaveFormData = async (req, res) => {
+  const id = req.params.id;
   const formData = req.body;
-  patioModel
-    .findByIdAndUpdate(_id, ...formData)
-    .then(() => {
-      res.send("Updated Successfully");
-    })
-    .catch(err => console.log(err));
+
+  try {
+    const updatedPatioNote = await patioModel.findByIdAndUpdate(id, formData, { new: true });
+    res.status(200).json(updatedPatioNote);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
 };
 
+
+//Lounge And Grill
 module.exports.getLoungeAndGrillData = async (req, res) => {
-  const userData = await loungeAndGril.find();
-  res.send(userData);
+  const userLoungeData = await loungeAndGril.find();
+  res.send(userLoungeData);
+  // const userLoungeData = await loungeAndGril.find({ userId: req.userId });
+  // res.status(200).json(userLoungeData)
 };
 
 module.exports.saveLoungeAndGrillData = async (req, res) => {
   try {
-    const formData = req.body;
-    // formData.userId = req.user.id;
-    const savedForm = loungeAndGril.create(formData);
+    const loungeData = req.body;
+    loungeData.userId = req.userId;
+    const newLounge = new loungeAndGril(loungeData);
+    const savedForm = await newLounge.save();
     res.json({ status: "ok", data: savedForm });
   } catch (err) {
     console.error("Error in saveFormData:", err);
@@ -247,19 +207,33 @@ module.exports.saveLoungeAndGrillData = async (req, res) => {
   }
 };
 
-//Nara Cafe
+module.exports.updateSaveLoungeAndGrillData = async (req, res) => {
+  const id = req.params.id;
+  const formData = req.body;
+  try {
+    const updatedPatioNote = await loungeAndGril.findByIdAndUpdate(id, formData, { new: true });
+    res.status(200).json(updatedPatioNote);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
 
+
+//Nara Cafe
 module.exports.getNaraCafeData = async (req, res) => {
-  const userData = await naraCafe.find();
-  res.send(userData);
+  const naraData = await naraCafe.find();
+  res.send(naraData);
 };
 
 module.exports.saveNaraCafeData = async (req, res) => {
   try {
-    const formData = req.body;
-    // formData.userId = req.user.id;
-    const savedForm = naraCafe.create(formData);
-    res.json({ status: "ok", data: savedForm });
+    const naraData = req.body;
+    naraData.userId = req.userId;
+    console.log(naraData);
+    const newNara = new naraCafe(naraData);
+    const savedNara = await newNara.save();
+    res.json({ status: "ok", data: savedNara });
   } catch (err) {
     console.error("Error in saveFormData:", err);
     res.status(500).json({
@@ -268,6 +242,22 @@ module.exports.saveNaraCafeData = async (req, res) => {
     });
   }
 };
+
+module.exports.updateSaveNaraCafeData = async (req, res) => {
+  const id = req.params.id;
+  const formData = req.body;
+
+  try {
+    const updatedPatioNote = await naraCafe.findByIdAndUpdate(id, formData, { new: true });
+    res.status(200).json(updatedPatioNote);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+
+
 
 const transporter = nodemailer.createTransport({
   host: "flowtechnologies.io",
