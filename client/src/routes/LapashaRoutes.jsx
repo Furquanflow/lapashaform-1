@@ -48,7 +48,7 @@ const LapashaRoutes = ({
     password: "",
     name: ""
   });
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
 
   let dataString = formData;
   const navigate = useNavigate();
@@ -117,33 +117,71 @@ const LapashaRoutes = ({
   let authPassword = auth.password;
   let authName = auth.name;
 
-  const onLoginClick = async e => {
+  // const onLoginClick = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${baseUrl}/login`,
+  //       {
+  //         authEmail,
+  //         authPassword,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     const data = response.data;
+
+  //     if (data.status === "ok" && data.token) {
+  //       // Assuming your backend returns a token upon successful login
+  //       setToken(data.token);
+  //       alert("Login successful");
+  //       navigate("/home");
+  //     } else {
+  //       alert("Please check your username and password");
+  //     }
+
+  //     localStorage.setItem("DATA", addStep.toString());
+  //     localStorage.setItem("FORMDATA", dataString);
+  //   } catch (error) {
+  //     if (error.response) {
+  //       console.error("Server Error:", error.response.data);
+  //     } else if (error.request) {
+  //       console.error("Network Error:", error.request);
+  //     } else {
+  //       console.error("Error:", error.message);
+  //     }
+  //   }
+  // };
+  const onLoginClick = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${baseUrl}/login`,
         {
           authEmail,
-          authPassword
+          authPassword,
         },
         {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
+
       const data = response.data;
-      if (data.user) {
-        // localStorage.setItem("token", data);
-        setToken(data.user);
+      if (data.token) {
+        // Assuming your token is in the response as "token"
+        setToken(data.token);
         alert("Login successful");
         navigate("/home");
       } else {
-        alert("Please check your username and password");
+        alert("Login failed. Please check your credentials.");
       }
-
-      localStorage.setItem("DATA", addStep.toString());
-      localStorage.setItem("FORMDATA", dataString);
     } catch (error) {
       if (error.response) {
         console.error("Server Error:", error.response.data);
@@ -155,7 +193,9 @@ const LapashaRoutes = ({
     }
   };
 
-  const onRegister = async e => {
+
+
+  const onRegister = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -163,22 +203,26 @@ const LapashaRoutes = ({
         {
           authName,
           authEmail,
-          authPassword
+          authPassword,
         },
         {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
 
-      if (response.statusText === "OK") {
+      if (response.status === 201) {
+        alert("Registration successful. Please log in.");
         navigate("/login");
+      } else {
+        alert("Registration failed. Please check your details.");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
 
   const onCompany = eve => {
     setCompanyCall(eve);
@@ -195,6 +239,14 @@ const LapashaRoutes = ({
     }
   };
 
+  const setToken = (token) => {
+    localStorage.setItem("token", token);
+  };
+
+  const getToken = () => {
+    return localStorage.getItem("token");
+  };
+
   const postFormData = async () => {
     const url = getPostUrl();
     if (!url) {
@@ -202,31 +254,38 @@ const LapashaRoutes = ({
       return;
     }
     try {
-      await axios.post(url, dataString, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+      await axios.post(
+        url,
+        dataString,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+          },
         }
-      });
+      );
+      alert("Data posted successfully");
     } catch (error) {
       console.error("Error posting data:", error);
     }
   };
 
-  const getFormData = () => {
+  const getFormData = async () => {
     const url = getGetUrl();
     if (!url) {
       alert("Select a valid option.");
       return;
     }
-    axios
-      .get(url)
-      .then(({ data }) => {
-        setFormDataArr(data);
-      })
-      .catch(error => {
-        console.error("Error getting data:", error);
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
       });
+      setFormDataArr(response.data);
+    } catch (error) {
+      console.error("Error getting data:", error);
+    }
   };
 
   const getPostUrl = () => {
