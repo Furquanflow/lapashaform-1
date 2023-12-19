@@ -14,7 +14,7 @@ const crypto = require("crypto");
 // const httpProxy = require('http-proxy');
 // const proxy = httpProxy.createProxyServer();
 
-let baseUrl = "http://localhost:8000";
+let baseUrl = "http://localhost:3000";
 
 //Admin Authentication and Authorization
 module.exports.postAdminRegisterData = async (req, res) => {
@@ -72,22 +72,21 @@ let SECRET_KEY = generateRandomString();
 console.log("Initial SECRET_KEY:", SECRET_KEY);
 
 module.exports.authenticateToken = (req, res, next) => {
-  console.log(SECRET_KEY);
+  const tokenHeader = req.headers.authorization;
 
-  try {
-    const tokenHeader = req.headers.authorization;
-
-    if (tokenHeader) {
-      const token = tokenHeader.split(" ")[1];
+  if (tokenHeader) {
+    const token = tokenHeader.split(" ")[1];
+    console.log("Received Token:", token);
+    try {
       let user = jwt.verify(token, SECRET_KEY);
-      console.log(SECRET_KEY);
+      console.log("Decoded User:", user);
       req.userId = user.id;
       next();
-    } else {
+    } catch (error) {
+      console.error("Error Verifying Token:", error);
       return res.status(401).json({ message: "Unauthorized" });
     }
-  } catch (error) {
-    console.log(error);
+  } else {
     return res.status(401).json({ message: "Unauthorized" });
   }
 };
@@ -95,9 +94,9 @@ module.exports.authenticateToken = (req, res, next) => {
 module.exports.postRegisterData = async (req, res) => {
   try {
     console.log(req.body);
-    const existingUser = await User.findOne({ authEmail: req.body.authEmail })
+    const existingUser = await User.findOne({ authEmail: req.body.authEmail });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exist" })
+      return res.status(400).json({ message: "User already exist" });
     }
     const newPassword = await bcrypt.hash(req.body.authPassword, 10);
     const user = await User.create({
@@ -112,7 +111,7 @@ module.exports.postRegisterData = async (req, res) => {
         name: user.authName,
         email: user.authEmail
       },
-      SECRET_KEY,
+      SECRET_KEY
     );
     res.status(201).json({ status: "ok", user: user, token: token });
   } catch (err) {
@@ -145,8 +144,7 @@ module.exports.postLoginData = async (req, res) => {
   }
 };
 
-
-//Patio 
+//Patio
 module.exports.getFormData = async (req, res) => {
   const userData = await patioModel.find();
   res.send(userData);
@@ -174,14 +172,15 @@ module.exports.updateSaveFormData = async (req, res) => {
   const formData = req.body;
 
   try {
-    const updatedPatioNote = await patioModel.findByIdAndUpdate(id, formData, { new: true });
+    const updatedPatioNote = await patioModel.findByIdAndUpdate(id, formData, {
+      new: true
+    });
     res.status(200).json(updatedPatioNote);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong" });
   }
 };
-
 
 //Lounge And Grill
 module.exports.getLoungeAndGrillData = async (req, res) => {
@@ -211,14 +210,17 @@ module.exports.updateSaveLoungeAndGrillData = async (req, res) => {
   const id = req.params.id;
   const formData = req.body;
   try {
-    const updatedPatioNote = await loungeAndGril.findByIdAndUpdate(id, formData, { new: true });
+    const updatedPatioNote = await loungeAndGril.findByIdAndUpdate(
+      id,
+      formData,
+      { new: true }
+    );
     res.status(200).json(updatedPatioNote);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong" });
   }
 };
-
 
 //Nara Cafe
 module.exports.getNaraCafeData = async (req, res) => {
@@ -248,16 +250,15 @@ module.exports.updateSaveNaraCafeData = async (req, res) => {
   const formData = req.body;
 
   try {
-    const updatedPatioNote = await naraCafe.findByIdAndUpdate(id, formData, { new: true });
+    const updatedPatioNote = await naraCafe.findByIdAndUpdate(id, formData, {
+      new: true
+    });
     res.status(200).json(updatedPatioNote);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong" });
   }
 };
-
-
-
 
 const transporter = nodemailer.createTransport({
   host: "flowtechnologies.io",
@@ -299,61 +300,60 @@ module.exports.postPdf = async (req, res) => {
 
 //Employeer/Manager Pdf
 module.exports.postEmployerPdf = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const formData = req.body.data;
+  console.log("Working");
   try {
     const browser = await puppeteer.launch({ headless: "new" });
+    console.log("Working");
     const page = await browser.newPage();
-    await page.goto(`${baseUrl}/eligibilityverificationview`, {
-      waitUntil: "networkidle0"
-    });
-    // await page.waitForTimeout(8000);
-    const pdfBuffer = await page.pdf({ format: "A4" });
-    const pdfPath = path.join(__dirname, "generated.pdf");
-    fs.writeFileSync(pdfPath, pdfBuffer);
-    await browser.close();
-    const emailAddresses = [
-      "thefurquanrahim@gmail.com",
-      "furquan.rahim124@gmail.com",
-      "thefurqanrahim@gmail.com"
-    ];
-    const attachments = [{ filename: "generated.pdf", content: pdfBuffer }];
 
-    emailAddresses.forEach(email => {
+    await page.goto(`${baseUrl}/eligibilityverificationview`);
+    await page.waitForTimeout(8000);
+    const pdfBuffer = await page.pdf({ format: 'A4' });
+
+    const pdfPath = path.join(__dirname, 'generated.pdf');
+    fs.writeFileSync(pdfPath, pdfBuffer);
+
+    await browser.close()
+
+    const emailAddresses = ['thefurquanrahim@gmail.com', 'furquan.rahim124@gmail.com', 'thefurqanrahim@gmail.com'];
+    const attachments = [{ filename: 'generated.pdf', content: pdfBuffer }];
+
+    emailAddresses.forEach((email) => {
       const mailOptions = {
-        from: "furqan.rahim@flowtechnologies.io",
+        from: 'furqan.rahim@flowtechnologies.io',
         to: email,
-        subject: "PDF Attachment",
-        text: "Attached is the PDF you requested.",
-        attachments
+        subject: 'PDF Attachment',
+        text: 'Attached is the PDF you requested.',
+        attachments,
       };
 
       const operation = retry.operation({
         retries: 3,
         factor: 2,
         minTimeout: 1000,
-        maxTimeout: 30000
+        maxTimeout: 30000,
       });
 
-      operation.attempt(currentAttempt => {
+      operation.attempt((currentAttempt) => {
         transporter.sendMail(mailOptions, (error, info) => {
           if (operation.retry(error)) {
-            console.error("Email not sent, retrying...", currentAttempt);
+            console.error('Email not sent, retrying...', currentAttempt);
             return;
           }
 
           if (error) {
-            console.error("Email not sent:", error);
+            console.error('Email not sent:', error);
           } else {
-            console.log("Email sent:", info.response);
+            console.log('Email sent:', info.response);
           }
         });
       });
     });
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "POST");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
-    res.json({ pdfPath: "/download-pdf" });
+    // res.header('Access-Control-Allow-Origin', '*');
+    // res.header('Access-Control-Allow-Methods', 'POST');
+    // res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.json({ pdfPath: '/download-pdf' });
   } catch (error) {
     console.log(error);
     // res.status(500).send('Internal Server Error');
@@ -361,9 +361,8 @@ module.exports.postEmployerPdf = async (req, res) => {
 };
 
 module.exports.getPdf = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const pdfPath = path.join(__dirname, "generated.pdf");
-  res.download(pdfPath, "generated.pdf");
+  const pdfPath = path.join(__dirname, 'generated.pdf');
+  res.download(pdfPath, 'generated.pdf');
 };
 
 // module.exports.getPdf = async (req, res) => {

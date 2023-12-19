@@ -1,4 +1,4 @@
-import React, { useRef} from "react";
+import React, { useRef } from "react";
 
 //React Router Dom
 import { Link, useNavigate } from "react-router-dom";
@@ -13,10 +13,10 @@ import {
   Button,
   Radio,
   RadioGroup,
-  FormControl,
+  FormControl
 } from "@mui/material";
 
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 //Images
 import mainLogo from "../assets/images/logo.png";
@@ -28,7 +28,7 @@ const EmploymentInformationForm = ({
   formChange,
   onStep,
   addData,
-  canvaUpdatedState,
+  canvaUpdatedState
 }) => {
   const navigate = useNavigate();
 
@@ -626,11 +626,15 @@ const EmploymentInformationForm = ({
                         canvasProps={{
                           width: 500,
                           height: 200,
-                          className: "sigCanvas txt-width",
+                          className: "sigCanvas txt-width"
                         }}
                       />
                     </label>
-                    <Button variant="text" className="clear-btn" onClick={clearUpdatedStateSignature}>
+                    <Button
+                      variant="text"
+                      className="clear-btn"
+                      onClick={clearUpdatedStateSignature}
+                    >
                       <HighlightOffIcon />
                     </Button>
                   </Grid>

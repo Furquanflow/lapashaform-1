@@ -19,10 +19,9 @@ mongoose
 const _dirName = path.dirname("");
 const buildPath = path.resolve(_dirName, "../client/build");
 
-// Enable CORS for all routes
 app.use(
   cors({
-    origin: "*",
+    origin: "*"
   })
 );
 

@@ -10,12 +10,12 @@ import { Link, useNavigate } from "react-router-dom";
 import pdfImg from "../assets/images/pdf.png";
 import uploadImg from "../assets/images/upload.png";
 
-const StepForm = ({ addCount, dataString, authPassword }) => {
+const StepForm = ({ addCount, dataString, authPassword, token }) => {
   const navigate = useNavigate();
   let newFormData = dataString && dataString.map(item => item.middleNameSB);
   const onEditClick = e => {
     e.preventDefault();
-    if ((addCount >= 1 && authPassword) || newFormData != "") {
+    if (addCount >= 1 && token) {
       navigate("/policyform");
     } else {
       alert("Fill Employment information form First");
@@ -23,7 +23,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
   };
   const onEditClick1 = e => {
     e.preventDefault();
-    if ((addCount >= 2 && authPassword) || newFormData != "") {
+    if (addCount >= 2 && token) {
       navigate("/contractform");
     } else {
       alert("Fill Policy 20223-06-12 Employee Manual First");
@@ -32,7 +32,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
   const onEditClick2 = e => {
     e.preventDefault();
 
-    if ((addCount >= 3 && authPassword) || newFormData != "") {
+    if (addCount >= 3 && token) {
       navigate("/eligibilityverification");
     } else {
       alert("Fill Contract 2023-04-12 Class Action Waiver Krikwood Ops First");
@@ -43,7 +43,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
   };
   const onPreview = e => {
     e.preventDefault();
-    if ((addCount >= 4 && authPassword) || newFormData != "") {
+    if (addCount >= 4 && token) {
       navigate("/eligibilityverificationview");
     } else {
       alert("Fill i9 Form First");
@@ -57,7 +57,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
           <Grid className="step-bar">
             <Grid
               className={
-                (addCount >= 1 && authPassword) || newFormData != ""
+                addCount >= 1 && token
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -67,7 +67,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
             </Grid>
             <Grid
               className={
-                (addCount >= 2 && authPassword) || newFormData != ""
+                addCount >= 2 && token
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -77,7 +77,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
             </Grid>
             <Grid
               className={
-                (addCount >= 3 && authPassword) || newFormData != ""
+                addCount >= 3 && token
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -87,7 +87,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
             </Grid>
             <Grid
               className={
-                (addCount >= 4 && authPassword) || newFormData != ""
+                addCount >= 4 && token
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -112,7 +112,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
 
             <Grid
               className={
-                (addCount >= 1 && authPassword) || newFormData != ""
+                addCount >= 1 && token
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -134,7 +134,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
 
             <Grid
               className={
-                (addCount >= 2 && authPassword) || newFormData != ""
+                addCount >= 2 && token
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -152,7 +152,7 @@ const StepForm = ({ addCount, dataString, authPassword }) => {
 
             <Grid
               className={
-                (addCount >= 3 && authPassword) || newFormData != ""
+                addCount >= 3 && token
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }

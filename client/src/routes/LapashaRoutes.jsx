@@ -29,7 +29,10 @@ const LapashaRoutes = ({
   idUser,
   dataUpdate
 }) => {
-  const [addStep, setAddStep] = useState(0);
+  const [addStep, setAddStep] = useState(() => {
+    const storedEve = localStorage.getItem("DATA");
+    return storedEve ? JSON.parse(storedEve) : "";
+  });
   const [canvas, setCanvas] = useState(null);
   const [contactEmployeeCanvas, setContactEmployeeCanvas] = useState(null);
   const [verificationCanvas, setVerificationCanvas] = useState(null);
@@ -43,12 +46,12 @@ const LapashaRoutes = ({
   const [formData, setFormData] = useState(data);
   const [formDataArr, setFormDataArr] = useState(null);
   const [companyCall, setCompanyCall] = useState(0);
+  const [authToken, setAuthToken] = useState(null);
   const [auth, setAuth] = useState({
     email: "",
     password: "",
     name: ""
   });
-  // const [token, setToken] = useState("");
 
   let dataString = formData;
   const navigate = useNavigate();
@@ -64,9 +67,8 @@ const LapashaRoutes = ({
 
   const onStepForm = eve => {
     let formDataChanges = {};
-    localStorage.setItem("DATA", addStep.toString());
-    localStorage.setItem("FORMDATA", dataString);
     setAddStep(eve);
+    localStorage.setItem("DATA", JSON.stringify(eve));
     if (canvas) {
       const signatureData = canvas.toDataURL();
       formDataChanges.conFormsign = signatureData;
@@ -117,68 +119,28 @@ const LapashaRoutes = ({
   let authPassword = auth.password;
   let authName = auth.name;
 
-  // const onLoginClick = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await axios.post(
-  //       `${baseUrl}/login`,
-  //       {
-  //         authEmail,
-  //         authPassword,
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     const data = response.data;
-
-  //     if (data.status === "ok" && data.token) {
-  //       // Assuming your backend returns a token upon successful login
-  //       setToken(data.token);
-  //       alert("Login successful");
-  //       navigate("/home");
-  //     } else {
-  //       alert("Please check your username and password");
-  //     }
-
-  //     localStorage.setItem("DATA", addStep.toString());
-  //     localStorage.setItem("FORMDATA", dataString);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       console.error("Server Error:", error.response.data);
-  //     } else if (error.request) {
-  //       console.error("Network Error:", error.request);
-  //     } else {
-  //       console.error("Error:", error.message);
-  //     }
-  //   }
-  // };
-  const onLoginClick = async (e) => {
+  const onLoginClick = async e => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${baseUrl}/login`,
         {
           authEmail,
-          authPassword,
+          authPassword
         },
         {
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         }
       );
-
       const data = response.data;
       if (data.token) {
-        // Assuming your token is in the response as "token"
         setToken(data.token);
         alert("Login successful");
         navigate("/home");
+        localStorage.setItem("DATA", addStep.toString());
+        localStorage.setItem("FORMDATA", dataString);
       } else {
         alert("Login failed. Please check your credentials.");
       }
@@ -193,9 +155,9 @@ const LapashaRoutes = ({
     }
   };
 
+  console.log(authToken);
 
-
-  const onRegister = async (e) => {
+  const onRegister = async e => {
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -203,12 +165,12 @@ const LapashaRoutes = ({
         {
           authName,
           authEmail,
-          authPassword,
+          authPassword
         },
         {
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         }
       );
 
@@ -222,7 +184,6 @@ const LapashaRoutes = ({
       console.error("Error:", error);
     }
   };
-
 
   const onCompany = eve => {
     setCompanyCall(eve);
@@ -239,7 +200,8 @@ const LapashaRoutes = ({
     }
   };
 
-  const setToken = (token) => {
+  const setToken = token => {
+    setAuthToken(token);
     localStorage.setItem("token", token);
   };
 
@@ -254,16 +216,12 @@ const LapashaRoutes = ({
       return;
     }
     try {
-      await axios.post(
-        url,
-        dataString,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getToken()}`,
-          },
+      await axios.post(url, dataString, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`
         }
-      );
+      });
       alert("Data posted successfully");
     } catch (error) {
       console.error("Error posting data:", error);
@@ -279,8 +237,8 @@ const LapashaRoutes = ({
     try {
       const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
+          Authorization: `Bearer ${getToken()}`
+        }
       });
       setFormDataArr(response.data);
     } catch (error) {
@@ -316,25 +274,25 @@ const LapashaRoutes = ({
 
   useEffect(
     () => {
-      localStorage.getItem("DATA", addStep);
       localStorage.getItem("FORMDATA", dataString);
+      localStorage.getItem("token");
+      localStorage.setItem("DATA", JSON.stringify(addStep));
+      setAuthToken(localStorage.getItem("token"));
       getFormData();
     },
     [dataString, addStep]
   );
 
-
   //update function use this for later
-// const updateLoungeAndGrillData = async (id, formData) => {
-//   try {
-//     const response = await axios.put(`/api/loungeAndGrill/${id}`, formData);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error updating lounge and grill data:", error);
-//     throw error;
-//   }
-// };
-
+  // const updateLoungeAndGrillData = async (id, formData) => {
+  //   try {
+  //     const response = await axios.put(`/api/loungeAndGrill/${id}`, formData);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error updating lounge and grill data:", error);
+  //     throw error;
+  //   }
+  // };
 
   return (
     <Routes>
@@ -367,7 +325,6 @@ const LapashaRoutes = ({
           <EligibilityVerificationView
             pdfCount={pdfCount}
             dataString={formDataArr}
-            // fomDataGetFunc={getFormData}
             formDataFunc={getFormData}
           />
         }
@@ -447,6 +404,7 @@ const LapashaRoutes = ({
             authPassword={authPassword}
             onStep2={eve => onStepForm(eve)}
             dataString={formDataArr}
+            token={authToken}
           />
         }
       />

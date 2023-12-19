@@ -20,8 +20,8 @@ const GeneratePDFButton = ({ formData, pdfCount }) => {
       formDataToSend.append("data", JSON.stringify(formData));
       const response = await axios.post(
         `${baseUrl}/${pdfCount >= 1
-          ? "generate-and-send-pdf"
-          : "generate-and-send-pdf-employer"}`,
+          ? "generate-and-send-pdf-employer"
+          : "generate-and-send-pdf"}`,
         formDataToSend
       );
       if (response.data && response.data.pdfPath) {

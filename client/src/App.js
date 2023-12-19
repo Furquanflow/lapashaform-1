@@ -63,7 +63,6 @@ const App = () => {
   };
   console.log(updateData);
 
-
   let authAdminEmail = auth.email;
   let authAdminPassword = auth.password;
   let authAdminName = auth.name;
