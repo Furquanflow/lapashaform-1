@@ -19,19 +19,19 @@ mongoose
 const _dirName = path.dirname("");
 const buildPath = path.resolve(_dirName, "../client/build");
 
-app.use(
-  cors({
-    origin: "*"
-  })
-);
-
 // app.use(
 //   cors({
-//     origin: "http://localhost:3000",
-//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     credentials: true
+//     origin: "*"
 //   })
 // );
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true
+  })
+);
 app.use(express.static(buildPath));
 app.get("*/", (req, res) => {
   const indexPath = path.resolve(buildPath, "index.html");
