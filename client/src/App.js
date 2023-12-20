@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 //Router Dom
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
@@ -30,6 +30,8 @@ const App = () => {
   });
   const [authentication, setAuthentication] = useState()
   const [userId, setUserId] = useState("")
+  const [loungeUserId, setLoungeUserId] = useState("")
+  const [naraUserId, setNaraUserId] = useState("")
   const [updateData, setUpdateData] = useState(false)
   const [updateShow, setUpdateShow] = useState(false)
   const [formShow, setFormShow] = useState(false)
@@ -41,17 +43,19 @@ const App = () => {
     setAuth({ ...auth, [name]: value });
   };
 
-  const loungeGrillEditFunc = async (e, countPdf) => {
+  const loungeGrillEditFunc = async (e, countPdf, id) => {
     e.preventDefault()
     navigate("/eligibilityverification");
     setPdfCount(countPdf)
     setFormShow(true)
+    setLoungeUserId(id)
   };
 
-  const naraCafeEditFunc = (e, countPdf) => {
+  const naraCafeEditFunc = (e, countPdf, id) => {
     e.preventDefault()
     navigate("/eligibilityverification");
     setPdfCount(countPdf)
+    setNaraUserId(id)
   };
 
   const patioEditFunc = (e, countPdf, id) => {
@@ -65,7 +69,7 @@ const App = () => {
   let authAdminEmail = auth.email;
   let authAdminPassword = auth.password;
   let authAdminName = auth.name;
-  
+
   const onAdminLoginClick = async e => {
     e.preventDefault();
     try {
@@ -82,9 +86,9 @@ const App = () => {
         }
       );
       const data = response.data;
-      setAuthentication(data.adminUser)
-      if (data.adminUser) {
-        localStorage.setItem("token", data);
+      if (data.token) {
+        setAuthenticToken(data.token)
+        // localStorage.setItem("token", data);
         alert("Login successful");
         navigate("/admin/lounge");
       } else {
@@ -118,7 +122,8 @@ const App = () => {
         }
       );
 
-      if (response.statusText === "OK") {
+      if (response.status === 201) {
+        alert("Registration successful. Please log in.");
         navigate("/admin/login");
       }
     } catch (error) {
@@ -126,24 +131,40 @@ const App = () => {
     }
   };
 
+
+  
+  const setAuthenticToken = token => {
+    setAuthentication(token);
+    localStorage.setItem("admin-token", token);
+  };
+
+  const getAdminToken = () => {
+    return localStorage.getItem("admin-token");
+  };
+
+  React.useEffect(() => {
+    setAuthentication(localStorage.getItem("admin-token"))
+  }, [])
+  
+
   return (
     <>
-    <LapashaRoutes updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount}  formShow={formShow} />
-    {/*Nested Routes*/}
-    <Routes>
-    <Route path="/admin/*" element={<SideNavbar loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication}  />} />
-    <Route
-    path="/admin"
-    element={<Navigate replace to="/admin/login" />}
-  />
-    <Route path="/admin/login" element={<Login  onLogin={onAdminLoginClick} authFunc={authAdminFunc} registerPage={"/admin/register"}  email={authAdminEmail}
-    password={authAdminPassword} />} />
-    <Route path="/admin/register" element={<Register  registerForm={onAdminRegister}
-    authFunc={authAdminFunc}
-    email={authAdminEmail}
-    password={authAdminPassword}
-    userName={authAdminName}   />} />
-    </Routes>
+      <LapashaRoutes updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} formShow={formShow} />
+      {/*Nested Routes*/}
+      <Routes>
+        <Route path="/admin/*" element={<SideNavbar getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
+        <Route
+          path="/admin"
+          element={<Navigate replace to="/admin/login" />}
+        />
+        <Route path="/admin/login" element={<Login onLogin={onAdminLoginClick} authFunc={authAdminFunc} registerPage={"/admin/register"} email={authAdminEmail}
+          password={authAdminPassword} />} />
+        <Route path="/admin/register" element={<Register registerForm={onAdminRegister}
+          authFunc={authAdminFunc}
+          email={authAdminEmail}
+          password={authAdminPassword}
+          userName={authAdminName} />} />
+      </Routes>
     </>
   )
 };
