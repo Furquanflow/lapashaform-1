@@ -40,7 +40,8 @@ const EligibilityVerification = ({
   formShow,
   dataUpdate,
   idUser,
-  updateToShow
+  updateToShow,
+  onEligbilityUpdate
 }) => {
   const navigate = useNavigate();
   const onEligbility = e => {
@@ -75,16 +76,6 @@ const EligibilityVerification = ({
   const clearEmpStateSignature = e => {
     e.preventDefault();
     verificationEmpState.current.clear();
-  };
-
-  const onEligbilityUpdate = e => {
-    e.preventDefault();
-    // axios.post(`${baseUrl}/updateformdata`, { _id: idUser }).then(item => {
-    //   console.log("data");
-    //   // setData("")
-    //   // setUpdate(false)
-    // });
-    navigate("/eligibilityverificationview");
   };
 
   console.log(idUser);
