@@ -21,7 +21,7 @@ import {
   StyledTableCell,
 } from "../../../functions/SpareFunctions";
 
-const LapashaFormData = ({ lapashaData, title, empolymentFunc }) => {
+const LapashaFormData = ({ lapashaData, title, empolymentFunc, lapashaUpdateData }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = e => {
@@ -60,10 +60,10 @@ const LapashaFormData = ({ lapashaData, title, empolymentFunc }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData &&
+              {
                 filteredData.map((row, ind) => {
                   return (
-                    <StyledTableRow key={+row.id}>
+                    <StyledTableRow key={row.id}>
                       <StyledTableCell component="th" scope="row">
                         {row.fNamePerInfo} {row.lnamePerInfo}
                       </StyledTableCell>
