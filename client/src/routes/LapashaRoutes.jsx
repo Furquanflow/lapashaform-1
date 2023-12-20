@@ -274,6 +274,19 @@ const LapashaRoutes = ({
     }
   };
 
+  const updateVerificationFunc = async (e) => {
+    // e.preventDefault()
+    if (idUser) {
+      try {
+        const response = await axios.put(`/api/loungeAndGrill/${idUser}`, formDataArr);
+        return response.data;
+      } catch (error) {
+        console.error("Error updating lounge and grill data:", error);
+        throw error;
+      }
+    }
+  }
+
   useEffect(
     () => {
       localStorage.getItem("FORMDATA", dataString);
@@ -321,6 +334,7 @@ const LapashaRoutes = ({
             dataUpdate={dataUpdate}
             updateShow={updateShow}
             token={authToken}
+            onEligbilityUpdate={updateVerificationFunc}
           />
         }
       />
