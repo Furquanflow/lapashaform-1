@@ -71,26 +71,44 @@ const generateRandomString = () => {
 let SECRET_KEY = generateRandomString();
 console.log("Initial SECRET_KEY:", SECRET_KEY);
 
-module.exports.authenticateToken = (req, res, next) => {
+// module.exports.authenticateToken = (req, res, next) => {
+//   const tokenHeader = req.headers.authorization;
+
+//   if (tokenHeader) {
+//     const token = tokenHeader.split(" ")[1];
+//     console.log("Received Token:", token);
+//     try {
+//       let user = jwt.verify(token, SECRET_KEY);
+//       console.log("Decoded User:", user);
+//       req.userId = user.id;
+//       next();
+//     } catch (error) {
+//       console.error("Error Verifying Token:", error);
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
+//   } else {
+//     return res.status(401).json({ message: "Unauthorized" });
+//   }
+// };
+
+module.exports.authenticateToken = async (req, res, next) => {
   const tokenHeader = req.headers.authorization;
 
-  if (tokenHeader) {
+  if (!tokenHeader) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
     const token = tokenHeader.split(" ")[1];
-    console.log("Received Token:", token);
-    try {
-      let user = jwt.verify(token, SECRET_KEY);
-      console.log("Decoded User:", user);
-      req.userId = user.id;
-      next();
-    } catch (error) {
-      console.error("Error Verifying Token:", error);
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-  } else {
+    const decoded = jwt.verify(token, SECRET_KEY);
+
+    req.userId = decoded.id;
+    next();
+  } catch (error) {
+    console.error("Error Verifying Token:", error);
     return res.status(401).json({ message: "Unauthorized" });
   }
 };
-
 module.exports.postRegisterData = async (req, res) => {
   try {
     console.log(req.body);
@@ -146,7 +164,7 @@ module.exports.postLoginData = async (req, res) => {
 
 //Patio
 module.exports.getFormData = async (req, res) => {
-  const userData = await patioModel.find();
+  const userData = await patioModel.find({});
   res.send(userData);
   // const userData = await patioModel.find({ userId: req.userId });
   // res.status(200).json(userData)
@@ -309,43 +327,47 @@ module.exports.postEmployerPdf = async (req, res) => {
 
     await page.goto(`${baseUrl}/eligibilityverificationview`);
     await page.waitForTimeout(8000);
-    const pdfBuffer = await page.pdf({ format: 'A4' });
+    const pdfBuffer = await page.pdf({ format: "A4" });
 
-    const pdfPath = path.join(__dirname, 'generated.pdf');
+    const pdfPath = path.join(__dirname, "generated.pdf");
     fs.writeFileSync(pdfPath, pdfBuffer);
 
-    await browser.close()
+    await browser.close();
 
-    const emailAddresses = ['thefurquanrahim@gmail.com', 'furquan.rahim124@gmail.com', 'thefurqanrahim@gmail.com'];
-    const attachments = [{ filename: 'generated.pdf', content: pdfBuffer }];
+    const emailAddresses = [
+      "thefurquanrahim@gmail.com",
+      "furquan.rahim124@gmail.com",
+      "thefurqanrahim@gmail.com"
+    ];
+    const attachments = [{ filename: "generated.pdf", content: pdfBuffer }];
 
-    emailAddresses.forEach((email) => {
+    emailAddresses.forEach(email => {
       const mailOptions = {
-        from: 'furqan.rahim@flowtechnologies.io',
+        from: "furqan.rahim@flowtechnologies.io",
         to: email,
-        subject: 'PDF Attachment',
-        text: 'Attached is the PDF you requested.',
-        attachments,
+        subject: "PDF Attachment",
+        text: "Attached is the PDF you requested.",
+        attachments
       };
 
       const operation = retry.operation({
         retries: 3,
         factor: 2,
         minTimeout: 1000,
-        maxTimeout: 30000,
+        maxTimeout: 30000
       });
 
-      operation.attempt((currentAttempt) => {
+      operation.attempt(currentAttempt => {
         transporter.sendMail(mailOptions, (error, info) => {
           if (operation.retry(error)) {
-            console.error('Email not sent, retrying...', currentAttempt);
+            console.error("Email not sent, retrying...", currentAttempt);
             return;
           }
 
           if (error) {
-            console.error('Email not sent:', error);
+            console.error("Email not sent:", error);
           } else {
-            console.log('Email sent:', info.response);
+            console.log("Email sent:", info.response);
           }
         });
       });
@@ -353,7 +375,7 @@ module.exports.postEmployerPdf = async (req, res) => {
     // res.header('Access-Control-Allow-Origin', '*');
     // res.header('Access-Control-Allow-Methods', 'POST');
     // res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.json({ pdfPath: '/download-pdf' });
+    res.json({ pdfPath: "/download-pdf" });
   } catch (error) {
     console.log(error);
     // res.status(500).send('Internal Server Error');
@@ -361,8 +383,8 @@ module.exports.postEmployerPdf = async (req, res) => {
 };
 
 module.exports.getPdf = async (req, res) => {
-  const pdfPath = path.join(__dirname, 'generated.pdf');
-  res.download(pdfPath, 'generated.pdf');
+  const pdfPath = path.join(__dirname, "generated.pdf");
+  res.download(pdfPath, "generated.pdf");
 };
 
 // module.exports.getPdf = async (req, res) => {

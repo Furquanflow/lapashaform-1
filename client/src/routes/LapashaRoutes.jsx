@@ -52,6 +52,7 @@ const LapashaRoutes = ({
     password: "",
     name: ""
   });
+  const [lapashaUserId, setLapashaUserId] = useState("");
 
   let dataString = formData;
   const navigate = useNavigate();
@@ -121,6 +122,7 @@ const LapashaRoutes = ({
 
   const onLoginClick = async e => {
     e.preventDefault();
+    setAddStep("")
     try {
       const response = await axios.post(
         `${baseUrl}/login`,
@@ -137,6 +139,7 @@ const LapashaRoutes = ({
       const data = response.data;
       if (data.token) {
         setToken(data.token);
+        setLapashaUserId(data.user._id);
         alert("Login successful");
         navigate("/home");
         localStorage.setItem("DATA", addStep.toString());
@@ -154,8 +157,6 @@ const LapashaRoutes = ({
       }
     }
   };
-
-  console.log(authToken);
 
   const onRegister = async e => {
     e.preventDefault();
@@ -186,18 +187,19 @@ const LapashaRoutes = ({
   };
 
   const onCompany = eve => {
+    localStorage.setItem("token", authToken);
     setCompanyCall(eve);
     navigate("/stepform");
-    if (companyCall === 0) {
-      setFormData({});
-      setAddStep(0);
-    } else if (companyCall === 1) {
-      setFormData({});
-      setAddStep(0);
-    } else if (companyCall === 2) {
-      setFormData({});
-      setAddStep(0);
-    }
+    // if (companyCall === 0) {
+    //   setFormData({});
+    //   setAddStep(0);
+    // } else if (companyCall === 1) {
+    //   setFormData({});
+    //   setAddStep(0);
+    // } else if (companyCall === 2) {
+    //   setFormData({});
+    //   setAddStep(0);
+    // }
   };
 
   const setToken = token => {
@@ -275,7 +277,6 @@ const LapashaRoutes = ({
   useEffect(
     () => {
       localStorage.getItem("FORMDATA", dataString);
-      localStorage.getItem("token");
       localStorage.setItem("DATA", JSON.stringify(addStep));
       setAuthToken(localStorage.getItem("token"));
       getFormData();
@@ -296,7 +297,10 @@ const LapashaRoutes = ({
 
   return (
     <Routes>
-      <Route path="/home" element={<Home callData={onCompany} />} />
+      <Route
+        path="/home"
+        element={<Home callData={onCompany} token={authToken} />}
+      />
       <Route
         path="/eligibilityverification"
         element={
@@ -316,6 +320,7 @@ const LapashaRoutes = ({
             idUser={idUser}
             dataUpdate={dataUpdate}
             updateShow={updateShow}
+            token={authToken}
           />
         }
       />
@@ -405,6 +410,7 @@ const LapashaRoutes = ({
             onStep2={eve => onStepForm(eve)}
             dataString={formDataArr}
             token={authToken}
+            lapashaUserId={lapashaUserId}
           />
         }
       />

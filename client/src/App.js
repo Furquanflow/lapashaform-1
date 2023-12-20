@@ -61,7 +61,6 @@ const App = () => {
     setUserId(id)
     setUpdateData(true)
   };
-  console.log(updateData);
 
   let authAdminEmail = auth.email;
   let authAdminPassword = auth.password;

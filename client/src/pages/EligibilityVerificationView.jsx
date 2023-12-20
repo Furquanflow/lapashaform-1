@@ -20,9 +20,15 @@ import companyLogo02 from "../assets/images/logo02.png";
 import companyLogo03 from "../assets/images/logo03.png";
 import GeneratePDFButton from "../pdf";
 
-const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => {
+const EligibilityVerificationView = ({
+  dataString,
+  formDataFunc,
+  pdfCount,
+  token
+}) => {
   React.useEffect(() => {
     formDataFunc();
+    // localStorage.setItem("token", token);
   }, []);
   return (
     dataString &&
@@ -6862,7 +6868,10 @@ const EligibilityVerificationView = ({ dataString, formDataFunc, pdfCount }) => 
                   >
                     <Grid item xs={6} />
                     <Grid item xs={6}>
-                      <GeneratePDFButton formData={dataString} pdfCount={pdfCount} />
+                      <GeneratePDFButton
+                        formData={dataString}
+                        pdfCount={pdfCount}
+                      />
                     </Grid>
                   </Grid>
                 </Grid>

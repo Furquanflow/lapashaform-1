@@ -9,6 +9,7 @@ import companyLogo02 from "../assets/images/logo02.png";
 import companyLogo03 from "../assets/images/logo03.png";
 
 const Home = ({ callData }) => {
+  
   return (
     <Grid>
       <Grid className="home-sec">

@@ -10,20 +10,27 @@ import { Link, useNavigate } from "react-router-dom";
 import pdfImg from "../assets/images/pdf.png";
 import uploadImg from "../assets/images/upload.png";
 
-const StepForm = ({ addCount, dataString, authPassword, token }) => {
+const StepForm = ({
+  addCount,
+  dataString,
+  authPassword,
+  token,
+  lapashaUserId
+}) => {
   const navigate = useNavigate();
   let newFormData = dataString && dataString.map(item => item.middleNameSB);
   const onEditClick = e => {
     e.preventDefault();
-    if (addCount >= 1 && token) {
+    if (addCount >= 1 && token && lapashaUserId) {
       navigate("/policyform");
+      console.log(lapashaUserId);
     } else {
       alert("Fill Employment information form First");
     }
   };
   const onEditClick1 = e => {
     e.preventDefault();
-    if (addCount >= 2 && token) {
+    if (addCount >= 2 && token && lapashaUserId) {
       navigate("/contractform");
     } else {
       alert("Fill Policy 20223-06-12 Employee Manual First");
@@ -32,7 +39,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
   const onEditClick2 = e => {
     e.preventDefault();
 
-    if (addCount >= 3 && token) {
+    if (addCount >= 3 && token && lapashaUserId) {
       navigate("/eligibilityverification");
     } else {
       alert("Fill Contract 2023-04-12 Class Action Waiver Krikwood Ops First");
@@ -43,7 +50,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
   };
   const onPreview = e => {
     e.preventDefault();
-    if (addCount >= 4 && token) {
+    if (addCount >= 4 && token && lapashaUserId) {
       navigate("/eligibilityverificationview");
     } else {
       alert("Fill i9 Form First");
@@ -57,7 +64,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
           <Grid className="step-bar">
             <Grid
               className={
-                addCount >= 1 && token
+                addCount >= 1 && token && lapashaUserId
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -67,7 +74,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
             </Grid>
             <Grid
               className={
-                addCount >= 2 && token
+                addCount >= 2 && token && lapashaUserId
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -77,7 +84,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
             </Grid>
             <Grid
               className={
-                addCount >= 3 && token
+                addCount >= 3 && token && lapashaUserId
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -87,7 +94,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
             </Grid>
             <Grid
               className={
-                addCount >= 4 && token
+                addCount >= 4 && token && lapashaUserId
                   ? "step-flx-red"
                   : "step-flx"
               }
@@ -112,7 +119,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
 
             <Grid
               className={
-                addCount >= 1 && token
+                addCount >= 1 && token && lapashaUserId
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -134,7 +141,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
 
             <Grid
               className={
-                addCount >= 2 && token
+                addCount >= 2 && token && lapashaUserId
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -152,7 +159,7 @@ const StepForm = ({ addCount, dataString, authPassword, token }) => {
 
             <Grid
               className={
-                addCount >= 3 && token
+                addCount >= 3 && token && lapashaUserId
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
