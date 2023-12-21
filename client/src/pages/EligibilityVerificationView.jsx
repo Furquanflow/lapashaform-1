@@ -31,7 +31,6 @@ const EligibilityVerificationView = ({
     // localStorage.setItem("token", token);
   }, []);
   return (
-    dataString &&
     dataString.map((value, ind) => {
       return (
         <Grid key={ind}>

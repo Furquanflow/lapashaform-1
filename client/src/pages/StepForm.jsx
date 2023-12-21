@@ -18,7 +18,7 @@ const StepForm = ({
   lapashaUserId
 }) => {
   const navigate = useNavigate();
-  let newFormData = dataString && dataString.map(item => item.middleNameSB);
+  // let newFormData = dataString && dataString.map(item => item.middleNameSB);
   const onEditClick = e => {
     e.preventDefault();
     if (addCount >= 1 && token && lapashaUserId) {

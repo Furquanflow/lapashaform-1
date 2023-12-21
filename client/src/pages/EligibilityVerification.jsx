@@ -41,7 +41,8 @@ const EligibilityVerification = ({
   dataUpdate,
   idUser,
   updateToShow,
-  onEligbilityUpdate
+  onEligbilityUpdate,
+  authUserToken
 }) => {
   const navigate = useNavigate();
   const onEligbility = e => {
@@ -77,8 +78,6 @@ const EligibilityVerification = ({
     e.preventDefault();
     verificationEmpState.current.clear();
   };
-
-  console.log(idUser);
 
   return (
     <Grid>

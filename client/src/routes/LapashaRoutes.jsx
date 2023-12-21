@@ -122,20 +122,14 @@ const LapashaRoutes = ({
 
   const onLoginClick = async e => {
     e.preventDefault();
-    setAddStep("")
+    setAddStep("");
     try {
       const response = await axios.post(
         `${baseUrl}/login`,
-        {
-          authEmail,
-          authPassword
-        },
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
+        { authEmail, authPassword },
+        { headers: { "Content-Type": "application/json" } }
       );
+
       const data = response.data;
       if (data.token) {
         setToken(data.token);
@@ -148,12 +142,13 @@ const LapashaRoutes = ({
         alert("Login failed. Please check your credentials.");
       }
     } catch (error) {
-      if (error.response) {
-        console.error("Server Error:", error.response.data);
-      } else if (error.request) {
-        console.error("Network Error:", error.request);
+      console.error("Error during login:", error);
+
+      // Provide user-friendly error message
+      if (error.response && error.response.status === 401) {
+        alert("Login failed. Incorrect email or password.");
       } else {
-        console.error("Error:", error.message);
+        alert("Login failed. Please try again later.");
       }
     }
   };
@@ -237,7 +232,7 @@ const LapashaRoutes = ({
       return;
     }
     try {
-      const response = await axios.get(url, {
+      const response = await axios.get(`${url}/${lapashaUserId}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`
         }
@@ -274,18 +269,21 @@ const LapashaRoutes = ({
     }
   };
 
-  const updateVerificationFunc = async (e) => {
+  const updateVerificationFunc = async e => {
     // e.preventDefault()
     if (idUser) {
       try {
-        const response = await axios.put(`/api/loungeAndGrill/${idUser}`, formDataArr);
+        const response = await axios.put(
+          `/api/loungeAndGrill/${idUser}`,
+          formDataArr
+        );
         return response.data;
       } catch (error) {
         console.error("Error updating lounge and grill data:", error);
         throw error;
       }
     }
-  }
+  };
 
   useEffect(
     () => {

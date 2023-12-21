@@ -7,6 +7,11 @@ const path = require("path");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000"
+  })
+);
 app.use(express.urlencoded({ extended: true, limit: "200mb" }));
 const PORT = process.env.port;
 app.use(routes);
@@ -19,11 +24,6 @@ mongoose
 const _dirName = path.dirname("");
 const buildPath = path.resolve(_dirName, "../client/build");
 
-app.use(
-  cors({
-    origin: "http://localhost:3000"
-  })
-);
 
 // app.use(
 //   cors({

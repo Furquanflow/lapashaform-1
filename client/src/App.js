@@ -28,7 +28,7 @@ const App = () => {
     password: "",
     name: ""
   });
-  const [authentication, setAuthentication] = useState()
+  const [authentication, setAuthentication] = useState("")
   const [userId, setUserId] = useState("")
   const [loungeUserId, setLoungeUserId] = useState("")
   const [naraUserId, setNaraUserId] = useState("")
@@ -49,6 +49,7 @@ const App = () => {
     setPdfCount(countPdf)
     setFormShow(true)
     setLoungeUserId(id)
+    setUpdateData(true)
   };
 
   const naraCafeEditFunc = (e, countPdf, id) => {
@@ -56,6 +57,7 @@ const App = () => {
     navigate("/eligibilityverification");
     setPdfCount(countPdf)
     setNaraUserId(id)
+    setUpdateData(true)
   };
 
   const patioEditFunc = (e, countPdf, id) => {
@@ -149,10 +151,10 @@ const App = () => {
 
   return (
     <>
-      <LapashaRoutes updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} formShow={formShow} />
+      <LapashaRoutes authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} formShow={formShow} />
       {/*Nested Routes*/}
       <Routes>
-        <Route path="/admin/*" element={<SideNavbar getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
+        <Route path="/admin/*" element={<SideNavbar adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
         <Route
           path="/admin"
           element={<Navigate replace to="/admin/login" />}

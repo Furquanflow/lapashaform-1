@@ -9,12 +9,17 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const Patio = ({ patioEditFunc }) => {
+const Patio = ({ patioEditFunc, adminToken }) => {
   const [adminPatioData, setAdminPatioData] = React.useState([]);
 
   const getFormData = () => {
     axios
-      .get(`${baseUrl}/formdata`)
+      .get(`${baseUrl}/formdata`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${adminToken()}`
+        }
+      })
       .then(({ data }) => {
         setAdminPatioData(data);
       })

@@ -9,12 +9,17 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const NaraCafe = ({ naraCafeEditFunc }) => {
+const NaraCafe = ({ naraCafeEditFunc, adminToken }) => {
   const [naraAdminData, setNaraAdminData] = React.useState([]);
 
   const getFormData = () => {
     axios
-      .get(`${baseUrl}/naracafedata`)
+      .get(`${baseUrl}/naracafedata`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${adminToken()}`
+        }
+      })
       .then(({ data }) => {
         setNaraAdminData(data);
       })

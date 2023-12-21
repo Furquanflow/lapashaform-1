@@ -14,82 +14,14 @@ const crypto = require("crypto");
 // const httpProxy = require('http-proxy');
 // const proxy = httpProxy.createProxyServer();
 
-let baseUrl = "http://localhost:3000";
+let baseUrl = "http://localhost:8000";
 
-//Admin Authentication and Authorization
-module.exports.postAdminRegisterData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  try {
-    console.log(req.body);
-    const newAdminPassword = await bcrypt.hash(req.body.authAdminPassword, 10);
-    await adminModel.create({
-      authAdminName: req.body.authAdminName,
-      authAdminEmail: req.body.authAdminEmail,
-      authAdminPassword: newAdminPassword
-    });
-    res.json({ status: "ok" });
-  } catch (err) {
-    res.json({ status: "error", error: "Duplicate email" });
-  }
-};
-
-module.exports.postAdminLoginData = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
-  const adminUser = await adminModel.findOne({
-    authAdminEmail: req.body.authAdminEmail
-  });
-
-  if (!adminUser) {
-    return res.json({ status: "error", error: "Invalid login" });
-  }
-
-  const isAdminPasswordValid = await bcrypt.compare(
-    req.body.authAdminPassword,
-    adminUser.authAdminPassword
-  );
-
-  if (isAdminPasswordValid) {
-    const token = jwt.sign(
-      {
-        name: adminUser.authAdminName,
-        email: adminUser.authAdminEmail
-      },
-      "secret123"
-    );
-
-    return res.json({ status: "ok", adminUser: token });
-  } else {
-    return res.json({ status: "error", adminUser: false });
-  }
-};
-
-// User Authentication and Authorization
 const generateRandomString = () => {
   return crypto.randomBytes(32).toString("hex");
 };
 
 let SECRET_KEY = generateRandomString();
 console.log("Initial SECRET_KEY:", SECRET_KEY);
-
-// module.exports.authenticateToken = (req, res, next) => {
-//   const tokenHeader = req.headers.authorization;
-
-//   if (tokenHeader) {
-//     const token = tokenHeader.split(" ")[1];
-//     console.log("Received Token:", token);
-//     try {
-//       let user = jwt.verify(token, SECRET_KEY);
-//       console.log("Decoded User:", user);
-//       req.userId = user.id;
-//       next();
-//     } catch (error) {
-//       console.error("Error Verifying Token:", error);
-//       return res.status(401).json({ message: "Unauthorized" });
-//     }
-//   } else {
-//     return res.status(401).json({ message: "Unauthorized" });
-//   }
-// };
 
 module.exports.authenticateToken = async (req, res, next) => {
   const tokenHeader = req.headers.authorization;
@@ -109,6 +41,67 @@ module.exports.authenticateToken = async (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 };
+
+//Admin Authentication and Authorization
+module.exports.postAdminRegisterData = async (req, res) => {
+  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
+  try {
+    console.log(req.body);
+    const existingUser = await adminModel.findOne({
+      authAdminEmail: req.body.authAdminEmail
+    });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exist" });
+    }
+    const newAdminPassword = await bcrypt.hash(req.body.authAdminPassword, 10);
+    const adminUser = await adminModel.create({
+      authAdminName: req.body.authAdminName,
+      authAdminEmail: req.body.authAdminEmail,
+      authAdminPassword: newAdminPassword
+    });
+    // res.json({ status: "ok" });
+    const adminToken = jwt.sign(
+      {
+        id: adminUser._id,
+        name: adminUser.authAdminName,
+        email: adminUser.authAdminEmail
+      },
+      SECRET_KEY
+    );
+    res.status(201).json({ status: "ok", user: adminUser, token: adminToken });
+  } catch (err) {
+    res.json({ status: "error", error: "Duplicate email" });
+  }
+};
+
+module.exports.postAdminLoginData = async (req, res) => {
+  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
+  const adminUser = await adminModel.findOne({
+    authAdminEmail: req.body.authAdminEmail
+  });
+
+  if (!adminUser) {
+    return res.json({ status: "error", error: "Invalid login" });
+  }
+  const isAdminPasswordValid = await bcrypt.compare(
+    req.body.authAdminPassword,
+    adminUser.authAdminPassword
+  );
+  if (isAdminPasswordValid) {
+    const adminToken = jwt.sign(
+      {
+        id: adminUser._id,
+        name: adminUser.authAdminName,
+        email: adminUser.authAdminEmail
+      },
+      SECRET_KEY
+    );
+    res.status(201).json({ status: "ok", user: adminUser, token: adminToken });
+  }
+};
+
+// User Authentication and Authorization
+
 module.exports.postRegisterData = async (req, res) => {
   try {
     console.log(req.body);
@@ -164,10 +157,14 @@ module.exports.postLoginData = async (req, res) => {
 
 //Patio
 module.exports.getFormData = async (req, res) => {
-  const userData = await patioModel.find({});
-  res.send(userData);
-  // const userData = await patioModel.find({ userId: req.userId });
-  // res.status(200).json(userData)
+  try {
+    const userId = req.params.userId;
+    const userData = await patioModel.find({ userId: userId });
+    res.send(userData);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 module.exports.saveFormData = async (req, res) => {
@@ -175,12 +172,12 @@ module.exports.saveFormData = async (req, res) => {
     const formData = req.body;
     const newForm = new patioModel(formData);
     const savedForm = await newForm.save();
-    res.json({ status: "ok", data: savedForm });
+    res.json({ status: 'ok', data: savedForm });
   } catch (err) {
-    console.error("Error in saveFormData:", err);
+    console.error('Error in saveFormData:', err);
     res.status(500).json({
-      status: "error",
-      error: "An error occurred during form submission"
+      status: 'error',
+      error: 'An error occurred during form submission'
     });
   }
 };
@@ -202,10 +199,14 @@ module.exports.updateSaveFormData = async (req, res) => {
 
 //Lounge And Grill
 module.exports.getLoungeAndGrillData = async (req, res) => {
-  const userLoungeData = await loungeAndGril.find();
-  res.send(userLoungeData);
-  // const userLoungeData = await loungeAndGril.find({ userId: req.userId });
-  // res.status(200).json(userLoungeData)
+  try {
+    const userId = req.params.userId;
+    const userData = await loungeAndGril.find({ userId: userId });
+    res.send(userData);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 module.exports.saveLoungeAndGrillData = async (req, res) => {
@@ -242,8 +243,14 @@ module.exports.updateSaveLoungeAndGrillData = async (req, res) => {
 
 //Nara Cafe
 module.exports.getNaraCafeData = async (req, res) => {
-  const naraData = await naraCafe.find();
-  res.send(naraData);
+  try {
+    const userId = req.params.userId;
+    const userData = await naraCafe.find({ userId: userId });
+    res.send(userData);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 module.exports.saveNaraCafeData = async (req, res) => {
@@ -293,7 +300,7 @@ module.exports.postPdf = async (req, res) => {
   const formData = req.body.data;
   console.log("Working");
   try {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: true });
     console.log("Working");
     const page = await browser.newPage();
 
@@ -305,7 +312,6 @@ module.exports.postPdf = async (req, res) => {
     fs.writeFileSync(pdfPath, pdfBuffer);
 
     await browser.close();
-
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "POST");
     res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -372,9 +378,9 @@ module.exports.postEmployerPdf = async (req, res) => {
         });
       });
     });
-    // res.header('Access-Control-Allow-Origin', '*');
-    // res.header('Access-Control-Allow-Methods', 'POST');
-    // res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "POST");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
     res.json({ pdfPath: "/download-pdf" });
   } catch (error) {
     console.log(error);
@@ -384,6 +390,7 @@ module.exports.postEmployerPdf = async (req, res) => {
 
 module.exports.getPdf = async (req, res) => {
   const pdfPath = path.join(__dirname, "generated.pdf");
+  // res.header("Content-Type", "application/pdf");
   res.download(pdfPath, "generated.pdf");
 };
 
