@@ -170,6 +170,7 @@ module.exports.getFormData = async (req, res) => {
 module.exports.saveFormData = async (req, res) => {
   try {
     const formData = req.body;
+    formData.userId = req.userId
     const newForm = new patioModel(formData);
     const savedForm = await newForm.save();
     res.json({ status: 'ok', data: savedForm });
