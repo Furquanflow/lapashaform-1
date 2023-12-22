@@ -36,7 +36,7 @@ const Patio = ({ patioEditFunc, adminToken }) => {
 
   return (
     <LapashaFormData
-      empolymentFunc={e => patioEditFunc(e, 1)}
+      empolymentFunc={patioEditFunc}
       lapashaData={adminPatioData}
       title={"Patio"}
     />
