@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000"
+    origin: "*"
   })
 );
 app.use(express.urlencoded({ extended: true, limit: "200mb" }));
@@ -23,15 +23,6 @@ mongoose
 
 const _dirName = path.dirname("");
 const buildPath = path.resolve(_dirName, "../client/build");
-
-
-// app.use(
-//   cors({
-//     origin: ["http://localhost:3000"],
-//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     credentials: true
-//   })
-// );
 app.use(express.static(buildPath));
 app.get("*/", (req, res) => {
   const indexPath = path.resolve(buildPath, "index.html");

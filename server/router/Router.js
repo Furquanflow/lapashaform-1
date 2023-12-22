@@ -30,16 +30,19 @@ router.post("/login", postLoginData);
 
 //Patio endpoints
 router.get("/formdata/:userId", authenticateToken, getFormData);
+router.get("/formdata", getFormData);
 router.post("/formdatapost", authenticateToken,  saveFormData);
 router.put("/updateformdata/:id", authenticateToken, updateSaveFormData);
 
 //Lounge And Grill endpoints
 router.get("/loungeandgrilldata/:userId", authenticateToken, getLoungeAndGrillData);
+router.get("/loungeandgrilldata", getLoungeAndGrillData);
 router.post("/loungeandgrilldatapost", authenticateToken, saveLoungeAndGrillData);
 router.put("/updateloungeandgrilldata/:id", authenticateToken, updateSaveLoungeAndGrillData);
 
 //Naracafe endpoints
 router.get("/naracafedata/:userId", authenticateToken, getNaraCafeData);
+router.get("/naracafedata", getNaraCafeData);
 router.post("/naracafedatapost", authenticateToken, saveNaraCafeData);
 router.put("/updatenaracafedata/:id", authenticateToken, updateSaveNaraCafeData);
 

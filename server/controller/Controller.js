@@ -11,29 +11,24 @@ const adminModel = require("../models/AdminAuth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-// const httpProxy = require('http-proxy');
-// const proxy = httpProxy.createProxyServer();
-
 let baseUrl = "http://localhost:8000";
 
+//Secret Key Generator
 const generateRandomString = () => {
   return crypto.randomBytes(32).toString("hex");
 };
-
 let SECRET_KEY = generateRandomString();
 console.log("Initial SECRET_KEY:", SECRET_KEY);
 
+//Authentication Token
 module.exports.authenticateToken = async (req, res, next) => {
   const tokenHeader = req.headers.authorization;
-
   if (!tokenHeader) {
     return res.status(401).json({ message: "Unauthorized" });
   }
-
   try {
     const token = tokenHeader.split(" ")[1];
     const decoded = jwt.verify(token, SECRET_KEY);
-
     req.userId = decoded.id;
     next();
   } catch (error) {
@@ -42,7 +37,7 @@ module.exports.authenticateToken = async (req, res, next) => {
   }
 };
 
-//Admin Authentication and Authorization
+//Admin Authentication and Authorization(Admin Register)
 module.exports.postAdminRegisterData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   try {
@@ -74,6 +69,7 @@ module.exports.postAdminRegisterData = async (req, res) => {
   }
 };
 
+//Admin Authentication and Authorization(Admin Login)
 module.exports.postAdminLoginData = async (req, res) => {
   // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const adminUser = await adminModel.findOne({
@@ -100,8 +96,7 @@ module.exports.postAdminLoginData = async (req, res) => {
   }
 };
 
-// User Authentication and Authorization
-
+// User Authentication and Authorization(user Register)
 module.exports.postRegisterData = async (req, res) => {
   try {
     console.log(req.body);
@@ -130,11 +125,11 @@ module.exports.postRegisterData = async (req, res) => {
   }
 };
 
+// User Authentication and Authorization(user Login)
 module.exports.postLoginData = async (req, res) => {
   const user = await User.findOne({
     authEmail: req.body.authEmail
   });
-
   if (!user) {
     return res.json({ status: "error", error: "Invalid login" });
   }
@@ -162,23 +157,23 @@ module.exports.getFormData = async (req, res) => {
     const userData = await patioModel.find({ userId: userId });
     res.send(userData);
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
 module.exports.saveFormData = async (req, res) => {
   try {
     const formData = req.body;
-    formData.userId = req.userId
+    formData.userId = req.userId;
     const newForm = new patioModel(formData);
     const savedForm = await newForm.save();
-    res.json({ status: 'ok', data: savedForm });
+    res.json({ status: "ok", data: savedForm });
   } catch (err) {
-    console.error('Error in saveFormData:', err);
+    console.error("Error in saveFormData:", err);
     res.status(500).json({
-      status: 'error',
-      error: 'An error occurred during form submission'
+      status: "error",
+      error: "An error occurred during form submission"
     });
   }
 };
@@ -205,8 +200,8 @@ module.exports.getLoungeAndGrillData = async (req, res) => {
     const userData = await loungeAndGril.find({ userId: userId });
     res.send(userData);
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -249,8 +244,8 @@ module.exports.getNaraCafeData = async (req, res) => {
     const userData = await naraCafe.find({ userId: userId });
     res.send(userData);
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -297,21 +292,17 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports.postPdf = async (req, res) => {
-  // proxy.web(req, res, { target: 'http://52.204.170.61:8000' });
   const formData = req.body.data;
   console.log("Working");
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: "new" });
     console.log("Working");
     const page = await browser.newPage();
-
     await page.goto(`${baseUrl}/eligibilityverificationview`);
     await page.waitForTimeout(8000);
     const pdfBuffer = await page.pdf({ format: "A4" });
-
     const pdfPath = path.join(__dirname, "generated.pdf");
     fs.writeFileSync(pdfPath, pdfBuffer);
-
     await browser.close();
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "POST");
@@ -319,7 +310,7 @@ module.exports.postPdf = async (req, res) => {
     res.json({ pdfPath: "/download-pdf" });
   } catch (error) {
     console.log(error);
-    // res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -331,23 +322,18 @@ module.exports.postEmployerPdf = async (req, res) => {
     const browser = await puppeteer.launch({ headless: "new" });
     console.log("Working");
     const page = await browser.newPage();
-
     await page.goto(`${baseUrl}/eligibilityverificationview`);
     await page.waitForTimeout(8000);
     const pdfBuffer = await page.pdf({ format: "A4" });
-
     const pdfPath = path.join(__dirname, "generated.pdf");
     fs.writeFileSync(pdfPath, pdfBuffer);
-
     await browser.close();
-
     const emailAddresses = [
       "thefurquanrahim@gmail.com",
       "furquan.rahim124@gmail.com",
       "thefurqanrahim@gmail.com"
     ];
     const attachments = [{ filename: "generated.pdf", content: pdfBuffer }];
-
     emailAddresses.forEach(email => {
       const mailOptions = {
         from: "furqan.rahim@flowtechnologies.io",
@@ -356,21 +342,18 @@ module.exports.postEmployerPdf = async (req, res) => {
         text: "Attached is the PDF you requested.",
         attachments
       };
-
       const operation = retry.operation({
         retries: 3,
         factor: 2,
         minTimeout: 1000,
         maxTimeout: 30000
       });
-
       operation.attempt(currentAttempt => {
         transporter.sendMail(mailOptions, (error, info) => {
           if (operation.retry(error)) {
             console.error("Email not sent, retrying...", currentAttempt);
             return;
           }
-
           if (error) {
             console.error("Email not sent:", error);
           } else {
@@ -385,24 +368,11 @@ module.exports.postEmployerPdf = async (req, res) => {
     res.json({ pdfPath: "/download-pdf" });
   } catch (error) {
     console.log(error);
-    // res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 };
 
 module.exports.getPdf = async (req, res) => {
   const pdfPath = path.join(__dirname, "generated.pdf");
-  // res.header("Content-Type", "application/pdf");
   res.download(pdfPath, "generated.pdf");
 };
-
-// module.exports.getPdf = async (req, res) => {
-//   const browser = await puppeteer.launch({ headless: "new" });
-//   const page = await browser.newPage();
-// await page.goto(`${baseUrl}/eligibilityverificationview`, {
-//   waitUntil: "networkidle0"
-// });
-//   const pdfBuffer = await page.pdf();
-//   res.contentType("application/pdf");
-//   res.send(pdfBuffer);
-//   browser.close();
-// };

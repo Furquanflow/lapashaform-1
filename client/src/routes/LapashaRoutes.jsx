@@ -182,9 +182,11 @@ const LapashaRoutes = ({
   };
 
   const onCompany = eve => {
-    localStorage.setItem("token", authToken);
-    setCompanyCall(eve);
-    navigate("/stepform");
+    if (lapashaUserId) {
+      localStorage.setItem("token", authToken);
+      setCompanyCall(eve);
+      navigate("/stepform");
+    }
     // if (companyCall === 0) {
     //   setFormData({});
     //   setAddStep(0);
@@ -232,19 +234,21 @@ const LapashaRoutes = ({
       return;
     }
     try {
-      const response = await axios.get(`${url}/${lapashaUserId}`, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`
-        }
-      });
-      setFormDataArr(response.data);
+      if (lapashaUserId) {
+        const response = await axios.get(`${url}/${lapashaUserId}`, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`
+          }
+        });
+        setFormDataArr(response.data);
+      }
     } catch (error) {
       console.error("Error getting data:", error);
     }
   };
 
   const getPostUrl = () => {
-    switch (companyCall || pdfCount) {
+    switch (companyCall || (pdfCount && lapashaUserId)) {
       case 0:
         return `${baseUrl}/loungeandgrilldatapost`;
       case 1:
@@ -257,7 +261,7 @@ const LapashaRoutes = ({
   };
 
   const getGetUrl = () => {
-    switch (companyCall || pdfCount) {
+    switch (companyCall || (pdfCount && lapashaUserId)) {
       case 0:
         return `${baseUrl}/loungeandgrilldata`;
       case 1:
@@ -270,11 +274,11 @@ const LapashaRoutes = ({
   };
 
   const updateVerificationFunc = async e => {
-    // e.preventDefault()
-    if (idUser) {
+    e.preventDefault();
+    if (lapashaUserId) {
       try {
         const response = await axios.put(
-          `/api/loungeAndGrill/${idUser}`,
+          `/api/loungeAndGrill/${lapashaUserId}`,
           formDataArr
         );
         return response.data;
@@ -283,6 +287,7 @@ const LapashaRoutes = ({
         throw error;
       }
     }
+    navigate("/EligibilityVerificationView");
   };
 
   useEffect(
@@ -294,17 +299,6 @@ const LapashaRoutes = ({
     },
     [dataString, addStep]
   );
-
-  //update function use this for later
-  // const updateLoungeAndGrillData = async (id, formData) => {
-  //   try {
-  //     const response = await axios.put(`/api/loungeAndGrill/${id}`, formData);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error updating lounge and grill data:", error);
-  //     throw error;
-  //   }
-  // };
 
   return (
     <Routes>
@@ -421,7 +415,7 @@ const LapashaRoutes = ({
             authPassword={authPassword}
             onStep2={eve => onStepForm(eve)}
             dataString={formDataArr}
-            token={authToken}
+            token={lapashaUserId}
             lapashaUserId={lapashaUserId}
           />
         }
