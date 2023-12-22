@@ -33,7 +33,7 @@ const NaraCafe = ({ naraCafeEditFunc, adminToken }) => {
   }, []);
   return (
     <LapashaFormData
-      empolymentFunc={e => naraCafeEditFunc(e, 2)}
+      empolymentFunc={naraCafeEditFunc}
       lapashaData={naraAdminData}
       title={"Nara Cafe"}
     />
