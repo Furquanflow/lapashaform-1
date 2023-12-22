@@ -30,8 +30,6 @@ const App = () => {
   });
   const [authentication, setAuthentication] = useState("")
   const [userId, setUserId] = useState("")
-  const [loungeUserId, setLoungeUserId] = useState("")
-  const [naraUserId, setNaraUserId] = useState("")
   const [updateData, setUpdateData] = useState(false)
   const [updateShow, setUpdateShow] = useState(false)
   const [formShow, setFormShow] = useState(false)
@@ -45,28 +43,30 @@ const App = () => {
 
   const loungeGrillEditFunc = async (e, countPdf, id) => {
     e.preventDefault()
-    navigate("/eligibilityverification");
-    setPdfCount(countPdf)
+    // setPdfCount(countPdf)
     setFormShow(true)
-    setLoungeUserId(id)
+    setUserId(countPdf)
     setUpdateData(true)
+    navigate("/eligibilityverification");
   };
 
   const naraCafeEditFunc = (e, countPdf, id) => {
     e.preventDefault()
-    navigate("/eligibilityverification");
-    setPdfCount(countPdf)
-    setNaraUserId(id)
+    // setPdfCount(countPdf)
+    setUserId(countPdf)
     setUpdateData(true)
+    navigate("/eligibilityverification");
   };
 
   const patioEditFunc = (e, countPdf, id) => {
     e.preventDefault()
-    navigate("/eligibilityverification");
-    setPdfCount(countPdf)
-    setUserId(id)
+    // setPdfCount(countPdf)
+    setUserId(countPdf)
     setUpdateData(true)
+    navigate("/eligibilityverification");
+  
   };
+  console.log(userId);
 
   let authAdminEmail = auth.email;
   let authAdminPassword = auth.password;
