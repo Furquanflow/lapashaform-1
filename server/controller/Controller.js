@@ -181,7 +181,6 @@ module.exports.saveFormData = async (req, res) => {
 module.exports.updateSaveFormData = async (req, res) => {
   const id = req.params.id;
   const formData = req.body;
-
   try {
     const updatedPatioNote = await patioModel.findByIdAndUpdate(id, formData, {
       new: true
