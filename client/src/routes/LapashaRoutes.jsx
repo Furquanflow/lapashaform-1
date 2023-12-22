@@ -210,10 +210,10 @@ const LapashaRoutes = ({
 
   const postFormData = async () => {
     const url = getPostUrl();
-    if (!url) {
-      alert("Select a valid option.");
-      return;
-    }
+    // if (!url) {
+    //   alert("Select a valid option.");
+    //   return;
+    // }
     try {
       await axios.post(url, dataString, {
         headers: {
@@ -227,12 +227,25 @@ const LapashaRoutes = ({
     }
   };
 
+  const getPostUrl = () => {
+    switch (companyCall || (pdfCount && lapashaUserId)) {
+      case 1:
+        return `${baseUrl}/loungeandgrilldatapost`;
+      case 2:
+        return `${baseUrl}/formdatapost`;
+      case 3:
+        return `${baseUrl}/naracafedataPost`;
+      default:
+        return null;
+    }
+  };
+
   const getFormData = async () => {
     const url = getGetUrl();
-    if (!url) {
-      alert("Select a valid option.");
-      return;
-    }
+    // if (!url) {
+    //   alert("Select a valid option.");
+    //   return;
+    // }
     try {
       if (lapashaUserId) {
         const response = await axios.get(`${url}/${lapashaUserId}`, {
@@ -247,48 +260,91 @@ const LapashaRoutes = ({
     }
   };
 
-  const getPostUrl = () => {
-    switch (companyCall || (pdfCount && lapashaUserId)) {
-      case 0:
-        return `${baseUrl}/loungeandgrilldatapost`;
-      case 1:
-        return `${baseUrl}/formdatapost`;
-      case 2:
-        return `${baseUrl}/naracafedataPost`;
-      default:
-        return null;
-    }
-  };
 
   const getGetUrl = () => {
     switch (companyCall || (pdfCount && lapashaUserId)) {
-      case 0:
-        return `${baseUrl}/loungeandgrilldata`;
       case 1:
-        return `${baseUrl}/formdata`;
+        return `${baseUrl}/loungeandgrilldata`;
       case 2:
+        return `${baseUrl}/formdata`;
+      case 3:
         return `${baseUrl}/naracafedata`;
       default:
         return null;
     }
   };
 
-  const updateVerificationFunc = async e => {
+  const updateVerificationFunc = async (e) => {
     e.preventDefault();
-    if (lapashaUserId) {
+    if (idUser) {
       try {
         const response = await axios.put(
-          `/api/loungeAndGrill/${lapashaUserId}`,
+          `${baseUrl}/updateloungeandgrilldata/${idUser}`,
           formDataArr
         );
-        return response.data;
+
+        // Assuming the response.data is the updated data
+        const updatedData = response.data;
+
+        // Handle the updated data as needed
+        console.log('Updated Data:', updatedData);
+
+        // Navigate to the specified view
+        navigate("/EligibilityVerificationView");
+
       } catch (error) {
         console.error("Error updating lounge and grill data:", error);
-        throw error;
+        // Handle the error as needed
       }
     }
-    navigate("/EligibilityVerificationView");
   };
+
+
+  // const updateDataFunc = async (userId, formData, apiEndpoint) => {
+  //   try {
+  //     const response = await axios.put(`/api/${apiEndpoint}/${userId}`, formData);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(`Error updating data for ${apiEndpoint}:`, error);
+  //     throw error;
+  //   }
+  // };
+
+  // const updateVerificationFunc = async (e) => {
+  //   e.preventDefault();
+  //   if (lapashaUserId) {
+  //     try {
+  //       const updatedData = await updateDataFunc(
+  //         lapashaUserId,
+  //         formDataArr,
+  //         getUpdateUrl()
+  //       );
+  //       // Do something with updatedData if needed
+  //       return updatedData;
+  //     } catch (error) {
+  //       // Handle error
+  //       console.error("Error updating data:", error);
+  //       throw error;
+  //     }
+  //   }
+  //   navigate("/EligibilityVerificationView"); 
+  // };
+
+  // const getUpdateUrl = (eve) => {
+  //   switch (eve && lapashaUserId) {
+  //     case 1:
+  //       return "loungeAndGrill";
+  //     case 2:
+  //       return "formData";
+  //     case 3:
+  //       return "naracafeData";
+  //     default:
+  //       return null;
+  //   }
+  // };
+
+
+
 
   useEffect(
     () => {
