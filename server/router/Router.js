@@ -38,7 +38,7 @@ router.put("/updateformdata/:id", authenticateToken, updateSaveFormData);
 router.get("/loungeandgrilldata/:userId", authenticateToken, getLoungeAndGrillData);
 router.get("/loungeandgrilldata", getLoungeAndGrillData);
 router.post("/loungeandgrilldatapost", authenticateToken, saveLoungeAndGrillData);
-router.put("/updateloungeandgrilldata/:id", authenticateToken, updateSaveLoungeAndGrillData);
+router.put("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillData);
 
 //Naracafe endpoints
 router.get("/naracafedata/:userId", authenticateToken, getNaraCafeData);
