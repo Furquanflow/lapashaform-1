@@ -35,7 +35,7 @@ const LapashaLoungeAndGrill = ({ loungeGrillEditFunc, adminToken }) => {
     <LapashaFormData
       lapashaData={adminData}
       title={"Lapasha lounge And Grill"}
-      empolymentFunc={e => loungeGrillEditFunc(e, 0)}
+      empolymentFunc={loungeGrillEditFunc}
     />
   );
 };
