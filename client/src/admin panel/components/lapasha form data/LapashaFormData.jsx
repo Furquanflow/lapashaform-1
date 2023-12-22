@@ -53,10 +53,10 @@ const LapashaFormData = ({ lapashaData, title, empolymentFunc, lapashaUpdateData
             <TableHead>
               <TableRow>
                 <StyledTableCell>Employee Name</StyledTableCell>
-                <StyledTableCell align="right">Email Address</StyledTableCell>
-                <StyledTableCell align="right">Phone Number</StyledTableCell>
-                <StyledTableCell align="right">Address</StyledTableCell>
-                <StyledTableCell align="right">Edit Form</StyledTableCell>
+                <StyledTableCell>Email Address</StyledTableCell>
+                <StyledTableCell>Phone Number</StyledTableCell>
+                <StyledTableCell>Address</StyledTableCell>
+                <StyledTableCell>Edit Form</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -67,19 +67,18 @@ const LapashaFormData = ({ lapashaData, title, empolymentFunc, lapashaUpdateData
                       <StyledTableCell component="th" scope="row">
                         {row.fNamePerInfo} {row.lnamePerInfo}
                       </StyledTableCell>
-                      <StyledTableCell align="right">
+                      <StyledTableCell>
                         {row.emailAddPerInfo}
                       </StyledTableCell>
-                      <StyledTableCell align="right">
+                      <StyledTableCell>
                         {row.phoneNoPerInfo}
                       </StyledTableCell>
-                      <StyledTableCell align="right">
+                      <StyledTableCell>
                         {row.addPerInfo}
                       </StyledTableCell>
                       <Button
                         variant="contained"
                         sx={{
-                          float: "right",
                           background: "#b49a53",
                           margin: "5px",
                           "&:hover": {
