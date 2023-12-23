@@ -70,6 +70,7 @@ const LapashaRoutes = ({
     let formDataChanges = {};
     setAddStep(eve);
     localStorage.setItem("DATA", JSON.stringify(eve));
+    getStoredUserId();
     if (canvas) {
       const signatureData = canvas.toDataURL();
       formDataChanges.conFormsign = signatureData;
@@ -115,6 +116,7 @@ const LapashaRoutes = ({
       ...formDataChanges
     }));
   };
+  console.log(formData);
 
   let authEmail = auth.email;
   let authPassword = auth.password;
@@ -138,6 +140,7 @@ const LapashaRoutes = ({
         navigate("/home");
         localStorage.setItem("DATA", addStep.toString());
         localStorage.setItem("FORMDATA", dataString);
+        localStorage.setItem("lapashaUserId", data.user._id);
       } else {
         alert("Login failed. Please check your credentials.");
       }
@@ -152,6 +155,7 @@ const LapashaRoutes = ({
       }
     }
   };
+  console.log(lapashaUserId);
 
   const onRegister = async e => {
     e.preventDefault();
@@ -182,7 +186,7 @@ const LapashaRoutes = ({
   };
 
   const onCompany = eve => {
-    if (lapashaUserId) {
+    if (getStoredUserId()) {
       localStorage.setItem("token", authToken);
       setCompanyCall(eve);
       navigate("/stepform");
@@ -228,7 +232,7 @@ const LapashaRoutes = ({
   };
 
   const getPostUrl = () => {
-    switch (companyCall || (pdfCount && lapashaUserId)) {
+    switch (companyCall || (pdfCount && getStoredUserId())) {
       case 1:
         return `${baseUrl}/loungeandgrilldatapost`;
       case 2:
@@ -247,7 +251,7 @@ const LapashaRoutes = ({
     //   return;
     // }
     try {
-      if (lapashaUserId) {
+      if (getStoredUserId()) {
         const response = await axios.get(`${url}/${lapashaUserId}`, {
           headers: {
             Authorization: `Bearer ${getToken()}`
@@ -260,9 +264,8 @@ const LapashaRoutes = ({
     }
   };
 
-
   const getGetUrl = () => {
-    switch (companyCall || (pdfCount && lapashaUserId)) {
+    switch (companyCall || (pdfCount && getStoredUserId())) {
       case 1:
         return `${baseUrl}/loungeandgrilldata`;
       case 2:
@@ -274,7 +277,7 @@ const LapashaRoutes = ({
     }
   };
 
-  const updateVerificationFunc = async (e) => {
+  const updateVerificationFunc = async e => {
     e.preventDefault();
     if (idUser) {
       try {
@@ -282,70 +285,16 @@ const LapashaRoutes = ({
           `${baseUrl}/updateloungeandgrilldata/${idUser}`,
           formDataArr
         );
-
-        // Assuming the response.data is the updated data
         const updatedData = response.data;
-
-        // Handle the updated data as needed
-        console.log('Updated Data:', updatedData);
-
-        // Navigate to the specified view
+        console.log("Updated Data:", updatedData);
         navigate("/EligibilityVerificationView");
-
       } catch (error) {
         console.error("Error updating lounge and grill data:", error);
-        // Handle the error as needed
       }
     }
   };
 
-
-  // const updateDataFunc = async (userId, formData, apiEndpoint) => {
-  //   try {
-  //     const response = await axios.put(`/api/${apiEndpoint}/${userId}`, formData);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error(`Error updating data for ${apiEndpoint}:`, error);
-  //     throw error;
-  //   }
-  // };
-
-  // const updateVerificationFunc = async (e) => {
-  //   e.preventDefault();
-  //   if (lapashaUserId) {
-  //     try {
-  //       const updatedData = await updateDataFunc(
-  //         lapashaUserId,
-  //         formDataArr,
-  //         getUpdateUrl()
-  //       );
-  //       // Do something with updatedData if needed
-  //       return updatedData;
-  //     } catch (error) {
-  //       // Handle error
-  //       console.error("Error updating data:", error);
-  //       throw error;
-  //     }
-  //   }
-  //   navigate("/EligibilityVerificationView"); 
-  // };
-
-  // const getUpdateUrl = (eve) => {
-  //   switch (eve && lapashaUserId) {
-  //     case 1:
-  //       return "loungeAndGrill";
-  //     case 2:
-  //       return "formData";
-  //     case 3:
-  //       return "naracafeData";
-  //     default:
-  //       return null;
-  //   }
-  // };
-
-
-
-
+  const getStoredUserId = () => localStorage.getItem("lapashaUserId");
   useEffect(
     () => {
       localStorage.getItem("FORMDATA", dataString);
@@ -360,81 +309,169 @@ const LapashaRoutes = ({
     <Routes>
       <Route
         path="/home"
-        element={<Home callData={onCompany} token={authToken} />}
+        element={
+          getStoredUserId()
+            ? <Home callData={onCompany} token={authToken} />
+            : <Navigate
+                replace
+                to="/login"
+                onLogin={onLoginClick}
+                authFunc={authFunc}
+                registerPage={"/register"}
+                email={authEmail}
+                password={authPassword}
+                getStoredUserId={getStoredUserId}
+              />
+        }
       />
       <Route
         path="/eligibilityverification"
         element={
-          <EligibilityVerification
-            updateToShow={updateToShow}
-            formShow={formShow}
-            data={formData}
-            formChange3={onForm}
-            onStep3={() => onStepForm(4)}
-            addData3={addStep}
-            formData={getFormData}
-            canvaVerificationState={setVerificationCanvas}
-            canvaVerificationEmpState={setVerificationEmpCanvas}
-            canvaVerificationPreState={setVerificationPreCanvas}
-            canvaVerificationEmpSBState={setVerificationEmpSBCanvas}
-            formDataFunc={postFormData}
-            idUser={idUser}
-            dataUpdate={dataUpdate}
-            updateShow={updateShow}
-            token={authToken}
-            onEligbilityUpdate={updateVerificationFunc}
-          />
+          getStoredUserId()
+            ? <EligibilityVerification
+                updateToShow={updateToShow}
+                formShow={formShow}
+                data={formData}
+                formChange3={onForm}
+                onStep3={() => onStepForm(4)}
+                addData3={addStep}
+                formData={getFormData}
+                canvaVerificationState={setVerificationCanvas}
+                canvaVerificationEmpState={setVerificationEmpCanvas}
+                canvaVerificationPreState={setVerificationPreCanvas}
+                canvaVerificationEmpSBState={setVerificationEmpSBCanvas}
+                formDataFunc={postFormData}
+                idUser={idUser}
+                dataUpdate={dataUpdate}
+                updateShow={updateShow}
+                token={authToken}
+                onEligbilityUpdate={updateVerificationFunc}
+              />
+            : <Navigate
+                replace
+                to="/login"
+                onLogin={onLoginClick}
+                authFunc={authFunc}
+                registerPage={"/register"}
+                email={authEmail}
+                password={authPassword}
+              />
         }
       />
       <Route
         path="/eligibilityverificationview"
         element={
-          <EligibilityVerificationView
-            pdfCount={pdfCount}
-            dataString={formDataArr}
-            formDataFunc={getFormData}
-          />
+          getStoredUserId()
+            ? <EligibilityVerificationView
+                pdfCount={pdfCount}
+                dataString={formDataArr}
+                formDataFunc={getFormData}
+              />
+            : <Navigate
+                replace
+                to="/login"
+                onLogin={onLoginClick}
+                authFunc={authFunc}
+                registerPage={"/register"}
+                email={authEmail}
+                password={authPassword}
+              />
         }
       />
       <Route
         path="/employmentinformationform"
         element={
-          <EmploymentInformationForm
-            data={formData}
-            formChange={onForm}
-            onStep={() => onStepForm(1)}
-            addData={addStep}
-            canvaUpdatedState={setCanvas}
-          />
+          getStoredUserId()
+            ? <EmploymentInformationForm
+                data={formData}
+                formChange={onForm}
+                onStep={() => onStepForm(1)}
+                addData={addStep}
+                canvaUpdatedState={setCanvas}
+              />
+            : <Navigate
+                replace
+                to="/login"
+                onLogin={onLoginClick}
+                authFunc={authFunc}
+                registerPage={"/register"}
+                email={authEmail}
+                password={authPassword}
+              />
         }
       />
       <Route
         path="/contractform"
         element={
-          <ContractForm
-            data={formData}
-            formChange2={onForm}
-            onStep2={() => onStepForm(3)}
-            addData2={addStep}
-            updateEmployeeContactSignature={setContactEmployeeCanvas}
-            updateTransContactSignature={setContactTransCanvas}
-          />
+          getStoredUserId()
+            ? <ContractForm
+                data={formData}
+                formChange2={onForm}
+                onStep2={() => onStepForm(3)}
+                addData2={addStep}
+                updateEmployeeContactSignature={setContactEmployeeCanvas}
+                updateTransContactSignature={setContactTransCanvas}
+              />
+            : <Navigate
+                replace
+                to="/login"
+                onLogin={onLoginClick}
+                authFunc={authFunc}
+                registerPage={"/register"}
+                email={authEmail}
+                password={authPassword}
+              />
         }
       />
       <Route
         path="/policyform"
         element={
-          <PolicyForm
-            data={formData}
-            formChange1={onForm}
-            onStep1={() => onStepForm(2)}
-            addData1={addStep}
-            updatePolicySignature={setPolicyCanvas}
-            updateEmployeePolicySignature={setPolicyEmployeeCanvas}
-            updateTransPolicySignature={setPolicyTranslatorCanvas}
-          />
+          getStoredUserId()
+            ? <PolicyForm
+                data={formData}
+                formChange1={onForm}
+                onStep1={() => onStepForm(2)}
+                addData1={addStep}
+                updatePolicySignature={setPolicyCanvas}
+                updateEmployeePolicySignature={setPolicyEmployeeCanvas}
+                updateTransPolicySignature={setPolicyTranslatorCanvas}
+              />
+            : <Navigate
+                replace
+                to="/login"
+                onLogin={onLoginClick}
+                authFunc={authFunc}
+                registerPage={"/register"}
+                email={authEmail}
+                password={authPassword}
+              />
         }
       />
+      <Route
+        path="/stepform"
+        element={
+          getStoredUserId()
+            ? <StepForm
+                addCount={addStep}
+                authPassword={authPassword}
+                onStep2={eve => onStepForm(eve)}
+                dataString={formDataArr}
+                token={lapashaUserId}
+                lapashaUserId={lapashaUserId}
+                getStoredUserId={getStoredUserId}
+              />
+            : <Navigate
+                replace
+                to="/login"
+                onLogin={onLoginClick}
+                authFunc={authFunc}
+                registerPage={"/register"}
+                email={authEmail}
+                password={authPassword}
+              />
+        }
+      />
+
       <Route
         path="/login"
         element={
@@ -462,19 +499,6 @@ const LapashaRoutes = ({
       <Route
         path="/"
         element={<Navigate replace to="/login" authFunc={authFunc} />}
-      />
-      <Route
-        path="/stepform"
-        element={
-          <StepForm
-            addCount={addStep}
-            authPassword={authPassword}
-            onStep2={eve => onStepForm(eve)}
-            dataString={formDataArr}
-            token={lapashaUserId}
-            lapashaUserId={lapashaUserId}
-          />
-        }
       />
     </Routes>
   );

@@ -144,17 +144,65 @@ const App = () => {
     return localStorage.getItem("admin-token");
   };
 
+  const adminLoungeFunc = async () => {
+    if (userId) {
+      try {
+        const response = await axios.put(
+          `${baseUrl}/updateformdata/${userId}`,
+          // dataString
+        );
+        const updatedData = response.data;
+        console.log("Updated Data:", updatedData);
+        navigate("/EligibilityVerificationView");
+      } catch (error) {
+        console.error("Error updating lounge and grill data:", error);
+      }
+    }
+    navigate("/admin/lounge")
+  }
+  const adminPatioFunc = async () => {
+    if (userId) {
+      try {
+        const response = await axios.put(
+          `${baseUrl}/updateformdata/${userId}`,
+          // dataString
+        );
+        const updatedData = response.data;
+        console.log("Updated Data:", updatedData);
+        navigate("/EligibilityVerificationView");
+      } catch (error) {
+        console.error("Error updating lounge and grill data:", error);
+      }
+    }
+    navigate("/admin/patio")
+  }
+  const adminNaraFunc = async () => {
+    if (userId) {
+      try {
+        const response = await axios.put(
+          `${baseUrl}/updatenaracafedata/${userId}`,
+          // dataString
+        );
+        const updatedData = response.data;
+        console.log("Updated Data:", updatedData);
+        navigate("/EligibilityVerificationView");
+      } catch (error) {
+        console.error("Error updating lounge and grill data:", error);
+      }
+    }
+    navigate("/admin/naracafe")
+  }
+
   React.useEffect(() => {
     setAuthentication(localStorage.getItem("admin-token"))
   }, [])
-  
 
   return (
     <>
       <LapashaRoutes authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} formShow={formShow} />
       {/*Nested Routes*/}
       <Routes>
-        <Route path="/admin/*" element={<SideNavbar adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
+        <Route path="/admin/*" element={<SideNavbar adminLoungeClick={adminLoungeFunc} adminPatioClick={adminPatioFunc} adminNaraClick={adminNaraFunc} adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
         <Route
           path="/admin"
           element={<Navigate replace to="/admin/login" />}

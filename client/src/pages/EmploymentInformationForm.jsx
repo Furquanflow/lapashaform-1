@@ -28,7 +28,7 @@ const EmploymentInformationForm = ({
   formChange,
   onStep,
   addData,
-  canvaUpdatedState
+  canvaUpdatedState,
 }) => {
   const navigate = useNavigate();
 

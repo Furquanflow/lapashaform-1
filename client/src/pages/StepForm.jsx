@@ -15,22 +15,23 @@ const StepForm = ({
   dataString,
   authPassword,
   token,
-  lapashaUserId
+  lapashaUserId,
+  getStoredUserId
 }) => {
   const navigate = useNavigate();
   // let newFormData = dataString && dataString.map(item => item.middleNameSB);
   const onEditClick = e => {
     e.preventDefault();
-    if (addCount >= 1 && lapashaUserId) {
+    if (addCount >= 1 && getStoredUserId()) {
       navigate("/policyform");
-      console.log(lapashaUserId);
+      console.log(getStoredUserId());
     } else {
       alert("Fill Employment information form First");
     }
   };
   const onEditClick1 = e => {
     e.preventDefault();
-    if (addCount >= 2 && lapashaUserId) {
+    if (addCount >= 2 && getStoredUserId()) {
       navigate("/contractform");
     } else {
       alert("Fill Policy 20223-06-12 Employee Manual First");
@@ -39,7 +40,7 @@ const StepForm = ({
   const onEditClick2 = e => {
     e.preventDefault();
 
-    if (addCount >= 3 && lapashaUserId) {
+    if (addCount >= 3 && getStoredUserId()) {
       navigate("/eligibilityverification");
     } else {
       alert("Fill Contract 2023-04-12 Class Action Waiver Krikwood Ops First");
@@ -50,7 +51,7 @@ const StepForm = ({
   };
   const onPreview = e => {
     e.preventDefault();
-    if (addCount >= 4 && lapashaUserId) {
+    if (addCount >= 4 && getStoredUserId()) {
       navigate("/eligibilityverificationview");
     } else {
       alert("Fill i9 Form First");
@@ -64,7 +65,7 @@ const StepForm = ({
           <Grid className="step-bar">
             <Grid
               className={
-                addCount >= 1 && lapashaUserId ? "step-flx-red" : "step-flx"
+                addCount >= 1 && getStoredUserId() ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">01</Typography>
@@ -72,7 +73,7 @@ const StepForm = ({
             </Grid>
             <Grid
               className={
-                addCount >= 2 && lapashaUserId ? "step-flx-red" : "step-flx"
+                addCount >= 2 && getStoredUserId() ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">02</Typography>
@@ -80,7 +81,7 @@ const StepForm = ({
             </Grid>
             <Grid
               className={
-                addCount >= 3 && lapashaUserId ? "step-flx-red" : "step-flx"
+                addCount >= 3 && getStoredUserId() ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">03</Typography>
@@ -88,7 +89,7 @@ const StepForm = ({
             </Grid>
             <Grid
               className={
-                addCount >= 4 && lapashaUserId ? "step-flx-red" : "step-flx"
+                addCount >= 4 && getStoredUserId() ? "step-flx-red" : "step-flx"
               }
             >
               <Typography variant="b">04</Typography>
@@ -111,7 +112,7 @@ const StepForm = ({
 
             <Grid
               className={
-                addCount >= 1 && lapashaUserId
+                addCount >= 1 && getStoredUserId()
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -133,7 +134,7 @@ const StepForm = ({
 
             <Grid
               className={
-                addCount >= 2 && lapashaUserId
+                addCount >= 2 && getStoredUserId()
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -151,7 +152,7 @@ const StepForm = ({
 
             <Grid
               className={
-                addCount >= 3 && lapashaUserId
+                addCount >= 3 && getStoredUserId()
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
