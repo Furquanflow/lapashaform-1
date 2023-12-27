@@ -9,31 +9,14 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const LapashaLoungeAndGrill = ({ loungeGrillEditFunc, adminToken }) => {
-  const [adminData, setAdminData] = React.useState([]);
-
-  const getFormData = () => {
-    axios
-      .get(`${baseUrl}/loungeandgrilldata`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${adminToken()}`
-        }
-      })
-      .then(({ data }) => {
-        setAdminData(data);
-      })
-      .catch(error => {
-        console.error("Error getting data:", error);
-      });
-  };
+const LapashaLoungeAndGrill = ({adminLoungeData, getLoungeData, loungeGrillEditFunc, adminToken }) => {
 
   React.useEffect(() => {
-    getFormData();
+    getLoungeData();
   }, []);
   return (
     <LapashaFormData
-      lapashaData={adminData}
+      lapashaData={adminLoungeData}
       title={"Lapasha lounge And Grill"}
       empolymentFunc={loungeGrillEditFunc}
     />
