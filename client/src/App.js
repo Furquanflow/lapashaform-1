@@ -64,7 +64,7 @@ const App = () => {
     setUserId(countPdf)
     setUpdateData(true)
     navigate("/eligibilityverification");
-  
+
   };
   console.log(userId);
 
@@ -134,7 +134,7 @@ const App = () => {
   };
 
 
-  
+
   const setAuthenticToken = token => {
     setAuthentication(token);
     localStorage.setItem("admin-token", token);
@@ -144,65 +144,50 @@ const App = () => {
     return localStorage.getItem("admin-token");
   };
 
-  const adminLoungeFunc = async () => {
-    if (userId) {
-      try {
-        const response = await axios.put(
-          `${baseUrl}/updateformdata/${userId}`,
-          // dataString
-        );
-        const updatedData = response.data;
-        console.log("Updated Data:", updatedData);
-        navigate("/EligibilityVerificationView");
-      } catch (error) {
-        console.error("Error updating lounge and grill data:", error);
-      }
+
+  const [adminLoungeData, setAdminLoungeData] = React.useState([]);
+
+  const getLoungeData = () => {
+    axios
+      .get(`${baseUrl}/loungeandgrilldata`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAdminToken()}`
+        }
+      })
+      .then(({ data }) => {
+        setAdminLoungeData(data);
+      })
+      .catch(error => {
+        console.error("Error getting data:", error);
+      });
+  };
+
+
+  const updateLoungeFunc = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.put(`${baseUrl}/updateloungeandgrilldata/${userId}`, adminLoungeData);
+      console.log(response.data);
+      navigate("/admin/lounge")
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-    navigate("/admin/lounge")
-  }
-  const adminPatioFunc = async () => {
-    if (userId) {
-      try {
-        const response = await axios.put(
-          `${baseUrl}/updateformdata/${userId}`,
-          // dataString
-        );
-        const updatedData = response.data;
-        console.log("Updated Data:", updatedData);
-        navigate("/EligibilityVerificationView");
-      } catch (error) {
-        console.error("Error updating lounge and grill data:", error);
-      }
-    }
-    navigate("/admin/patio")
-  }
-  const adminNaraFunc = async () => {
-    if (userId) {
-      try {
-        const response = await axios.put(
-          `${baseUrl}/updatenaracafedata/${userId}`,
-          // dataString
-        );
-        const updatedData = response.data;
-        console.log("Updated Data:", updatedData);
-        navigate("/EligibilityVerificationView");
-      } catch (error) {
-        console.error("Error updating lounge and grill data:", error);
-      }
-    }
-    navigate("/admin/naracafe")
   }
 
   React.useEffect(() => {
     setAuthentication(localStorage.getItem("admin-token"))
   }, [])
 
+
   return (
     <>
-      <LapashaRoutes authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} formShow={formShow} />
+      <LapashaRoutes updateLoungeFunc={updateLoungeFunc} authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} formShow={formShow} />
       {/*Nested Routes*/}
       <Routes>
-        <Route path="/admin/*" element={<SideNavbar adminLoungeClick={adminLoungeFunc} adminPatioClick={adminPatioFunc} adminNaraClick={adminNaraFunc} adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
+        <Route path="/admin/*" element={<SideNavbar adminLoungeData={adminLoungeData} getLoungeData={getLoungeData} adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
         <Route
           path="/admin"
           element={<Navigate replace to="/admin/login" />}
