@@ -42,6 +42,7 @@ const EligibilityVerification = ({
   idUser,
   updateToShow,
   onEligbilityUpdate,
+  updateAdminFunc,
   authUserToken
 }) => {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ const EligibilityVerification = ({
       <Grid className="form-section">
         <Container>
           <form
-            onSubmit={dataUpdate === true ? onEligbilityUpdate : onEligbility}
+            onSubmit={dataUpdate === true ? updateAdminFunc : onEligbility}
           >
             <Grid className="form-inner">
               <Grid
