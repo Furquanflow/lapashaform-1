@@ -22,7 +22,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 //Router Dom
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, Navigate, useParams } from "react-router-dom";
 
 //Local Component
 import LapashaLoungeAndGrill from "../pages/LapashaLoungeAndGrill";
@@ -46,10 +46,10 @@ export default function PersistentDrawerLeft({
   loungeGrillEditFunc,
   naraCafeFunc,
   patioFunc,
+  adminPass,
   adminUserToken,
-  adminLoungeClick,
-  adminPatioClick,
-  adminNaraClick
+  getLoungeData,
+  adminLoungeData
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -125,51 +125,50 @@ export default function PersistentDrawerLeft({
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr"
               ? <ChevronLeftIcon
-                  sx={{ background: "#fff", borderRadius: "50px" }}
-                />
+                sx={{ background: "#fff", borderRadius: "50px" }}
+              />
               : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        {/*  <Link style={navStyle} to="/admin/lounge"> */}
-        <ListItem style={navStyle} disablePadding onClick={adminLoungeClick}>
-          <ListItemButton sx={navBtnStyle}>
-            <img
-              src={companyLogo01}
-              width={50}
-              style={{ marginRight: "10px" }}
-              alt="Lounge And Grill"
-            />
-            Lounge And Grill
-          </ListItemButton>
-        </ListItem>
-        {/* </Link> */}
-
-        {/* <Link style={navStyle} to="/admin/patio"> */}
-        <ListItem style={navStyle} disablePadding onClick={adminPatioClick}>
-          <ListItemButton sx={navBtnStyle}>
-            <img
-              src={companyLogo02}
-              width={50}
-              style={{ marginRight: "10px" }}
-              alt="Patio"
-            />
-            Patio
-          </ListItemButton>
-        </ListItem>
-        {/* </Link> */}
-        {/* <Link style={navStyle} to="/admin/naracafe"> */}
-        <ListItem style={navStyle} disablePadding onClick={adminNaraClick}>
-          <ListItemButton sx={navBtnStyle}>
-            <img
-              src={companyLogo03}
-              width={50}
-              style={{ marginRight: "10px" }}
-              alt="Nara Cafe"
-            />
-            Nara Cafe
-          </ListItemButton>
-        </ListItem>
-        {/* </Link> */}
+        <Link style={navStyle} to="/admin/lounge">
+          <ListItem disablePadding>
+            <ListItemButton sx={navBtnStyle}>
+              <img
+                src={companyLogo01}
+                width={50}
+                style={{ marginRight: "10px" }}
+                alt="Lounge And Grill"
+              />
+              Lounge And Grill
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link style={navStyle} to="/admin/patio">
+          <ListItem disablePadding>
+            <ListItemButton sx={navBtnStyle}>
+              <img
+                src={companyLogo02}
+                width={50}
+                style={{ marginRight: "10px" }}
+                alt="Patio"
+              />
+              Patio
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <Link style={navStyle} to="/admin/naracafe">
+          <ListItem disablePadding>
+            <ListItemButton sx={navBtnStyle}>
+              <img
+                src={companyLogo03}
+                width={50}
+                style={{ marginRight: "10px" }}
+                alt="Nara Cafe"
+              />
+              Nara Cafe
+            </ListItemButton>
+          </ListItem>
+        </Link>
       </Drawer>
       <Main open={open} sx={{ padding: 0 }}>
         <DrawerHeader />
@@ -189,6 +188,8 @@ export default function PersistentDrawerLeft({
                 <LapashaLoungeAndGrill
                   loungeGrillEditFunc={loungeGrillEditFunc}
                   adminToken={adminUserToken}
+                  getLoungeData={getLoungeData}
+                  adminLoungeData={adminLoungeData}
                 />
               }
             />
