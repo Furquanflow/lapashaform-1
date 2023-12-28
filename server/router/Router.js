@@ -32,7 +32,7 @@ router.post("/login", postLoginData);
 router.get("/formdata/:userId", authenticateToken, getFormData);
 router.get("/formdata", getFormData);
 router.post("/formdatapost", authenticateToken,  saveFormData);
-router.put("/updateformdata/:id", authenticateToken, updateSaveFormData);
+router.put("/updateformdata/:id", updateSaveFormData);
 
 //Lounge And Grill endpoints
 router.get("/loungeandgrilldata/:userId", authenticateToken, getLoungeAndGrillData);
@@ -44,7 +44,7 @@ router.put("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillData);
 router.get("/naracafedata/:userId", authenticateToken, getNaraCafeData);
 router.get("/naracafedata", getNaraCafeData);
 router.post("/naracafedatapost", authenticateToken, saveNaraCafeData);
-router.put("/updatenaracafedata/:id", authenticateToken, updateSaveNaraCafeData);
+router.put("/updatenaracafedata/:id", updateSaveNaraCafeData);
 
 //Pdf Generator and Email send endpoints
 router.get("/download-pdf", getPdf);

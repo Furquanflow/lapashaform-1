@@ -225,11 +225,9 @@ module.exports.updateSaveLoungeAndGrillData = async (req, res) => {
   const updatedData = req.body;
 
   try {
-    const updatedUser = await loungeAndGril.findByIdAndUpdate(
-      id,
-      { $set: updatedData },
-      { new: true }
-    );
+    const updatedUser = await loungeAndGril.findByIdAndUpdate(id, updatedData, {
+      new: true
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -241,7 +239,6 @@ module.exports.updateSaveLoungeAndGrillData = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
-
 
 //Nara Cafe
 module.exports.getNaraCafeData = async (req, res) => {
@@ -274,12 +271,16 @@ module.exports.saveNaraCafeData = async (req, res) => {
 
 module.exports.updateSaveNaraCafeData = async (req, res) => {
   const id = req.params.id;
-  const formData = req.body;
+  const formNaraData = req.body;
 
   try {
-    const updatedPatioNote = await naraCafe.findByIdAndUpdate(id, formData, {
-      new: true
-    });
+    const updatedPatioNote = await naraCafe.findByIdAndUpdate(
+      id,
+      formNaraData,
+      {
+        new: true
+      }
+    );
     res.status(200).json(updatedPatioNote);
   } catch (error) {
     console.error(error);

@@ -29,7 +29,8 @@ const LapashaRoutes = ({
   idUser,
   dataUpdate,
   updateLoungeFunc,
-  
+  adminFormDataArr,
+  adminCompanyData
 }) => {
   const [addStep, setAddStep] = useState(() => {
     const storedEve = localStorage.getItem("DATA");
@@ -363,11 +364,13 @@ const LapashaRoutes = ({
       <Route
         path="/eligibilityverificationview"
         element={
-          getStoredUserId()
+          getStoredUserId() || formShow
             ? <EligibilityVerificationView
                 pdfCount={pdfCount}
                 dataString={formDataArr}
                 formDataFunc={getFormData}
+                adminFormDataArr={adminFormDataArr}
+                adminCompanyData={adminCompanyData}
               />
             : <Navigate
                 replace

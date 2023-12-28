@@ -54,7 +54,7 @@ export default function PersistentDrawerLeft({
   getNaraData,
   getPatioData,
   adminPatioData,
-  adminFormDataComapny
+  adminFormDataCompany
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -135,7 +135,11 @@ export default function PersistentDrawerLeft({
               : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        <Link style={navStyle} to="/admin/lounge">
+        <Link
+          style={navStyle}
+          to="/admin/lounge"
+          onClick={() => adminFormDataCompany(0)}
+        >
           <ListItem disablePadding>
             <ListItemButton sx={navBtnStyle}>
               <img
@@ -148,7 +152,11 @@ export default function PersistentDrawerLeft({
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link style={navStyle} to="/admin/patio">
+        <Link
+          style={navStyle}
+          to="/admin/patio"
+          onClick={() => adminFormDataCompany(1)}
+        >
           <ListItem disablePadding>
             <ListItemButton sx={navBtnStyle}>
               <img
@@ -161,7 +169,11 @@ export default function PersistentDrawerLeft({
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link style={navStyle} to="/admin/naracafe">
+        <Link
+          style={navStyle}
+          to="/admin/naracafe"
+          onClick={() => adminFormDataCompany(2)}
+        >
           <ListItem disablePadding>
             <ListItemButton sx={navBtnStyle}>
               <img

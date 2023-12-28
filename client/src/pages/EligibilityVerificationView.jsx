@@ -24,14 +24,18 @@ const EligibilityVerificationView = ({
   dataString,
   formDataFunc,
   pdfCount,
-  token
+  token,
+  adminFormDataArr,
+  adminCompanyData
 }) => {
+  
   React.useEffect(() => {
     formDataFunc();
     // localStorage.setItem("token", token);
   }, []);
+  let newData = adminCompanyData ? adminFormDataArr : dataString;
   return (
-    dataString && dataString.map((value, ind) => {
+    newData.map((value, ind) => {
       return (
         <Grid key={ind}>
           <Grid>
@@ -50,7 +54,6 @@ const EligibilityVerificationView = ({
                     </Grid>
                     <Grid item xs={6} />
                   </Grid>
-
                   <Grid className="text-box">
                     <h1>Company Name New Employee Onboarding Form</h1>
                   </Grid>

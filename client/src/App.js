@@ -150,6 +150,7 @@ const App = () => {
   const [adminLoungeData, setAdminLoungeData] = React.useState([]);
   const [naraAdminData, setNaraAdminData] = React.useState([]);
   const [adminPatioData, setAdminPatioData] = React.useState([]);
+  const [adminFormDataArr, setAdminFormDataArr] = React.useState([]);
 
   const getPatioData = () => {
     axios
@@ -215,33 +216,49 @@ const App = () => {
   let todayDateSB = adminLoungeData.todayDateSB;
   let clickHereSB = adminLoungeData.clickHereSB;
 
-  const [adminCompanyData, setAdminCompanyData] = useState(0)
+  const [adminCompanyData, setAdminCompanyData] = useState(() => {
+    const storedState = localStorage.getItem('yourState');
+    return storedState ? JSON.parse(storedState) : null;
+  });
 
   const adminFormDataCompany = (eve) => {
     setAdminCompanyData(eve)
   }
 
-
-  const adminFormData = () => {
-    if (adminCompanyData == 0) {
-      navigate("/admin/lounge");
-      return `${baseUrl}/updateloungeandgrilldata`;
-    } else if (adminCompanyData == 1) {
-      navigate("/admin/patio"); 
-      return `${baseUrl}/updateformdata`;
-    } else if (adminCompanyData == 2) {
-      navigate("/admin/naracafe");
-      return `${baseUrl}/updatenaracafedata`;
-    } else {
-      return null;
-    }
-  };
-
+  console.log(adminCompanyData);
   const updateLoungeFunc = async (e) => {
     e.preventDefault();
-    const url = adminFormData();
-    try {
-      const response = await axios.put(`${url}/${userId}`,
+
+    const getAdminFormData = async () => {
+      const adminUrl =
+      adminCompanyData === 0
+        ? "loungeandgrilldata"
+        : adminCompanyData === 1
+        ? "formdata"
+        : adminCompanyData === 2 ? "naracafedata": null
+      try {
+          const response = await axios.get(`${baseUrl}/${adminUrl}/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${getAdminToken()}`
+            }
+          });
+          setAdminFormDataArr(response.data);
+        } catch (error) {
+          console.error("Error getting data:", error);
+        }
+      };
+      
+      getAdminFormData()
+      
+      
+    const url =
+    adminCompanyData === 0
+      ? "updateloungeandgrilldata"
+      : adminCompanyData === 1
+      ? "updateformdata"
+      : adminCompanyData === 2 ? "updatenaracafedata": null
+      try {
+      const response = await axios.put(`${baseUrl}/${url}/${userId}`,
         {
           todayDateSB,
           clickHereSB,
@@ -260,7 +277,7 @@ const App = () => {
         }
       );
       console.log(response.data);
-      navigate("/admin/lounge");
+      navigate("/eligibilityverificationview");
       return response.data;
     } catch (error) {
       console.error(error);
@@ -268,22 +285,22 @@ const App = () => {
     }
   };
   
-
-  
   React.useEffect(() => {
+    
     setAuthentication(localStorage.getItem("admin-token"))
+    localStorage.setItem('yourState', JSON.stringify(adminCompanyData));
     getLoungeData()
     getNaraData()
     getPatioData()
-  }, [])
+  }, [adminCompanyData])
 
 
   return (
     <>
-      <LapashaRoutes formShow={formShow} updateLoungeFunc={updateLoungeFunc} authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} />
+      <LapashaRoutes adminCompanyData={adminCompanyData} adminFormDataArr={adminFormDataArr} formShow={formShow} updateLoungeFunc={updateLoungeFunc} authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} />
       {/*Nested Routes*/}
       <Routes>
-        <Route path="/admin/*" element={<SideNavbar adminFormDataCompany={adminFormDataCompany} adminFormData={adminFormData} getPatioData={getPatioData} adminPatioData={adminPatioData} naraAdminData={naraAdminData} getNaraData={getNaraData} adminLoungeData={adminLoungeData} getLoungeData={getLoungeData} adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
+        <Route path="/admin/*" element={<SideNavbar adminFormDataCompany={adminFormDataCompany} getPatioData={getPatioData} adminPatioData={adminPatioData} naraAdminData={naraAdminData} getNaraData={getNaraData} adminLoungeData={adminLoungeData} getLoungeData={getLoungeData} adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
         <Route
           path="/admin"
           element={<Navigate replace to="/admin/login" />}
