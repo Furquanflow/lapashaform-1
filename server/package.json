@@ -30,5 +30,10 @@
     "retry": "^0.13.1",
     "serverless-http": "^3.2.0",
     "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "babel-cli": "^6.26.0"
   }
 }
