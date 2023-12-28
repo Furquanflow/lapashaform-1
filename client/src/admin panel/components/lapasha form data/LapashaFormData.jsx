@@ -13,22 +13,46 @@ import {
   Table,
   TableBody,
   Typography,
+  Pagination
 } from "@mui/material";
 
 //Spare Functions
 import {
   StyledTableRow,
-  StyledTableCell,
+  StyledTableCell
 } from "../../../functions/SpareFunctions";
 
-const LapashaFormData = ({ lapashaData, title, empolymentFunc, lapashaUpdateData }) => {
+const LapashaFormData = ({
+  lapashaData,
+  title,
+  empolymentFunc,
+  lapashaUpdateData
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentItems, setCurrentItems] = useState([]);
+
+  React.useEffect(
+    () => {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      setCurrentItems(lapashaData.slice(startIndex, endIndex));
+    },
+    [lapashaData, currentPage, itemsPerPage]
+  );
+
+  const totalPages = Math.ceil(lapashaData.length / itemsPerPage);
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
 
   const handleSearch = e => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredData = lapashaData.filter(item =>
+  const filteredData = currentItems.filter(item =>
     item.fNamePerInfo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -60,41 +84,53 @@ const LapashaFormData = ({ lapashaData, title, empolymentFunc, lapashaUpdateData
               </TableRow>
             </TableHead>
             <TableBody>
-              {
-                filteredData.map((row, ind) => {
-                  return (
-                    <StyledTableRow key={row.id}>
-                      <StyledTableCell component="th" scope="row">
-                        {row.fNamePerInfo} {row.lnamePerInfo}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {row.emailAddPerInfo}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {row.phoneNoPerInfo}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {row.addPerInfo}
-                      </StyledTableCell>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          background: "#b49a53",
-                          margin: "5px",
-                          "&:hover": {
-                            background: "#b49a53",
-                          },
-                        }}
-                        onClick={(e) => empolymentFunc(e, row._id, row)}
-                      >
-                        Edit
-                      </Button>
-                    </StyledTableRow>
-                  );
-                })}
+              {filteredData.map((row, ind) => {
+                return (
+                  <StyledTableRow key={row.id}>
+                    <StyledTableCell component="th" scope="row">
+                      {row.fNamePerInfo} {row.lnamePerInfo}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.emailAddPerInfo}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.phoneNoPerInfo}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.addPerInfo}
+                    </StyledTableCell>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        background: "#b49a53",
+                        margin: "5px",
+                        "&:hover": {
+                          background: "#b49a53"
+                        }
+                      }}
+                      onClick={e => empolymentFunc(e, row._id, row)}
+                    >
+                      Edit
+                    </Button>
+                  </StyledTableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
+      </Grid>
+      <Grid spacing={10}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          sx={{
+            backgroundColor: "rgb(180, 154, 83)",
+            color: "#fff",
+            display: "flex",
+            justifyContent: "center"
+          }}
+        />
       </Grid>
     </Box>
   );

@@ -49,7 +49,12 @@ export default function PersistentDrawerLeft({
   adminPass,
   adminUserToken,
   getLoungeData,
-  adminLoungeData
+  adminLoungeData,
+  naraAdminData,
+  getNaraData,
+  getPatioData,
+  adminPatioData,
+  adminFormDataComapny
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -125,8 +130,8 @@ export default function PersistentDrawerLeft({
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr"
               ? <ChevronLeftIcon
-                sx={{ background: "#fff", borderRadius: "50px" }}
-              />
+                  sx={{ background: "#fff", borderRadius: "50px" }}
+                />
               : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
@@ -196,7 +201,12 @@ export default function PersistentDrawerLeft({
             <Route
               path="/patio"
               element={
-                <Patio patioEditFunc={patioFunc} adminToken={adminUserToken} />
+                <Patio
+                  adminPatioData={adminPatioData}
+                  getPatioData={getPatioData}
+                  patioEditFunc={patioFunc}
+                  adminToken={adminUserToken}
+                />
               }
             />
             <Route
@@ -205,6 +215,8 @@ export default function PersistentDrawerLeft({
                 <NaraCafe
                   naraCafeEditFunc={naraCafeFunc}
                   adminToken={adminUserToken}
+                  getNaraData={getNaraData}
+                  naraAdminData={naraAdminData}
                 />
               }
             />

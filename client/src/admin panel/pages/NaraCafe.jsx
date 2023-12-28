@@ -9,27 +9,9 @@ import axios from "axios";
 //Server Url
 let baseUrl = "http://localhost:8000";
 
-const NaraCafe = ({ naraCafeEditFunc, adminToken }) => {
-  const [naraAdminData, setNaraAdminData] = React.useState([]);
-
-  const getFormData = () => {
-    axios
-      .get(`${baseUrl}/naracafedata`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${adminToken()}`
-        }
-      })
-      .then(({ data }) => {
-        setNaraAdminData(data);
-      })
-      .catch(error => {
-        console.error("Error getting data:", error);
-      });
-  };
-
+const NaraCafe = ({ naraCafeEditFunc, updateNaraFunc, naraAdminData, getNaraData }) => {
   React.useEffect(() => {
-    getFormData();
+    getNaraData();
   }, []);
   return (
     <LapashaFormData

@@ -9,7 +9,6 @@ import companyLogo02 from "../assets/images/logo02.png";
 import companyLogo03 from "../assets/images/logo03.png";
 
 const Home = ({ callData }) => {
-  
   return (
     <Grid>
       <Grid className="home-sec">
@@ -29,7 +28,7 @@ const Home = ({ callData }) => {
                   <Button
                     className="save-btn"
                     variant="contained"
-                    onClick={() => callData(0)}
+                    onClick={() => callData(1)}
                   >
                     Get Started
                   </Button>
@@ -47,7 +46,7 @@ const Home = ({ callData }) => {
                   <Button
                     className="save-btn"
                     variant="contained"
-                    onClick={() => callData(1)}
+                    onClick={() => callData(2)}
                   >
                     Get Started
                   </Button>
@@ -65,7 +64,7 @@ const Home = ({ callData }) => {
                   <Button
                     className="save-btn"
                     variant="contained"
-                    onClick={() => callData(2)}
+                    onClick={() => callData(3)}
                   >
                     Get Started
                   </Button>

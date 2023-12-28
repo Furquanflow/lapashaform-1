@@ -27,7 +27,9 @@ const LapashaRoutes = ({
   pdfCount,
   formShow,
   idUser,
-  dataUpdate
+  dataUpdate,
+  updateLoungeFunc,
+  
 }) => {
   const [addStep, setAddStep] = useState(() => {
     const storedEve = localStorage.getItem("DATA");
@@ -277,22 +279,22 @@ const LapashaRoutes = ({
     }
   };
 
-  const updateVerificationFunc = async e => {
-    e.preventDefault();
-    if (idUser) {
-      try {
-        const response = await axios.put(
-          `${baseUrl}/updateloungeandgrilldata/${idUser}`,
-          formDataArr
-        );
-        const updatedData = response.data;
-        console.log("Updated Data:", updatedData);
-        navigate("/EligibilityVerificationView");
-      } catch (error) {
-        console.error("Error updating lounge and grill data:", error);
-      }
-    }
-  };
+  // const updateVerificationFunc = async e => {
+  //   e.preventDefault();
+  //   if (idUser) {
+  //     try {
+  //       const response = await axios.put(
+  //         `${baseUrl}/updateloungeandgrilldata/${idUser}`,
+  //         formDataArr
+  //       );
+  //       const updatedData = response.data;
+  //       console.log("Updated Data:", updatedData);
+  //       navigate("/EligibilityVerificationView");
+  //     } catch (error) {
+  //       console.error("Error updating lounge and grill data:", error);
+  //     }
+  //   }
+  // };
 
   const getStoredUserId = () => localStorage.getItem("lapashaUserId");
   useEffect(
@@ -327,7 +329,7 @@ const LapashaRoutes = ({
       <Route
         path="/eligibilityverification"
         element={
-          getStoredUserId()
+          getStoredUserId() || formShow
             ? <EligibilityVerification
                 updateToShow={updateToShow}
                 formShow={formShow}
@@ -345,7 +347,7 @@ const LapashaRoutes = ({
                 dataUpdate={dataUpdate}
                 updateShow={updateShow}
                 token={authToken}
-                onEligbilityUpdate={updateVerificationFunc}
+                updateAdminFunc={updateLoungeFunc}
               />
             : <Navigate
                 replace
