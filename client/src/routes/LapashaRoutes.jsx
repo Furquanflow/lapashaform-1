@@ -364,23 +364,27 @@ const LapashaRoutes = ({
       <Route
         path="/eligibilityverificationview"
         element={
-          getStoredUserId() || formShow
-            ? <EligibilityVerificationView
+          // getStoredUserId() || formShow
+          //   ? 
+            <EligibilityVerificationView
                 pdfCount={pdfCount}
                 dataString={formDataArr}
+                getStoredUserId={getToken}
                 formDataFunc={getFormData}
                 adminFormDataArr={adminFormDataArr}
                 adminCompanyData={adminCompanyData}
+                token={authToken}
+                lapashaUserId= {lapashaUserId}
               />
-            : <Navigate
-                replace
-                to="/login"
-                onLogin={onLoginClick}
-                authFunc={authFunc}
-                registerPage={"/register"}
-                email={authEmail}
-                password={authPassword}
-              />
+            // : <Navigate
+            //     replace
+            //     to="/login"
+            //     onLogin={onLoginClick}
+            //     authFunc={authFunc}
+            //     registerPage={"/register"}
+            //     email={authEmail}
+            //     password={authPassword}
+            //   />
         }
       />
       <Route
@@ -464,6 +468,7 @@ const LapashaRoutes = ({
                 token={lapashaUserId}
                 lapashaUserId={lapashaUserId}
                 getStoredUserId={getStoredUserId}
+                companyCall={companyCall}
               />
             : <Navigate
                 replace

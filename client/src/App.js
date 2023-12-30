@@ -8,6 +8,7 @@ import LapashaRoutes from "./routes/LapashaRoutes";
 import SideNavbar from "./admin panel/side navbar/SideNavbar"
 import Login from "./pages/Login";
 import Register from "./pages/Register"
+import EligibilityVerificationView from "./pages/EligibilityVerificationView"
 
 
 //Css
@@ -155,10 +156,10 @@ const App = () => {
   const getPatioData = () => {
     axios
       .get(`${baseUrl}/formdata`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getAdminToken()}`
-        }
+        // headers: {
+        //   "Content-Type": "application/json",
+        //   Authorization: `Bearer ${getAdminToken()}`
+        // }
       })
       .then(({ data }) => {
         setAdminPatioData(data);
@@ -286,7 +287,6 @@ const App = () => {
   };
   
   React.useEffect(() => {
-    
     setAuthentication(localStorage.getItem("admin-token"))
     localStorage.setItem('yourState', JSON.stringify(adminCompanyData));
     getLoungeData()
@@ -294,7 +294,9 @@ const App = () => {
     getPatioData()
   }, [adminCompanyData])
 
-
+  // let adminFormData = adminCompanyData === 0 ? adminLoungeData : adminCompanyData === 1 ? adminPatioData : naraAdminData
+  // let adminFormDataFunc = adminCompanyData === 0 ? loungeGrillEditFunc : adminCompanyData === 1 ? patioEditFunc : naraCafeEditFunc
+  // console.log(adminFormData);
   return (
     <>
       <LapashaRoutes adminCompanyData={adminCompanyData} adminFormDataArr={adminFormDataArr} formShow={formShow} updateLoungeFunc={updateLoungeFunc} authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} />

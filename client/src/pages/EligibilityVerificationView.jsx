@@ -24,18 +24,21 @@ const EligibilityVerificationView = ({
   dataString,
   formDataFunc,
   pdfCount,
+  getStoredUserId,
   token,
   adminFormDataArr,
-  adminCompanyData
+  adminCompanyData,
+  adminFormDataFunc,
+  lapashaUserId
 }) => {
-  
   React.useEffect(() => {
     formDataFunc();
+    // adminFormDataFunc();
     // localStorage.setItem("token", token);
   }, []);
-  let newData = adminCompanyData ? adminFormDataArr : dataString;
   return (
-    newData.map((value, ind) => {
+    dataString &&
+    dataString.map((value, ind) => {
       return (
         <Grid key={ind}>
           <Grid>
@@ -6871,8 +6874,11 @@ const EligibilityVerificationView = ({
                     <Grid item xs={6} />
                     <Grid item xs={6}>
                       <GeneratePDFButton
+                        getStoredUserId={getStoredUserId}
                         formData={dataString}
                         pdfCount={pdfCount}
+                        token={token}
+                        lapashaUserId={lapashaUserId}
                       />
                     </Grid>
                   </Grid>

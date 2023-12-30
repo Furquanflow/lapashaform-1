@@ -16,22 +16,23 @@ const StepForm = ({
   authPassword,
   token,
   lapashaUserId,
-  getStoredUserId
+  getStoredUserId,
+  companyCall
 }) => {
   const navigate = useNavigate();
   // let newFormData = dataString && dataString.map(item => item.middleNameSB);
   const onEditClick = e => {
     e.preventDefault();
-    if (addCount >= 1 && getStoredUserId()) {
+    if (addCount >= 1 && getStoredUserId() && companyCall) {
       navigate("/policyform");
-      console.log(getStoredUserId());
+      console.log(getStoredUserId() && companyCall);
     } else {
       alert("Fill Employment information form First");
     }
   };
   const onEditClick1 = e => {
     e.preventDefault();
-    if (addCount >= 2 && getStoredUserId()) {
+    if (addCount >= 2 && getStoredUserId() && companyCall) {
       navigate("/contractform");
     } else {
       alert("Fill Policy 20223-06-12 Employee Manual First");
@@ -40,7 +41,7 @@ const StepForm = ({
   const onEditClick2 = e => {
     e.preventDefault();
 
-    if (addCount >= 3 && getStoredUserId()) {
+    if (addCount >= 3 && getStoredUserId() && companyCall) {
       navigate("/eligibilityverification");
     } else {
       alert("Fill Contract 2023-04-12 Class Action Waiver Krikwood Ops First");
@@ -51,7 +52,7 @@ const StepForm = ({
   };
   const onPreview = e => {
     e.preventDefault();
-    if (addCount >= 4 && getStoredUserId()) {
+    if (addCount >= 4 && getStoredUserId() && companyCall) {
       navigate("/eligibilityverificationview");
     } else {
       alert("Fill i9 Form First");
@@ -65,7 +66,9 @@ const StepForm = ({
           <Grid className="step-bar">
             <Grid
               className={
-                addCount >= 1 && getStoredUserId() ? "step-flx-red" : "step-flx"
+                addCount >= 1 && getStoredUserId() && companyCall
+                  ? "step-flx-red"
+                  : "step-flx"
               }
             >
               <Typography variant="b">01</Typography>
@@ -73,7 +76,9 @@ const StepForm = ({
             </Grid>
             <Grid
               className={
-                addCount >= 2 && getStoredUserId() ? "step-flx-red" : "step-flx"
+                addCount >= 2 && getStoredUserId() && companyCall
+                  ? "step-flx-red"
+                  : "step-flx"
               }
             >
               <Typography variant="b">02</Typography>
@@ -81,7 +86,9 @@ const StepForm = ({
             </Grid>
             <Grid
               className={
-                addCount >= 3 && getStoredUserId() ? "step-flx-red" : "step-flx"
+                addCount >= 3 && getStoredUserId() && companyCall
+                  ? "step-flx-red"
+                  : "step-flx"
               }
             >
               <Typography variant="b">03</Typography>
@@ -89,7 +96,9 @@ const StepForm = ({
             </Grid>
             <Grid
               className={
-                addCount >= 4 && getStoredUserId() ? "step-flx-red" : "step-flx"
+                addCount >= 4 && getStoredUserId() && companyCall
+                  ? "step-flx-red"
+                  : "step-flx"
               }
             >
               <Typography variant="b">04</Typography>
@@ -112,7 +121,7 @@ const StepForm = ({
 
             <Grid
               className={
-                addCount >= 1 && getStoredUserId()
+                addCount >= 1 && getStoredUserId() && companyCall
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -134,7 +143,7 @@ const StepForm = ({
 
             <Grid
               className={
-                addCount >= 2 && getStoredUserId()
+                addCount >= 2 && getStoredUserId() && companyCall
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }
@@ -152,7 +161,7 @@ const StepForm = ({
 
             <Grid
               className={
-                addCount >= 3 && getStoredUserId()
+                addCount >= 3 && getStoredUserId() && companyCall
                   ? "step-opt step-opt-active"
                   : "step-opt"
               }

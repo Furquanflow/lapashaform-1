@@ -31,13 +31,21 @@ router.post("/login", postLoginData);
 //Patio endpoints
 router.get("/formdata/:userId", authenticateToken, getFormData);
 router.get("/formdata", getFormData);
-router.post("/formdatapost", authenticateToken,  saveFormData);
+router.post("/formdatapost", authenticateToken, saveFormData);
 router.put("/updateformdata/:id", updateSaveFormData);
 
 //Lounge And Grill endpoints
-router.get("/loungeandgrilldata/:userId", authenticateToken, getLoungeAndGrillData);
+router.get(
+  "/loungeandgrilldata/:userId",
+  authenticateToken,
+  getLoungeAndGrillData
+);
 router.get("/loungeandgrilldata", getLoungeAndGrillData);
-router.post("/loungeandgrilldatapost", authenticateToken, saveLoungeAndGrillData);
+router.post(
+  "/loungeandgrilldatapost",
+  authenticateToken,
+  saveLoungeAndGrillData
+);
 router.put("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillData);
 
 //Naracafe endpoints
@@ -48,7 +56,7 @@ router.put("/updatenaracafedata/:id", updateSaveNaraCafeData);
 
 //Pdf Generator and Email send endpoints
 router.get("/download-pdf", getPdf);
+router.post("/generate-and-send-pdf", authenticateToken, postPdf);
 router.post("/generate-and-send-pdf-employer", postEmployerPdf);
-router.post("/generate-and-send-pdf", postPdf);
 
 module.exports = router;
