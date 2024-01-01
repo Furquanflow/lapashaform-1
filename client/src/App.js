@@ -156,10 +156,10 @@ const App = () => {
   const getPatioData = () => {
     axios
       .get(`${baseUrl}/formdata`, {
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   Authorization: `Bearer ${getAdminToken()}`
-        // }
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAdminToken()}`
+        }
       })
       .then(({ data }) => {
         setAdminPatioData(data);
@@ -202,21 +202,6 @@ const App = () => {
       });
   };
 
-  let lastNameSBsec1 = adminLoungeData.lastNameSBsec1;
-  let firstNameSBsec1 = adminLoungeData.firstNameSBsec1;
-  let middleNameSBsec1 = adminLoungeData.middleNameSBsec1;
-  let dateOfRehireSB = adminLoungeData.dateOfRehireSB;
-  let lastNameSb = adminLoungeData.lastNameSb;
-  let firstNameSB = adminLoungeData.firstNameSB;
-  let middleNameSB = adminLoungeData.middleNameSB;
-  let docTitleSB = adminLoungeData.docTitleSB;
-  let docNoSB = adminLoungeData.docNoSB;
-  let expDateSb = adminLoungeData.expDateSb;
-  let nameOfEmpSB = adminLoungeData.nameOfEmpSB;
-  let signOfEmpSb = adminLoungeData.signOfEmpSb;
-  let todayDateSB = adminLoungeData.todayDateSB;
-  let clickHereSB = adminLoungeData.clickHereSB;
-
   const [adminCompanyData, setAdminCompanyData] = useState(() => {
     const storedState = localStorage.getItem('yourState');
     return storedState ? JSON.parse(storedState) : null;
@@ -225,67 +210,109 @@ const App = () => {
   const adminFormDataCompany = (eve) => {
     setAdminCompanyData(eve)
   }
-
+  let newAdminFormData;
   console.log(adminCompanyData);
   const updateLoungeFunc = async (e) => {
     e.preventDefault();
 
-    const getAdminFormData = async () => {
-      const adminUrl =
-      adminCompanyData === 0
-        ? "loungeandgrilldata"
-        : adminCompanyData === 1
-        ? "formdata"
-        : adminCompanyData === 2 ? "naracafedata": null
-      try {
-          const response = await axios.get(`${baseUrl}/${adminUrl}/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${getAdminToken()}`
-            }
-          });
-          setAdminFormDataArr(response.data);
-        } catch (error) {
-          console.error("Error getting data:", error);
-        }
-      };
-      
-      getAdminFormData()
-      
-      
+    // const getAdminFormData = async () => {
+    //   const adminUrl =
+    //   adminCompanyData === 0
+    //     ? "loungeandgrilldata"
+    //     : adminCompanyData === 1
+    //     ? "formdata"
+    //     : adminCompanyData === 2 ? "naracafedata": null
+    //   try {
+    //       const response = await axios.get(`${baseUrl}/${adminUrl}/${userId}`, {
+    //         headers: {
+    //           Authorization: `Bearer ${getAdminToken()}`
+    //         }
+    //       });
+    //       setAdminFormDataArr(response.data);
+    //     } catch (error) {
+    //       console.error("Error getting data:", error);
+    //     }
+    //   };
+
+    //   getAdminFormData()
+
+    newAdminFormData = adminCompanyData === 0 ? adminLoungeData : adminCompanyData === 1 ? adminPatioData : adminCompanyData === 2 ? naraAdminData : null
+    let setNewAdminFormData = adminCompanyData === 0 ? setAdminLoungeData : adminCompanyData === 1 ? setAdminPatioData : adminCompanyData === 2 ? setNaraAdminData : null
+
+
+    let lastNameSBsec1 = newAdminFormData.lastNameSBsec1;
+    let firstNameSBsec1 = newAdminFormData.firstNameSBsec1;
+    let middleNameSBsec1 = newAdminFormData.middleNameSBsec1;
+    let dateOfRehireSB = newAdminFormData.dateOfRehireSB;
+    let lastNameSb = newAdminFormData.lastNameSb;
+    let firstNameSB = newAdminFormData.firstNameSB;
+    let middleNameSB = newAdminFormData.middleNameSB;
+    let docTitleSB = newAdminFormData.docTitleSB;
+    let docNoSB = newAdminFormData.docNoSB;
+    let expDateSb = newAdminFormData.expDateSb;
+    let nameOfEmpSB = newAdminFormData.nameOfEmpSB;
+    let signOfEmpSb = newAdminFormData.signOfEmpSb;
+    let todayDateSB = newAdminFormData.todayDateSB;
+    let clickHereSB = newAdminFormData.clickHereSB;
+
     const url =
-    adminCompanyData === 0
-      ? "updateloungeandgrilldata"
-      : adminCompanyData === 1
-      ? "updateformdata"
-      : adminCompanyData === 2 ? "updatenaracafedata": null
-      try {
-      const response = await axios.put(`${baseUrl}/${url}/${userId}`,
-        {
-          todayDateSB,
-          clickHereSB,
-          firstNameSB,
-          middleNameSB,
-          docTitleSB,
-          docNoSB,
-          expDateSb,
-          nameOfEmpSB,
-          signOfEmpSb,
-          lastNameSBsec1,
-          firstNameSBsec1,
-          middleNameSBsec1,
-          dateOfRehireSB,
-          lastNameSb,
-        }
-      );
-      console.log(response.data);
-      navigate("/eligibilityverificationview");
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+      adminCompanyData === 0
+        ? "updateloungeandgrilldata"
+        : adminCompanyData === 1
+          ? "updateformdata"
+          : adminCompanyData === 2 ? "updatenaracafedata" : null
+
+
+    axios.put(`${baseUrl}/${url}/${userId}`, {
+      todayDateSB,
+      clickHereSB,
+      firstNameSB,
+      middleNameSB,
+      docTitleSB,
+      docNoSB,
+      expDateSb,
+      nameOfEmpSB,
+      signOfEmpSb,
+      lastNameSBsec1,
+      firstNameSBsec1,
+      middleNameSBsec1,
+      dateOfRehireSB,
+      lastNameSb,
+    })
+      .then(response => {
+        const updatedTasks = newAdminFormData.map(task => (task._id === userId ? response.data : task));
+        setNewAdminFormData(updatedTasks);
+      })
+      .catch(error => console.error(error));
+
+    // try {
+    //   const response = await axios.put(`${baseUrl}/${url}/${userId}`,
+    //     {
+    //       todayDateSB,
+    //       clickHereSB,
+    //       firstNameSB,
+    //       middleNameSB,
+    //       docTitleSB,
+    //       docNoSB,
+    //       expDateSb,
+    //       nameOfEmpSB,
+    //       signOfEmpSb,
+    //       lastNameSBsec1,
+    //       firstNameSBsec1,
+    //       middleNameSBsec1,
+    //       dateOfRehireSB,
+    //       lastNameSb,
+    //     }
+    //   );
+    //   console.log(response.data);
+    //   navigate("/eligibilityverificationview");
+    //   newAdminFormData(response.data);
+    // } catch (error) {
+    //   console.error(error);
+    //   throw error;
+    // }
   };
-  
+
   React.useEffect(() => {
     setAuthentication(localStorage.getItem("admin-token"))
     localStorage.setItem('yourState', JSON.stringify(adminCompanyData));
@@ -314,6 +341,24 @@ const App = () => {
           email={authAdminEmail}
           password={authAdminPassword}
           userName={authAdminName} />} />
+
+        <Route
+          path="/admin/eligibilityverificationview"
+          element={
+            // getStoredUserId() || formShow
+            //   ? 
+            <EligibilityVerificationView
+              pdfCount={pdfCount}
+              dataString={newAdminFormData}
+              // getStoredUserId={getToken}
+              // formDataFunc={getFormData}
+              adminFormDataArr={adminFormDataArr}
+              adminCompanyData={adminCompanyData}
+              // token={authToken}
+              lapashaUserId={userId}
+            />
+          }
+          />
       </Routes>
     </>
   )
