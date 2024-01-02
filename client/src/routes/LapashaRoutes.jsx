@@ -222,10 +222,10 @@ const LapashaRoutes = ({
     // }
     try {
       await axios.post(url, dataString, {
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   Authorization: `Bearer ${getToken()}`
-        // }
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`
+        }
       });
       alert("Data posted successfully");
     } catch (error) {
@@ -255,9 +255,9 @@ const LapashaRoutes = ({
     try {
       if (getStoredUserId()) {
         const response = await axios.get(`${url}/${lapashaUserId}`, {
-          // headers: {
-          //   Authorization: `Bearer ${getToken()}`
-          // }
+          headers: {
+            Authorization: `Bearer ${getToken()}`
+          }
         });
         setFormDataArr(response.data);
       }
