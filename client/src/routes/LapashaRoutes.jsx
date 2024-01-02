@@ -306,7 +306,7 @@ const LapashaRoutes = ({
 
   const updateLoungeFunc = async (e) => {
         try {
-      await fetch(
+      const response = await fetch(
         `${baseUrl}/updateloungeandgrilldata/update/${lapashaUserId}`, {
         method: "PATCH",
         body: JSON.stringify(formData)
@@ -315,9 +315,9 @@ const LapashaRoutes = ({
       // const userAdminData = await response.json();
       // console.log(`users single data: ${userAdminData}`);
       // setFormData(userAdminData)
-      navigate("/eligibilityverificationview")
-      // if (response.ok) {
-      // }
+      if (response.ok) {
+        navigate("/eligibilityverificationview")
+      }
     } catch (error) {
       console.log(error)
     }

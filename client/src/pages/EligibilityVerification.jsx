@@ -42,6 +42,7 @@ const EligibilityVerification = ({
   onEligbilityUpdate,
   updateAdminFunc,
   authUserToken,
+  getToken
 }) => {
   const navigate = useNavigate();
   const onEligbility = e => {
