@@ -11,7 +11,7 @@ const adminModel = require("../models/AdminAuth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-let baseUrl = "https://lapasha-employment-form.netlify.app";
+let baseUrl = "http://localhost:8000";
 
 //Secret Key Generator
 const generateRandomString = () => {
