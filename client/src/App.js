@@ -208,30 +208,18 @@ const App = () => {
   }
 
   console.log(adminCompanyData);
-
-  const [first, setfirst] = useState(null)
-  const updateLoungeFunc = async (e) => {
-    e.preventDefault();
-    axios.put( `${baseUrl}/updateloungeandgrilldata/${userId}`, { userId, first})
-    .then(response => {
-      setfirst(response.data)
-      navigate("/admin/eligibilityverificationview")
-    }).catch(error => console.error('Error updating Data:', error))
-  };
-  
-  
   
 console.log(adminLoungeData);
   React.useEffect(() => {
     setAuthentication(localStorage.getItem("admin-token"))
     localStorage.setItem('yourState', JSON.stringify(adminCompanyData));
     localStorage.setItem("UserId", userId);
-  }, [adminCompanyData, userId, first])
+  }, [adminCompanyData, userId])
 
 
   return (
     <>
-      <LapashaRoutes adminCompanyData={adminCompanyData} adminFormDataArr={adminFormDataArr} formShow={formShow} updateLoungeFunc={updateLoungeFunc} authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} />
+      <LapashaRoutes adminCompanyData={adminCompanyData} adminFormDataArr={adminFormDataArr} formShow={formShow} authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} />
       {/*Nested Routes*/}
       <Routes>
         <Route path="/admin/*" element={<SideNavbar adminFormDataCompany={adminFormDataCompany} getPatioData={getPatioData} adminPatioData={adminPatioData} naraAdminData={naraAdminData} getNaraData={getNaraData} adminLoungeData={adminLoungeData} getLoungeData={getLoungeData} adminUserToken={getAdminToken} getAdminTokenFunc={getAdminToken} loungeGrillEditFunc={loungeGrillEditFunc} naraCafeFunc={naraCafeEditFunc} patioFunc={patioEditFunc} adminPass={authentication} />} />
