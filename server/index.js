@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://18.220.50.129:8000",
+    origin: "https://3.144.216.200:8000",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true
   })
