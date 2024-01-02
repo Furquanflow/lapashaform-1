@@ -19,7 +19,8 @@ const {
   updateSaveNaraCafeData,
   getFormDataAdmin,
   getLoungeAndGrillDataAdmin,
-  getNaraCafeDataAdmin
+  getNaraCafeDataAdmin,
+  updateSaveLoungeAndGrillDataById
 } = require("../controller/Controller");
 const router = express.Router();
 
@@ -49,7 +50,8 @@ router.post(
   authenticateToken,
   saveLoungeAndGrillData
 );
-router.put("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillData);
+router.get("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillData);
+router.patch("/updateloungeanta/update/:id", updateSaveLoungeAndGrillDataById);
 
 //Naracafe endpoints
 router.get("/naracafedata/:userId", authenticateToken, getNaraCafeData);
