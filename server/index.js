@@ -18,7 +18,7 @@ app.use(
 // app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const PORT = process.env.port;
+const PORT = process.env.PORT || 8000;
 app.use(routes);
 
 mongoose
