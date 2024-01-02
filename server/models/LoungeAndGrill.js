@@ -1,508 +1,507 @@
 const mongoose = require("mongoose");
 
 const loungeAndGrillSchema = new mongoose.Schema({
- 
-    userId: { type: mongoose.Schema.Types.ObjectId, require: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, require: true },
   fNamePerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   lnamePerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   statePerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   zipcodePerInfo: {
     type: Number,
-    require: true,
+    require: true
   },
   phoneNoPerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   emailAddPerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   addPerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   emrCnoPerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   relaPerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   emrPhoneNoPerInfo: {
     type: String,
-    require: true,
+    require: true
   },
   startDateEmpDet: {
     type: String,
-    require: true,
+    require: true
   },
   deptEmpDet: {
     type: String,
-    require: true,
+    require: true
   },
   managerEmpDet: {
     type: String,
-    require: true,
+    require: true
   },
   empIdEmpDet: {
     type: String,
-    require: true,
+    require: true
   },
   ssNoTaxInfo: {
     type: String,
-    require: true,
+    require: true
   },
   depTaxInfo: {
     type: String,
-    require: true,
+    require: true
   },
   taxInfo: {
     type: String,
-    require: true,
+    require: true
   },
   bankNameDDinfo: {
     type: String,
-    require: true,
+    require: true
   },
   routNoDDinfo: {
     type: String,
-    require: true,
+    require: true
   },
   accNoDDinfo: {
     type: String,
-    require: true,
+    require: true
   },
   healthInsurance: {
     type: String,
-    require: true,
+    require: true
   },
   dentalInsurance: {
     type: String,
-    require: true,
+    require: true
   },
   visionInsurance: {
     type: String,
-    require: true,
+    require: true
   },
   retirementPlan: {
     type: String,
-    require: true,
+    require: true
   },
   medConyes: {
     type: String,
-    require: true,
+    require: true
   },
   medConNo: {
     type: String,
-    require: true,
+    require: true
   },
   conFormsign: {
     type: String,
-    require: true,
+    require: true
   },
   conFormDate: {
     type: String,
-    require: true,
+    require: true
   },
   polciStatement: {
     type: String,
-    require: true,
+    require: true
   },
   tipsCredit: {
     type: String,
-    require: true,
+    require: true
   },
   cardFee: {
     type: String,
-    require: true,
+    require: true
   },
   policyAgainst: {
     type: String,
-    require: true,
+    require: true
   },
   policyReg: {
     type: String,
-    require: true,
+    require: true
   },
   consent: {
     type: String,
-    require: true,
+    require: true
   },
   workPlace: {
     type: String,
-    require: true,
+    require: true
   },
   drugFee: {
     type: String,
-    require: true,
+    require: true
   },
   remoteWork: {
     type: String,
-    require: true,
+    require: true
   },
   elecSys: {
     type: String,
-    require: true,
+    require: true
   },
   alterDis: {
     type: String,
-    require: true,
+    require: true
   },
   empSigPolicy: {
     type: String,
-    require: true,
+    require: true
   },
   datePolicy: {
     type: String,
-    require: true,
+    require: true
   },
   ableReadPolicy: {
     type: String,
-    require: true,
+    require: true
   },
   empNamePolicy: {
     type: String,
-    require: true,
+    require: true
   },
   empSignPolicy: {
     type: String,
-    require: true,
+    require: true
   },
   tranNamePolicy: {
     type: String,
-    require: true,
+    require: true
   },
   transSignPolicy: {
     type: String,
-    require: true,
+    require: true
   },
   ableReadEng: {
     type: String,
-    require: true,
+    require: true
   },
   empName: {
     type: String,
-    require: true,
+    require: true
   },
   empSign: {
     type: String,
-    require: true,
+    require: true
   },
   transPrinName: {
     type: String,
-    require: true,
+    require: true
   },
   transSignName: {
     type: String,
-    require: true,
+    require: true
   },
   lastName: {
     type: String,
-    require: true,
+    require: true
   },
   firstName: {
     type: String,
-    require: true,
+    require: true
   },
   middle: {
     type: String,
-    require: true,
+    require: true
   },
   otheLn: {
     type: String,
-    require: true,
+    require: true
   },
   address: {
     type: String,
-    require: true,
+    require: true
   },
   aptNo: {
     type: String,
-    require: true,
+    require: true
   },
   city: {
     type: String,
-    require: true,
+    require: true
   },
   state: {
     type: String,
-    require: true,
+    require: true
   },
   zipCode: {
     type: String,
-    require: true,
+    require: true
   },
   dob: {
     type: String,
-    require: true,
+    require: true
   },
   socialSno: {
     type: String,
-    require: true,
+    require: true
   },
   empEmail: {
     type: String,
-    require: true,
+    require: true
   },
   empTno: {
     type: String,
-    require: true,
+    require: true
   },
   citizeOfUsa: {
     type: String,
-    require: true,
+    require: true
   },
   uscis: {
     type: String,
-    require: true,
+    require: true
   },
   formi94: {
     type: String,
-    require: true,
+    require: true
   },
   foreignPass: {
     type: String,
-    require: true,
+    require: true
   },
   signOfEmp: {
     type: String,
-    require: true,
+    require: true
   },
   todayDate: {
     type: String,
-    require: true,
+    require: true
   },
   lawFullPrTextFeild: {
     type: String,
-    require: true,
+    require: true
   },
   noncitizenAuthTextField: {
     type: String,
-    require: true,
+    require: true
   },
   docTitle1: {
     type: String,
-    require: true,
+    require: true
   },
   issueAuth: {
     type: String,
-    require: true,
+    require: true
   },
   docNo: {
     type: String,
-    require: true,
+    require: true
   },
   expDate: {
     type: String,
-    require: true,
+    require: true
   },
   docTitle2: {
     type: String,
-    require: true,
+    require: true
   },
   issueAuth2: {
     type: String,
-    require: true,
+    require: true
   },
   docNo2: {
     type: String,
-    require: true,
+    require: true
   },
   expDate2: {
     type: String,
-    require: true,
+    require: true
   },
   docTitle3: {
     type: String,
-    require: true,
+    require: true
   },
   issueAuth3: {
     type: String,
-    require: true,
+    require: true
   },
   docNo3: {
     type: String,
-    require: true,
+    require: true
   },
   expdate3: {
     type: String,
-    require: true,
+    require: true
   },
   docTitle4: {
     type: String,
-    require: true,
+    require: true
   },
   issueAuth4: {
     type: String,
-    require: true,
+    require: true
   },
   docNo4: {
     type: String,
-    require: true,
+    require: true
   },
   expdate4: {
     type: String,
-    require: true,
+    require: true
   },
   docTitleC: {
     type: String,
-    require: true,
+    require: true
   },
   issueAuthC: {
     type: String,
-    require: true,
+    require: true
   },
   docNoC: {
     type: String,
-    require: true,
+    require: true
   },
   expdateC: {
     type: String,
-    require: true,
+    require: true
   },
   addInfoC: {
     type: String,
-    require: true,
+    require: true
   },
   firstDayofEmp: {
     type: String,
-    require: true,
+    require: true
   },
   lastFirstNameOfEmp: {
     type: String,
-    require: true,
+    require: true
   },
   signOfEmpRep: {
     type: String,
-    require: true,
+    require: true
   },
   todaySDate: {
     type: String,
-    require: true,
+    require: true
   },
   empBuss: {
     type: String,
-    require: true,
+    require: true
   },
   empBusOrg: {
     type: String,
-    require: true,
+    require: true
   },
   lNamesec1: {
     type: String,
-    require: true,
+    require: true
   },
   fNamesec1: {
     type: String,
-    require: true,
+    require: true
   },
   middleNamesec1: {
     type: String,
-    require: true,
+    require: true
   },
   signOfPre: {
     type: String,
-    require: true,
+    require: true
   },
   DatePre: {
     type: String,
-    require: true,
+    require: true
   },
   lastNamePre: {
     type: String,
-    require: true,
+    require: true
   },
   firstNamePre: {
     type: String,
-    require: true,
+    require: true
   },
   middleNamePre: {
     type: String,
-    require: true,
+    require: true
   },
   addressPre: {
     type: String,
-    require: true,
+    require: true
   },
   cityPre: {
     type: String,
-    require: true,
+    require: true
   },
   statePre: {
     type: String,
-    require: true,
+    require: true
   },
   zipCodePre: {
     type: String,
-    require: true,
+    require: true
   },
   lastNameSBsec1: {
     type: String,
-    require: true,
+    require: true
   },
   firstNameSBsec1: {
     type: String,
-    require: true,
+    require: true
   },
   middleNameSBsec1: {
     type: String,
-    require: true,
+    require: true
   },
   dateOfRehireSB: {
     type: String,
-    require: true,
+    require: true
   },
   lastNameSb: {
     type: String,
-    require: true,
+    require: true
   },
   firstNameSB: {
     type: String,
-    require: true,
+    require: true
   },
   middleNameSB: {
     type: String,
-    require: true,
+    require: true
   },
   docTitleSB: {
     type: String,
-    require: true,
+    require: true
   },
   docNoSB: {
     type: String,
-    require: true,
+    require: true
   },
   expDateSB: {
     type: String,
-    require: true,
+    require: true
   },
   nameOfEmpSB: {
     type: String,
-    require: true,
+    require: true
   },
   signOfEmpSB: {
     type: String,
-    require: true,
+    require: true
   },
   todayDateSB: {
     type: String,
-    require: true,
+    require: true
   },
   clickHereSB: {
     type: String,
-    require: true,
-  },
+    require: true
+  }
 });
 
 module.exports = mongoose.model("laungeAndGrill", loungeAndGrillSchema);
