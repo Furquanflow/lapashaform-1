@@ -243,25 +243,35 @@ module.exports.saveLoungeAndGrillData = async (req, res) => {
 module.exports.updateSaveLoungeAndGrillData = async (req, res) => {
   try {
     const id = req.params.id;
-    const updateData = await loungeAndGril.findOne({ _id: id })
-    return res.status(200).json(updateData)
+    const updateData = await loungeAndGril.findOne({ _id: id });
+    return res.status(200).json(updateData);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
-  module.exports.updateSaveLoungeAndGrillDataById = async (req, res) => {
-    try {
-      const id = req.params.id;
-      const updatedUserData = req.body;
-      const updatedData = await loungeAndGril.updateOne(
-        { _id: id },
-        { $set: updatedUserData }
-      )
-      return res.status(200).json(updatedData)
-    } catch (error) {
-      next(error)
+};
+module.exports.updateSaveLoungeAndGrillDataById = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const updatedUserData = req.body;
+    const updatedData = await loungeAndGril.updateOne(
+      { _id: id },
+      { $set: updatedUserData }
+    );
+
+    if (updatedData.nModified === 1) {
+      return res.status(200).json({ acknowledged: true, updatedData });
+    } else {
+      return res
+        .status(404)
+        .json({ acknowledged: false, message: "No document found to update." });
     }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ acknowledged: false, error: "Internal Server Error" });
   }
+};
 
 //Nara Cafe
 module.exports.getNaraCafeData = async (req, res) => {
@@ -338,7 +348,7 @@ module.exports.postPdf = async (req, res) => {
     const browser = await puppeteer.launch({ headless: "new" });
     console.log("Working");
     const page = await browser.newPage();
-    await page.goto(`${baseUrl}/admin/eligibilityverificationview`);
+    await page.goto(`${baseUrl}/eligibilityverificationview`);
     await page.waitForTimeout(8000);
     const pdfBuffer = await page.pdf({ format: "A4" });
     const pdfPath = path.join(__dirname, "generated.pdf");
@@ -362,7 +372,7 @@ module.exports.postEmployerPdf = async (req, res) => {
     const browser = await puppeteer.launch({ headless: "new" });
     console.log("Working");
     const page = await browser.newPage();
-    await page.goto(`${baseUrl}/admin/eligibilityverificationview`);
+    await page.goto(`${baseUrl}/eligibilityverificationview`);
     await page.waitForTimeout(28000);
     const pdfBuffer = await page.pdf({ format: "A4" });
     const pdfPath = path.join(__dirname, "generated.pdf");
