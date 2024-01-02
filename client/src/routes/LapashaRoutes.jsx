@@ -296,18 +296,11 @@ const LapashaRoutes = ({
   //   }
   // };
 
-  const adminHandleChange = async e => {
-    // let { name, value } = e.target
-    let name = e.target.name;
-    let value = e.target.value;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const updateLoungeFunc = async e => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${baseUrl}/updateloungeandgrilldata/update/${lapashaUserId}`,
+        `${baseUrl}/updateloungeandgrilldata/${idUser}`,
         {
           method: "PATCH",
           body: JSON.stringify(formData)
@@ -381,7 +374,6 @@ const LapashaRoutes = ({
                 updateShow={updateShow}
                 token={authToken}
                 updateAdminFunc={updateLoungeFunc}
-                adminhandleChange={adminHandleChange}
               />
             : <Navigate
                 replace

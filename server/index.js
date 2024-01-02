@@ -19,6 +19,7 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 8000;
+const IP_ADDRESS = process.env.IP_ADDRESS || '0.0.0.0';
 app.use(routes);
 
 mongoose
