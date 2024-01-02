@@ -29,7 +29,7 @@ const EligibilityVerificationView = ({
   adminFormDataArr,
   adminCompanyData,
   adminFormDataFunc,
-  lapashaUserId
+  lapashaUserId,
 }) => {
   console.log(dataString);
   React.useEffect(() => {
