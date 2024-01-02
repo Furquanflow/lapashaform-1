@@ -11,7 +11,7 @@ const adminModel = require("../models/AdminAuth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-let baseUrl = "http://localhost:8000";
+let baseUrl = "http://localhost:3000";
 
 //Secret Key Generator
 const generateRandomString = () => {
@@ -162,6 +162,16 @@ module.exports.getFormData = async (req, res) => {
   }
 };
 
+module.exports.getFormDataAdmin = async (req, res) => {
+  try {
+    const userData = await patioModel.find();
+    res.send(userData);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 module.exports.saveFormData = async (req, res) => {
   try {
     const formData = req.body;
@@ -204,6 +214,16 @@ module.exports.getLoungeAndGrillData = async (req, res) => {
   }
 };
 
+module.exports.getLoungeAndGrillDataAdmin = async (req, res) => {
+  try {
+    const userData = await loungeAndGril.find();
+    res.send(userData);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 module.exports.saveLoungeAndGrillData = async (req, res) => {
   try {
     const loungeData = req.body;
@@ -221,19 +241,23 @@ module.exports.saveLoungeAndGrillData = async (req, res) => {
 };
 
 module.exports.updateSaveLoungeAndGrillData = async (req, res) => {
-  const id = req.params.id;
-  const updatedData = req.body;
+  const { id } = req.params;
+  const { updatedData } = req.body;
 
   try {
     const updatedUser = await loungeAndGril.findByIdAndUpdate(id, updatedData, {
       new: true
     });
-
+    
     if (!updatedUser) {
+      console.log("User not found");
       return res.status(404).json({ message: "User not found" });
     }
-
-    res.status(200).json(updatedUser);
+    
+    console.log("Updated User:", updatedUser);
+    
+    // res.status(200).json(updatedUser);
+    res.json(updatedUser)
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong" });
@@ -245,6 +269,16 @@ module.exports.getNaraCafeData = async (req, res) => {
   try {
     const userId = req.params.userId;
     const userData = await naraCafe.find({ userId: userId });
+    res.send(userData);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+module.exports.getNaraCafeDataAdmin = async (req, res) => {
+  try {
+    const userData = await naraCafe.find();
     res.send(userData);
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -305,7 +339,7 @@ module.exports.postPdf = async (req, res) => {
     const browser = await puppeteer.launch({ headless: "new" });
     console.log("Working");
     const page = await browser.newPage();
-    await page.goto(`${baseUrl}/eligibilityverificationview`);
+    await page.goto(`${baseUrl}/admin/eligibilityverificationview`);
     await page.waitForTimeout(8000);
     const pdfBuffer = await page.pdf({ format: "A4" });
     const pdfPath = path.join(__dirname, "generated.pdf");
@@ -329,8 +363,8 @@ module.exports.postEmployerPdf = async (req, res) => {
     const browser = await puppeteer.launch({ headless: "new" });
     console.log("Working");
     const page = await browser.newPage();
-    await page.goto(`${baseUrl}/eligibilityverificationview`);
-    await page.waitForTimeout(8000);
+    await page.goto(`${baseUrl}/admin/eligibilityverificationview`);
+    await page.waitForTimeout(28000);
     const pdfBuffer = await page.pdf({ format: "A4" });
     const pdfPath = path.join(__dirname, "generated.pdf");
     fs.writeFileSync(pdfPath, pdfBuffer);

@@ -26,21 +26,14 @@ const LapashaFormData = ({
   lapashaData,
   title,
   empolymentFunc,
-  lapashaUpdateData
+  lapashaUpdateData,
+  getPatioData,
+  getAdminData
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
-
-  React.useEffect(
-    () => {
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = startIndex + itemsPerPage;
-      setCurrentItems(lapashaData.slice(startIndex, endIndex));
-    },
-    [lapashaData, currentPage, itemsPerPage]
-  );
 
   const totalPages = Math.ceil(lapashaData.length / itemsPerPage);
 
@@ -55,6 +48,19 @@ const LapashaFormData = ({
   const filteredData = currentItems.filter(item =>
     item.fNamePerInfo.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  React.useEffect(
+    () => {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      setCurrentItems(lapashaData.slice(startIndex, endIndex));
+    },
+    [lapashaData, currentPage, itemsPerPage]
+  );
+
+  React.useEffect(() => {
+    getAdminData();
+  }, []);
 
   return (
     <Box sx={{ background: "#fff", padding: "40px", borderRadius: "20px" }}>

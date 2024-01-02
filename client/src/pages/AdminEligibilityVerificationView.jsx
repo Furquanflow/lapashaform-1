@@ -20,26 +20,21 @@ import companyLogo02 from "../assets/images/logo02.png";
 import companyLogo03 from "../assets/images/logo03.png";
 import GeneratePDFButton from "../pdf";
 
-const EligibilityVerificationView = ({
+const AdminEligibilityVerificationView = ({
   dataString,
-  formDataFunc,
   pdfCount,
-  getStoredUserId,
+  adminFormDataArrFunc,
+  lapashaUserId,
   token,
-  adminFormDataArr,
-  adminCompanyData,
-  adminFormDataFunc,
-  lapashaUserId
+  adminDataString
 }) => {
-  console.log(dataString);
-  React.useEffect(() => {
-    formDataFunc();
-    // adminFormDataFunc();
-    // localStorage.setItem("token", token);
-  }, []);
+  console.log(adminDataString);
+  // React.useEffect(() => {
+  //   // adminFormDataArrFunc();
+  // }, []);
   return (
-    dataString &&
-    dataString.map((value, ind) => {
+    adminDataString &&
+    adminDataString.map((value, ind) => {
       return (
         <Grid key={ind}>
           <Grid>
@@ -6875,8 +6870,8 @@ const EligibilityVerificationView = ({
                     <Grid item xs={6} />
                     <Grid item xs={6}>
                       <GeneratePDFButton
-                        getStoredUserId={getStoredUserId}
-                        formData={dataString}
+                        // getStoredUserId={getStoredUserId}
+                        formData={adminDataString}
                         pdfCount={pdfCount}
                         token={token}
                         lapashaUserId={lapashaUserId}
@@ -6893,4 +6888,4 @@ const EligibilityVerificationView = ({
   );
 };
 
-export default EligibilityVerificationView;
+export default AdminEligibilityVerificationView;

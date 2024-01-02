@@ -435,8 +435,9 @@ const LapashaRoutes = ({
       <Route
         path="/policyform"
         element={
-          getStoredUserId()
-            ? <PolicyForm
+          // getStoredUserId()
+          //   ?
+             <PolicyForm
                 data={formData}
                 formChange1={onForm}
                 onStep1={() => onStepForm(2)}
@@ -445,15 +446,15 @@ const LapashaRoutes = ({
                 updateEmployeePolicySignature={setPolicyEmployeeCanvas}
                 updateTransPolicySignature={setPolicyTranslatorCanvas}
               />
-            : <Navigate
-                replace
-                to="/login"
-                onLogin={onLoginClick}
-                authFunc={authFunc}
-                registerPage={"/register"}
-                email={authEmail}
-                password={authPassword}
-              />
+            // : <Navigate
+            //     replace
+            //     to="/login"
+            //     onLogin={onLoginClick}
+            //     authFunc={authFunc}
+            //     registerPage={"/register"}
+            //     email={authEmail}
+            //     password={authPassword}
+            //   />
         }
       />
       <Route

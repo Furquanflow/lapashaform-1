@@ -16,7 +16,10 @@ const {
   updateSaveFormData,
   authenticateToken,
   updateSaveLoungeAndGrillData,
-  updateSaveNaraCafeData
+  updateSaveNaraCafeData,
+  getFormDataAdmin,
+  getLoungeAndGrillDataAdmin,
+  getNaraCafeDataAdmin
 } = require("../controller/Controller");
 const router = express.Router();
 
@@ -30,7 +33,7 @@ router.post("/login", postLoginData);
 
 //Patio endpoints
 router.get("/formdata/:userId", authenticateToken, getFormData);
-router.get("/formdata", getFormData);
+router.get("/formdataadmin", getFormDataAdmin);
 router.post("/formdatapost", authenticateToken, saveFormData);
 router.put("/updateformdata/:id", updateSaveFormData);
 
@@ -40,7 +43,7 @@ router.get(
   authenticateToken,
   getLoungeAndGrillData
 );
-router.get("/loungeandgrilldata", getLoungeAndGrillData);
+router.get("/loungeandgrilldataadmin", getLoungeAndGrillDataAdmin);
 router.post(
   "/loungeandgrilldatapost",
   authenticateToken,
@@ -50,13 +53,13 @@ router.put("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillData);
 
 //Naracafe endpoints
 router.get("/naracafedata/:userId", authenticateToken, getNaraCafeData);
-router.get("/naracafedata", getNaraCafeData);
+router.get("/naracafedataadmin", getNaraCafeDataAdmin);
 router.post("/naracafedatapost", authenticateToken, saveNaraCafeData);
 router.put("/updatenaracafedata/:id", updateSaveNaraCafeData);
 
 //Pdf Generator and Email send endpoints
 router.get("/download-pdf", getPdf);
-router.post("/generate-and-send-pdf", authenticateToken, postPdf);
+router.post("/generate-and-send-pdf", postPdf);
 router.post("/generate-and-send-pdf-employer", postEmployerPdf);
 
 module.exports = router;

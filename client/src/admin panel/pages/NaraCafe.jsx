@@ -10,14 +10,15 @@ import axios from "axios";
 let baseUrl = "http://localhost:8000";
 
 const NaraCafe = ({ naraCafeEditFunc, updateNaraFunc, naraAdminData, getNaraData }) => {
-  React.useEffect(() => {
-    getNaraData();
-  }, []);
+  // React.useEffect(() => {
+  //   getNaraData();
+  // }, []);
   return (
     <LapashaFormData
       empolymentFunc={naraCafeEditFunc}
       lapashaData={naraAdminData}
       title={"Nara Cafe"}
+      getAdminData={getNaraData}
     />
   );
 };

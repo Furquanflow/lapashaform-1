@@ -9,14 +9,15 @@ const LapashaLoungeAndGrill = ({
   loungeGrillEditFunc,
   adminToken
 }) => {
-  React.useEffect(() => {
-    getLoungeData();
-  }, []);
+  // React.useEffect(() => {
+  //   getLoungeData();
+  // }, []);
   return (
     <LapashaFormData
       lapashaData={adminLoungeData}
       title={"Lapasha lounge And Grill"}
       empolymentFunc={loungeGrillEditFunc}
+      getAdminData={getLoungeData}
     />
   );
 };

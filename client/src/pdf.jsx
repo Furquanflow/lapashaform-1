@@ -20,21 +20,12 @@ const GeneratePDFButton = ({
   lapashaUserId
 }) => {
   // let navigate = useNavigate();
-  console.log(token);
   const handleGeneratePDF = async () => {
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("data", JSON.stringify(formData));
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      };
       const response = await axios.post(
         `${baseUrl}/${pdfCount >= 1
           ? "generate-and-send-pdf-employer"
-          : "generate-and-send-pdf"}`,
-        formDataToSend,
-        { headers }
+          : "generate-and-send-pdf-employer"}`
       );
       if (response.data && response.data.pdfPath) {
         alert("PDF generated and sent successfully.");

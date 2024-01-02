@@ -8,7 +8,7 @@ import LapashaRoutes from "./routes/LapashaRoutes";
 import SideNavbar from "./admin panel/side navbar/SideNavbar"
 import Login from "./pages/Login";
 import Register from "./pages/Register"
-import EligibilityVerificationView from "./pages/EligibilityVerificationView"
+import AdminEligibilityVerificationView from "./pages/AdminEligibilityVerificationView"
 
 
 //Css
@@ -30,10 +30,16 @@ const App = () => {
     name: ""
   });
   const [authentication, setAuthentication] = useState("")
-  const [userId, setUserId] = useState("")
+  // const [userId, setUserId] = useState("")
+  const [userId, setUserId] = useState(() => {
+    localStorage.getItem("UserId");});
   const [updateData, setUpdateData] = useState(false)
   const [updateShow, setUpdateShow] = useState(false)
   const [formShow, setFormShow] = useState(false)
+  const [adminLoungeData, setAdminLoungeData] = React.useState([]);
+  const [naraAdminData, setNaraAdminData] = React.useState([]);
+  const [adminPatioData, setAdminPatioData] = React.useState([]);
+  const [adminFormDataArr, setAdminFormDataArr] = React.useState([]);
 
   const navigate = useNavigate();
 
@@ -148,14 +154,9 @@ const App = () => {
   };
 
 
-  const [adminLoungeData, setAdminLoungeData] = React.useState([]);
-  const [naraAdminData, setNaraAdminData] = React.useState([]);
-  const [adminPatioData, setAdminPatioData] = React.useState([]);
-  const [adminFormDataArr, setAdminFormDataArr] = React.useState([]);
-
   const getPatioData = () => {
     axios
-      .get(`${baseUrl}/formdata`, {
+      .get(`${baseUrl}/formdataadmin`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getAdminToken()}`
@@ -172,12 +173,7 @@ const App = () => {
 
   const getNaraData = () => {
     axios
-      .get(`${baseUrl}/naracafedata`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getAdminToken()}`
-        }
-      })
+      .get(`${baseUrl}/naracafedataadmin`)
       .then(({ data }) => {
         setNaraAdminData(data);
       })
@@ -188,7 +184,7 @@ const App = () => {
 
   const getLoungeData = () => {
     axios
-      .get(`${baseUrl}/loungeandgrilldata`, {
+      .get(`${baseUrl}/loungeandgrilldataadmin`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getAdminToken()}`
@@ -210,120 +206,29 @@ const App = () => {
   const adminFormDataCompany = (eve) => {
     setAdminCompanyData(eve)
   }
-  let newAdminFormData;
+
   console.log(adminCompanyData);
+
+  const [first, setfirst] = useState(null)
   const updateLoungeFunc = async (e) => {
     e.preventDefault();
-
-    // const getAdminFormData = async () => {
-    //   const adminUrl =
-    //   adminCompanyData === 0
-    //     ? "loungeandgrilldata"
-    //     : adminCompanyData === 1
-    //     ? "formdata"
-    //     : adminCompanyData === 2 ? "naracafedata": null
-    //   try {
-    //       const response = await axios.get(`${baseUrl}/${adminUrl}/${userId}`, {
-    //         headers: {
-    //           Authorization: `Bearer ${getAdminToken()}`
-    //         }
-    //       });
-    //       setAdminFormDataArr(response.data);
-    //     } catch (error) {
-    //       console.error("Error getting data:", error);
-    //     }
-    //   };
-
-    //   getAdminFormData()
-
-    newAdminFormData = adminCompanyData === 0 ? adminLoungeData : adminCompanyData === 1 ? adminPatioData : adminCompanyData === 2 ? naraAdminData : null
-    let setNewAdminFormData = adminCompanyData === 0 ? setAdminLoungeData : adminCompanyData === 1 ? setAdminPatioData : adminCompanyData === 2 ? setNaraAdminData : null
-
-
-    let lastNameSBsec1 = newAdminFormData.lastNameSBsec1;
-    let firstNameSBsec1 = newAdminFormData.firstNameSBsec1;
-    let middleNameSBsec1 = newAdminFormData.middleNameSBsec1;
-    let dateOfRehireSB = newAdminFormData.dateOfRehireSB;
-    let lastNameSb = newAdminFormData.lastNameSb;
-    let firstNameSB = newAdminFormData.firstNameSB;
-    let middleNameSB = newAdminFormData.middleNameSB;
-    let docTitleSB = newAdminFormData.docTitleSB;
-    let docNoSB = newAdminFormData.docNoSB;
-    let expDateSb = newAdminFormData.expDateSb;
-    let nameOfEmpSB = newAdminFormData.nameOfEmpSB;
-    let signOfEmpSb = newAdminFormData.signOfEmpSb;
-    let todayDateSB = newAdminFormData.todayDateSB;
-    let clickHereSB = newAdminFormData.clickHereSB;
-
-    const url =
-      adminCompanyData === 0
-        ? "updateloungeandgrilldata"
-        : adminCompanyData === 1
-          ? "updateformdata"
-          : adminCompanyData === 2 ? "updatenaracafedata" : null
-
-
-    axios.put(`${baseUrl}/${url}/${userId}`, {
-      todayDateSB,
-      clickHereSB,
-      firstNameSB,
-      middleNameSB,
-      docTitleSB,
-      docNoSB,
-      expDateSb,
-      nameOfEmpSB,
-      signOfEmpSb,
-      lastNameSBsec1,
-      firstNameSBsec1,
-      middleNameSBsec1,
-      dateOfRehireSB,
-      lastNameSb,
-    })
-      .then(response => {
-        const updatedTasks = newAdminFormData.map(task => (task._id === userId ? response.data : task));
-        setNewAdminFormData(updatedTasks);
-      })
-      .catch(error => console.error(error));
-
-    // try {
-    //   const response = await axios.put(`${baseUrl}/${url}/${userId}`,
-    //     {
-    //       todayDateSB,
-    //       clickHereSB,
-    //       firstNameSB,
-    //       middleNameSB,
-    //       docTitleSB,
-    //       docNoSB,
-    //       expDateSb,
-    //       nameOfEmpSB,
-    //       signOfEmpSb,
-    //       lastNameSBsec1,
-    //       firstNameSBsec1,
-    //       middleNameSBsec1,
-    //       dateOfRehireSB,
-    //       lastNameSb,
-    //     }
-    //   );
-    //   console.log(response.data);
-    //   navigate("/eligibilityverificationview");
-    //   newAdminFormData(response.data);
-    // } catch (error) {
-    //   console.error(error);
-    //   throw error;
-    // }
+    axios.put( `${baseUrl}/updateloungeandgrilldata/${userId}`, { userId, first})
+    .then(response => {
+      setfirst(response.data)
+      navigate("/admin/eligibilityverificationview")
+    }).catch(error => console.error('Error updating Data:', error))
   };
-
+  
+  
+  
+console.log(adminLoungeData);
   React.useEffect(() => {
     setAuthentication(localStorage.getItem("admin-token"))
     localStorage.setItem('yourState', JSON.stringify(adminCompanyData));
-    getLoungeData()
-    getNaraData()
-    getPatioData()
-  }, [adminCompanyData])
+    localStorage.setItem("UserId", userId);
+  }, [adminCompanyData, userId, first])
 
-  // let adminFormData = adminCompanyData === 0 ? adminLoungeData : adminCompanyData === 1 ? adminPatioData : naraAdminData
-  // let adminFormDataFunc = adminCompanyData === 0 ? loungeGrillEditFunc : adminCompanyData === 1 ? patioEditFunc : naraCafeEditFunc
-  // console.log(adminFormData);
+
   return (
     <>
       <LapashaRoutes adminCompanyData={adminCompanyData} adminFormDataArr={adminFormDataArr} formShow={formShow} updateLoungeFunc={updateLoungeFunc} authenticationToken={authentication} updateShow={updateShow} updateToShow={setUpdateShow} dataUpdate={updateData} idUser={userId} pdfCount={pdfCount} />
@@ -345,16 +250,14 @@ const App = () => {
         <Route
           path="/admin/eligibilityverificationview"
           element={
-            // getStoredUserId() || formShow
-            //   ? 
-            <EligibilityVerificationView
+            <AdminEligibilityVerificationView
               pdfCount={pdfCount}
-              dataString={newAdminFormData}
+              adminDataString={adminLoungeData}
               // getStoredUserId={getToken}
               // formDataFunc={getFormData}
               adminFormDataArr={adminFormDataArr}
               adminCompanyData={adminCompanyData}
-              // token={authToken}
+              token={getAdminToken}
               lapashaUserId={userId}
             />
           }
