@@ -43,7 +43,8 @@ const EligibilityVerification = ({
   updateToShow,
   onEligbilityUpdate,
   updateAdminFunc,
-  authUserToken
+  authUserToken,
+  adminHandleChange
 }) => {
   const navigate = useNavigate();
   const onEligbility = e => {
@@ -1253,7 +1254,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.lNamesec1}
                         name="lNamesec1"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Last Name (Family Name) from Section 1."
                         variant="standard"
@@ -1265,7 +1266,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.fNamesec1}
                         name="fNamesec1"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="First Name (Given Name) from Section 1."
                         variant="standard"
@@ -1276,7 +1277,7 @@ const EligibilityVerification = ({
                         className="txt-width"
                         value={data.middleNamesec1}
                         name="middleNamesec1"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Middle initial (if any) from Section 1."
                         variant="standard"
@@ -1317,7 +1318,7 @@ const EligibilityVerification = ({
                             canvaVerificationPreState(ref, "signOfPre");
                           }}
                           name="signOfPre"
-                          onChange={formChange3}
+                          onChange={adminHandleChange}
                           penColor="black"
                           label="signature"
                           canvasProps={{
@@ -1341,7 +1342,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.DatePre}
                         name="DatePre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Date (mm/dd/yyyy)"
                         variant="standard"
@@ -1354,7 +1355,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.lastNamePre}
                         name="lastNamePre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Last Name (Family Name)  "
                         variant="standard"
@@ -1366,7 +1367,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.firstNamePre}
                         name="firstNamePre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="First Name (Given Name) "
                         variant="standard"
@@ -1377,7 +1378,7 @@ const EligibilityVerification = ({
                         className="txt-width"
                         value={data.middleNamePre}
                         name="middleNamePre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Middle Initial (if any)"
                         variant="standard"
@@ -1389,7 +1390,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.addressPre}
                         name="addressPre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Address (Street Number and Name) "
                         variant="standard"
@@ -1401,7 +1402,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.cityPre}
                         name="cityPre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="City or Town "
                         variant="standard"
@@ -1413,7 +1414,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.statePre}
                         name="statePre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="State"
                         variant="standard"
@@ -1425,7 +1426,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.zipCodePre}
                         name="zipCodePre"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="ZIP Code "
                         variant="standard"
@@ -1444,7 +1445,7 @@ const EligibilityVerification = ({
        <Grid container spacing={3} columns={12} className='flx-box'>
        <Grid item xs={8}>
        required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
-       value={data.} onChange={formChange3} id="standard-basic" label="Signature of Preparer or Translator" variant="standard" />
+       value={data.} onChange={adminHandleChange} id="standard-basic" label="Signature of Preparer or Translator" variant="standard" />
        </Grid>
        <Grid item xs={4}>
        required = {dataUpdate === false ? false : true}<TextField className='txt-width' 
@@ -1612,7 +1613,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.lastNameSBsec1}
                         name="lastNameSBsec1"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Last Name (Family Name) from Section 1."
                         variant="standard"
@@ -1624,7 +1625,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.firstNameSBsec1}
                         name="firstNameSBsec1"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="First Name (Given Name) from Section 1."
                         variant="standard"
@@ -1635,7 +1636,7 @@ const EligibilityVerification = ({
                         className="txt-width"
                         value={data.middleNameSBsec1}
                         name="middleNameSBsec1"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Middle initial (if any) from Section 1."
                         variant="standard"
@@ -1672,7 +1673,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.dateOfRehireSB}
                         name="dateOfRehireSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Date of Rehire (if applicable)"
                         variant="standard"
@@ -1685,7 +1686,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.lastNameSb}
                         name="lastNameSb"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Last Name (Family Name)"
                         variant="standard"
@@ -1697,7 +1698,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.firstNameSB}
                         name="firstNameSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="First Name (Family Name)"
                         variant="standard"
@@ -1708,7 +1709,7 @@ const EligibilityVerification = ({
                         className="txt-width"
                         value={data.middleNameSB}
                         name="middleNameSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Middle Initial"
                         variant="standard"
@@ -1729,7 +1730,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.docTitleSB}
                         name="docTitleSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Document Title"
                         variant="standard"
@@ -1740,7 +1741,7 @@ const EligibilityVerification = ({
                         className="txt-width"
                         value={data.docNoSB}
                         name="docNoSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Document Number (if any)"
                         variant="standard"
@@ -1752,7 +1753,7 @@ const EligibilityVerification = ({
                         className="txt-width"
                         value={data.ExpDateSB}
                         name="ExpDateSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Expiration Date (if any) (mm/dd/yyyy)"
                         variant="standard"
@@ -1775,7 +1776,7 @@ const EligibilityVerification = ({
                         required={dataUpdate === false ? false : true}
                         value={data.nameOfEmpSB}
                         name="nameOfEmpSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Name of Employer or Authorized Representative"
                         variant="standard"
@@ -1790,7 +1791,7 @@ const EligibilityVerification = ({
                             canvaVerificationPreState(ref, "signOfEmpSb");
                           }}
                           name="signOfEmpSb"
-                          onChange={formChange3}
+                          onChange={adminHandleChange}
                           penColor="black"
                           label="signature"
                           canvasProps={{
@@ -1814,7 +1815,7 @@ const EligibilityVerification = ({
                         required={formShow === false ? false : true}
                         value={data.todayDateSB}
                         name="todayDateSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         id="standard-basic"
                         label="Today's Date (mm/dd/yyyy)"
                         variant="standard"
@@ -1833,7 +1834,7 @@ const EligibilityVerification = ({
                         required={formShow === false ? false : true}
                         value={data.clickHereSB}
                         name="clickHereSB"
-                        onChange={formChange3}
+                        onChange={adminHandleChange}
                         label="Check here if you used an alternative procedure authorized by DHS to examine documents."
                       />
                     </Grid>
