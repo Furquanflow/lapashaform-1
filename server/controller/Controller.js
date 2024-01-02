@@ -11,7 +11,7 @@ const adminModel = require("../models/AdminAuth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-let baseUrl = "http://localhost:3000";
+let baseUrl = "http://localhost:8000";
 
 //Secret Key Generator
 const generateRandomString = () => {
