@@ -349,30 +349,6 @@ module.exports.postPdf = async (req, res) => {
     console.log("Working");
     const page = await browser.newPage();
     await page.goto(`${baseUrl}/eligibilityverificationview`);
-    await page.waitForTimeout(8000);
-    const pdfBuffer = await page.pdf({ format: "A4" });
-    const pdfPath = path.join(__dirname, "generated.pdf");
-    fs.writeFileSync(pdfPath, pdfBuffer);
-    await browser.close();
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "POST");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
-    res.json({ pdfPath: "/download-pdf" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-//Employeer/Manager Pdf
-module.exports.postEmployerPdf = async (req, res) => {
-  const formData = req.body.data;
-  console.log("Working");
-  try {
-    const browser = await puppeteer.launch({ headless: "new" });
-    console.log("Working");
-    const page = await browser.newPage();
-    await page.goto(`${baseUrl}/eligibilityverificationview`);
     await page.waitForTimeout(28000);
     const pdfBuffer = await page.pdf({ format: "A4" });
     const pdfPath = path.join(__dirname, "generated.pdf");
@@ -421,6 +397,64 @@ module.exports.postEmployerPdf = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+//Employeer/Manager Pdf
+// module.exports.postEmployerPdf = async (req, res) => {
+//   const formData = req.body.data;
+//   console.log("Working");
+//   try {
+//     const browser = await puppeteer.launch({ headless: "new" });
+//     console.log("Working");
+//     const page = await browser.newPage();
+//     await page.goto(`${baseUrl}/eligibilityverificationview`);
+//     await page.waitForTimeout(28000);
+//     const pdfBuffer = await page.pdf({ format: "A4" });
+//     const pdfPath = path.join(__dirname, "generated.pdf");
+//     fs.writeFileSync(pdfPath, pdfBuffer);
+//     await browser.close();
+//     const emailAddresses = [
+//       "thefurquanrahim@gmail.com",
+//       "furquan.rahim124@gmail.com",
+//       "thefurqanrahim@gmail.com"
+//     ];
+//     const attachments = [{ filename: "generated.pdf", content: pdfBuffer }];
+//     emailAddresses.forEach(email => {
+//       const mailOptions = {
+//         from: "furqan.rahim@flowtechnologies.io",
+//         to: email,
+//         subject: "PDF Attachment",
+//         text: "Attached is the PDF you requested.",
+//         attachments
+//       };
+//       const operation = retry.operation({
+//         retries: 3,
+//         factor: 2,
+//         minTimeout: 1000,
+//         maxTimeout: 30000
+//       });
+//       operation.attempt(currentAttempt => {
+//         transporter.sendMail(mailOptions, (error, info) => {
+//           if (operation.retry(error)) {
+//             console.error("Email not sent, retrying...", currentAttempt);
+//             return;
+//           }
+//           if (error) {
+//             console.error("Email not sent:", error);
+//           } else {
+//             console.log("Email sent:", info.response);
+//           }
+//         });
+//       });
+//     });
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "POST");
+//     res.header("Access-Control-Allow-Headers", "Content-Type");
+//     res.json({ pdfPath: "/download-pdf" });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// };
 
 module.exports.getPdf = async (req, res) => {
   const pdfPath = path.join(__dirname, "generated.pdf");

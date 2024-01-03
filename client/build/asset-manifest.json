@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ff6d3cb3.css",
+    "main.js": "/static/js/main.d83f4694.js",
+    "static/media/bg-card-02.png": "/static/media/bg-card-02.c7421eee13ef8ad5c82f.png",
+    "static/media/bg-card-01.png": "/static/media/bg-card-01.fa92e18becb6604950ea.png",
+    "static/media/bg-card-03.png": "/static/media/bg-card-03.51470a00a25bb87125cc.png",
+    "static/media/logo.png": "/static/media/logo.b3dc3707793ced2e5bce.png",
+    "static/media/itc-avant-garde-gothic-std-bold.otf": "/static/media/itc-avant-garde-gothic-std-bold.5abebb26003c9072e03d.otf",
+    "static/media/logo03.png": "/static/media/logo03.5204d1b71965d86232ca.png",
+    "static/media/logo01.png": "/static/media/logo01.e9552aec79e94eae9ffc.png",
+    "static/media/lapasha-logo.png": "/static/media/lapasha-logo.23ced26a9cd479515f23.png",
+    "static/media/logo02.png": "/static/media/logo02.7dacbe7d685279f51c2c.png",
+    "index.html": "/index.html",
+    "main.ff6d3cb3.css.map": "/static/css/main.ff6d3cb3.css.map",
+    "main.d83f4694.js.map": "/static/js/main.d83f4694.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ff6d3cb3.css",
+    "static/js/main.d83f4694.js"
+  ]
+}

@@ -61,7 +61,7 @@ router.put("/updatenaracafedata/:id", updateSaveNaraCafeData);
 
 //Pdf Generator and Email send endpoints
 router.get("/download-pdf", getPdf);
-router.post("/generate-and-send-pdf", authenticateToken, postPdf);
-router.post("/generate-and-send-pdf-employer", postEmployerPdf);
+router.post("/generate-and-send-pdf", postPdf);
+// router.post("/generate-and-send-pdf-employer", postEmployerPdf);
 
 module.exports = router;
