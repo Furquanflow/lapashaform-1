@@ -51,7 +51,7 @@ router.post(
   saveLoungeAndGrillData
 );
 router.get("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillData);
-router.patch("/updateloungeandgrilldata/:id", updateSaveLoungeAndGrillDataById);
+router.put("/updateloungeanta/update/:id", updateSaveLoungeAndGrillDataById);
 
 //Naracafe endpoints
 router.get("/naracafedata/:userId", authenticateToken, getNaraCafeData);
@@ -61,7 +61,7 @@ router.put("/updatenaracafedata/:id", updateSaveNaraCafeData);
 
 //Pdf Generator and Email send endpoints
 router.get("/download-pdf", getPdf);
-router.post("/generate-and-send-pdf", postPdf);
+router.post("/generate-and-send-pdf", authenticateToken, postPdf);
 router.post("/generate-and-send-pdf-employer", postEmployerPdf);
 
 module.exports = router;
