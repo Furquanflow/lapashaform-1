@@ -10,7 +10,7 @@ import { Button, Grid } from "@mui/material";
 import axios from "axios";
 
 //Server Url
-const baseUrl = "http://3.144.216.200:8000";
+const baseUrl = "http://localhost:8000";
 
 const GeneratePDFButton = ({
   formData,
@@ -24,49 +24,52 @@ const GeneratePDFButton = ({
     console.log("Working");
     try {
       console.log("Working in try catch");
-  
+
       const formDataToSend = new FormData();
-      formDataToSend.append('data', JSON.stringify(formData));
-  
-      const response = await axios.post(`${baseUrl}/generate-and-send-pdf`, formDataToSend, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getStoredUserId()}`
+      formDataToSend.append("data", JSON.stringify(formData));
+
+      const response = await axios.post(
+        `${baseUrl}/generate-and-send-pdf`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getStoredUserId()}`
+          }
         }
-      });
-  
+      );
+
       console.log(response.data);
-  
+
       if (response.data && response.data.pdfPath) {
-        alert('PDF generated and sent successfully.');
-        window.open(`${baseUrl}/download-pdf`, '_blank');
+        alert("PDF generated and sent successfully.");
+        window.open(`${baseUrl}/download-pdf`, "_blank");
         console.log("Condition Working");
         // navigate("/stepform")
       } else {
-        alert('Failed to generate and send PDF.');
+        alert("Failed to generate and send PDF.");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       console.log("Hello");
     }
   };
 
   React.useEffect(() => {
-    getStoredUserId()
-  }, [])
-  
-    
-  return (
-      <Grid sx={{ float: "right" }}>
-        <Button
-          variant="contained"
-          className="save-btn"
-          onClick={handleGeneratePDF}
-        >
-          Generate PDF
-        </Button>
-      </Grid>
-    );
-  };
+    getStoredUserId();
+  }, []);
 
-  export default GeneratePDFButton;
+  return (
+    <Grid sx={{ float: "right" }}>
+      <Button
+        variant="contained"
+        className="save-btn"
+        onClick={handleGeneratePDF}
+      >
+        Generate PDF
+      </Button>
+    </Grid>
+  );
+};
+
+export default GeneratePDFButton;
