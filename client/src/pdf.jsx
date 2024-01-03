@@ -21,36 +21,52 @@ const GeneratePDFButton = ({
 }) => {
   // let navigate = useNavigate();
   const handleGeneratePDF = async () => {
+    console.log("Working");
     try {
-      const response = await axios.post(
-        `${baseUrl}/${pdfCount >= 1
-          ? "generate-and-send-pdf-employer"
-          : "generate-and-send-pdf-employer"}`
-      );
+      console.log("Working in try catch");
+  
+      const formDataToSend = new FormData();
+      formDataToSend.append('data', JSON.stringify(formData));
+  
+      const response = await axios.post(`${baseUrl}/generate-and-send-pdf`, formDataToSend, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getStoredUserId()}`
+        }
+      });
+  
+      console.log(response.data);
+  
       if (response.data && response.data.pdfPath) {
-        alert("PDF generated and sent successfully.");
-        window.open(`${baseUrl}/download-pdf`, "_blank");
+        alert('PDF generated and sent successfully.');
+        window.open(`${baseUrl}/download-pdf`, '_blank');
         console.log("Condition Working");
-        // navigate("/stepform");
+        // navigate("/stepform")
       } else {
-        alert("Failed to generate and send PDF.");
+        alert('Failed to generate and send PDF.');
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
+      console.log("Hello");
     }
   };
 
+  React.useEffect(() => {
+    getStoredUserId()
+  }, [])
+  
+    
   return (
-    <Grid sx={{ float: "right" }}>
-      <Button
-        variant="contained"
-        className="save-btn"
-        onClick={handleGeneratePDF}
-      >
-        Generate PDF
-      </Button>
-    </Grid>
-  );
-};
+      <Grid sx={{ float: "right" }}>
+        <Button
+          variant="contained"
+          className="save-btn"
+          onClick={handleGeneratePDF}
+        >
+          Generate PDF
+        </Button>
+      </Grid>
+    );
+  };
 
-export default GeneratePDFButton;
+  export default GeneratePDFButton;
