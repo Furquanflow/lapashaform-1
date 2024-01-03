@@ -23,6 +23,8 @@ import mainLogo from "../assets/images/logo.png";
 
 import SignatureCanvas from "react-signature-canvas";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import axios from "axios";
+let baseUrl = "http://localhost:8000";
 
 const EligibilityVerification = ({
   data,
@@ -42,7 +44,6 @@ const EligibilityVerification = ({
   onEligbilityUpdate,
   updateAdminFunc,
   authUserToken,
-  getToken
 }) => {
   const navigate = useNavigate();
   const onEligbility = e => {
