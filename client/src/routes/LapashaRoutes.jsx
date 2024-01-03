@@ -19,7 +19,7 @@ import Register from "../pages/Register";
 import axios from "axios";
 
 //Server Url
-let baseUrl = "http://3.144.216.200:8000";
+let baseUrl = "http://localhost:8000";
 
 const LapashaRoutes = ({
   updateShow,
@@ -504,10 +504,10 @@ const LapashaRoutes = ({
               authPassword={authPassword}
               onStep2={eve => onStepForm(eve)}
               dataString={formDataArr}
-              token={lapashaUserId}
               lapashaUserId={lapashaUserId}
               getStoredUserId={getStoredUserId}
               companyCall={companyCall}
+              idUser={idUser}
             />
             : <Navigate
               replace
