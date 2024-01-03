@@ -31,12 +31,12 @@ const GeneratePDFButton = ({
       const response = await axios.post(
         `${baseUrl}/generate-and-send-pdf`,
         formDataToSend,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getStoredUserId()}`
-          }
-        }
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Authorization: `Bearer ${getStoredUserId()}`
+        //   }
+        // }
       );
 
       console.log(response.data);
