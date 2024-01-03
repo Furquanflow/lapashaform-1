@@ -10,7 +10,7 @@ import { Button, Grid } from "@mui/material";
 import axios from "axios";
 
 //Server Url
-const baseUrl = "http://localhost:8000";
+const baseUrl = "http://lapashaform-server.vercel.app";
 
 const GeneratePDFButton = ({
   formData,

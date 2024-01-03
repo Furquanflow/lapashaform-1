@@ -18,7 +18,7 @@ import "./App.css";
 import axios from "axios";
 
 //Server Url
-let baseUrl = "http://localhost:8000";
+let baseUrl = "http://lapashaform-server.vercel.app";
 
 
 const App = () => {

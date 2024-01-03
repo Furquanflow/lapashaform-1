@@ -19,7 +19,7 @@ import Register from "../pages/Register";
 import axios from "axios";
 
 //Server Url
-let baseUrl = "http://localhost:8000";
+let baseUrl = "http://lapashaform-server.vercel.app";
 
 const LapashaRoutes = ({
   updateShow,
