@@ -35,7 +35,7 @@ const EligibilityVerificationView = ({
   React.useEffect(() => {
     formDataFunc();
     // adminFormDataFunc();
-    // localStorage.setItem("token", token);
+    localStorage.setItem("token", token);
   }, []);
   return (
     dataString &&
