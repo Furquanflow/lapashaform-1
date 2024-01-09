@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //material Ui Design Component
 import {
@@ -31,11 +31,52 @@ const LapashaFormData = ({
   getAdminData
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalPages = Math.ceil(lapashaData.length / itemsPerPage);
+  useEffect(
+    () => {
+      const fetchData = async () => {
+        try {
+          await getAdminData();
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    },
+    [getAdminData]
+  );
+
+  useEffect(
+    () => {
+      if (!loading) {
+        const filteredData = lapashaData.filter(item =>
+          item.fNamePerInfo.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        const totalPagesFiltered = Math.ceil(
+          filteredData.length / itemsPerPage
+        );
+        setTotalPages(totalPagesFiltered);
+
+        // If currentPage is greater than totalPagesFiltered, reset to 1
+        setCurrentPage(currentPage =>
+          Math.min(currentPage, totalPagesFiltered || 1)
+        );
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        setCurrentItems(filteredData.slice(startIndex, endIndex));
+      }
+    },
+    [lapashaData, currentPage, itemsPerPage, searchTerm, loading]
+  );
 
   const handlePageChange = (event, newPage) => {
     setCurrentPage(newPage);
@@ -45,22 +86,9 @@ const LapashaFormData = ({
     setSearchTerm(e.target.value);
   };
 
-  const filteredData = currentItems.filter(item =>
-    item.fNamePerInfo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  React.useEffect(
-    () => {
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = startIndex + itemsPerPage;
-      setCurrentItems(lapashaData.slice(startIndex, endIndex));
-    },
-    [lapashaData, currentPage, itemsPerPage]
-  );
-
-  React.useEffect(() => {
-    getAdminData();
-  }, []);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Box sx={{ background: "#fff", padding: "40px", borderRadius: "20px" }}>
@@ -90,7 +118,7 @@ const LapashaFormData = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map((row, ind) => {
+              {currentItems.map((row, ind) => {
                 return (
                   <StyledTableRow key={row.id}>
                     <StyledTableCell component="th" scope="row">
