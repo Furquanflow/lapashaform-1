@@ -310,7 +310,7 @@ const EmploymentInformationForm = ({
                           aria-labelledby="demo-radio-buttons-group-label"
                           value={data.taxInfo}
                           name="taxInfo"
-                          onChange={formChange} // Assuming you have an onChange handler
+                          onChange={formChange}
                         >
                           <Grid
                             container
@@ -412,7 +412,7 @@ const EmploymentInformationForm = ({
                           aria-labelledby="demo-radio-buttons-group-label"
                           value={data.healthInsurance}
                           name="healthInsurance"
-                          onChange={formChange} // Assuming you have an onChange handler
+                          onChange={formChange}
                         >
                           <Grid
                             container
@@ -448,7 +448,7 @@ const EmploymentInformationForm = ({
                           aria-labelledby="demo-radio-buttons-group-label"
                           value={data.dentalInsurance}
                           name="dentalInsurance"
-                          onChange={formChange} // Assuming you have an onChange handler
+                          onChange={formChange}
                         >
                           <Grid
                             container

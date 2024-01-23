@@ -148,8 +148,6 @@ const LapashaRoutes = ({
       }
     } catch (error) {
       console.error("Error during login:", error);
-
-      // Provide user-friendly error message
       if (error.response && error.response.status === 401) {
         alert("Login failed. Incorrect email or password.");
       } else {
@@ -216,10 +214,6 @@ const LapashaRoutes = ({
 
   const postFormData = async () => {
     const url = getPostUrl();
-    // if (!url) {
-    //   alert("Select a valid option.");
-    //   return;
-    // }
     try {
       await axios.post(url, dataString, {
         headers: {
@@ -248,10 +242,6 @@ const LapashaRoutes = ({
 
   const getFormData = async () => {
     const url = getGetUrl();
-    // if (!url) {
-    //   alert("Select a valid option.");
-    //   return;
-    // }
     try {
       if (getStoredUserId()) {
         const response = await axios.get(`${url}/${lapashaUserId}`, {
@@ -279,23 +269,6 @@ const LapashaRoutes = ({
     }
   };
 
-  // const updateVerificationFunc = async e => {
-  //   e.preventDefault();
-  //   if (idUser) {
-  //     try {
-  //       const response = await axios.put(
-  //         `${baseUrl}/updateloungeandgrilldata/${idUser}`,
-  //         formDataArr
-  //       );
-  //       const updatedData = response.data;
-  //       console.log("Updated Data:", updatedData);
-  //       navigate("/EligibilityVerificationView");
-  //     } catch (error) {
-  //       console.error("Error updating lounge and grill data:", error);
-  //     }
-  //   }
-  // };
-
   const adminHandleChange = async e => {
     // let { name, value } = e.target
     let name = e.target.name;
@@ -308,26 +281,13 @@ const LapashaRoutes = ({
     try {
       await fetch(`${baseUrl}/updateloungeandgrilldata/update/${idUser}`, {
         method: "PUT",
-        // headers: {
-        //   Authorization: `Bearer ${getToken()}`
-        // },
         body: JSON.stringify(formData)
       });
-      // const userAdminData = await response.json();
-      // console.log(`users single data: ${userAdminData}`);
-      // setFormData(userAdminData)
-      // if (response.ok) {
       getFormData();
-      navigate("/eligibilityverificationview");
-      // }
+      // navigate("/eligibilityverificationview");
     } catch (error) {
       console.log(error);
     }
-    // e.preventDefault();
-    // axios.put(`${baseUrl}/updateloungeandgrilldata/${userId}`, { userId, first })
-    //   .then(response => {
-    //     setfirst(response.data)
-    //   }).catch(error => console.error('Error updating Data:', error))
   };
 
   const getStoredUserId = () => localStorage.getItem("lapashaUserId");
@@ -363,8 +323,6 @@ const LapashaRoutes = ({
       <Route
         path="/eligibilityverification"
         element={
-          // getStoredUserId() || formShow
-          // ?
           <EligibilityVerification
             updateToShow={updateToShow}
             formShow={formShow}
@@ -385,22 +343,11 @@ const LapashaRoutes = ({
             updateAdminFunc={updateLoungeFunc}
             adminhandleChange={adminHandleChange}
           />
-          // : <Navigate
-          //   replace
-          //   to="/login"
-          //   onLogin={onLoginClick}
-          //   authFunc={authFunc}
-          //   registerPage={"/register"}
-          //   email={authEmail}
-          //   password={authPassword}
-          // />
         }
       />
       <Route
         path="/eligibilityverificationview"
         element={
-          // getStoredUserId() || formShow
-          //   ?
           <EligibilityVerificationView
             pdfCount={pdfCount}
             dataString={formDataArr}
@@ -412,15 +359,6 @@ const LapashaRoutes = ({
             lapashaUserId={lapashaUserId}
             addCount={addStep}
           />
-          // : <Navigate
-          //     replace
-          //     to="/login"
-          //     onLogin={onLoginClick}
-          //     authFunc={authFunc}
-          //     registerPage={"/register"}
-          //     email={authEmail}
-          //     password={authPassword}
-          //   />
         }
       />
       <Route
@@ -471,8 +409,6 @@ const LapashaRoutes = ({
       <Route
         path="/policyform"
         element={
-          // getStoredUserId()
-          //   ?
           <PolicyForm
             data={formData}
             formChange1={onForm}
@@ -482,15 +418,6 @@ const LapashaRoutes = ({
             updateEmployeePolicySignature={setPolicyEmployeeCanvas}
             updateTransPolicySignature={setPolicyTranslatorCanvas}
           />
-          // : <Navigate
-          //     replace
-          //     to="/login"
-          //     onLogin={onLoginClick}
-          //     authFunc={authFunc}
-          //     registerPage={"/register"}
-          //     email={authEmail}
-          //     password={authPassword}
-          //   />
         }
       />
       <Route

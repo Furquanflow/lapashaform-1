@@ -21,17 +21,11 @@ import companyLogo03 from "../assets/images/logo03.png";
 import GeneratePDFButton from "../pdf";
 
 const AdminEligibilityVerificationView = ({
-  dataString,
   pdfCount,
-  adminFormDataArrFunc,
   lapashaUserId,
   token,
   adminDataString
 }) => {
-  console.log(adminDataString);
-  // React.useEffect(() => {
-  //   // adminFormDataArrFunc();
-  // }, []);
   return (
     adminDataString &&
     adminDataString.map((value, ind) => {

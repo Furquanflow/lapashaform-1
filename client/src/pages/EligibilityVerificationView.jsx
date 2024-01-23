@@ -29,7 +29,7 @@ const EligibilityVerificationView = ({
   adminFormDataArr,
   adminCompanyData,
   adminFormDataFunc,
-  lapashaUserId,
+  lapashaUserId
 }) => {
   console.log(dataString);
   React.useEffect(() => {
@@ -5828,40 +5828,6 @@ const EligibilityVerificationView = ({
                                 {value.citizeOfUsa}
                               </Typography>
                             </Grid>
-
-                            {/* <Grid item xs={6}>
-                                  <Typography 
-                                  
-                                    className="label-name"
-                                    variant="label"
-                                  >
-                                    Checkbox label
-                                  </Typography>
-                                  <Typography 
-                                  
-                                    className="input-value"
-                                    variant="body"
-                                  >
-                                    3. A lawful permanent resident (Enter USCIS
-                                    or A-Number.)
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                  <Typography 
-                                  
-                                    className="label-name"
-                                    variant="body"
-                                  >
-                                    Checkbox label
-                                  </Typography>
-                                  <Typography 
-                                  
-                                    className="input-value"
-                                    variant="body"
-                                  >
-                                    Blank Filed
-                                  </Typography>
-                                    </Grid> */}
                           </Grid>
                         </RadioGroup>
                       </FormControl>
