@@ -349,7 +349,6 @@ module.exports.postPdf = async (req, res) => {
     console.log("Working");
     const page = await browser.newPage();
     await page.goto(`${baseUrl}/eligibilityverificationview`);
-    await page.waitForTimeout(28000);
     const pdfBuffer = await page.pdf({ format: "A4" });
     const pdfPath = path.join(__dirname, "generated.pdf");
     fs.writeFileSync(pdfPath, pdfBuffer);

@@ -10,7 +10,7 @@ import { Button, Grid } from "@mui/material";
 import axios from "axios";
 
 //Server Url
-const baseUrl = "https://lapashaform-server.vercel.app";
+const baseUrl = "http://localhost:8000";
 
 const GeneratePDFButton = ({
   formData,
@@ -23,20 +23,9 @@ const GeneratePDFButton = ({
   const handleGeneratePDF = async () => {
     console.log("Working");
     try {
-      console.log("Working in try catch");
-
-      const formDataToSend = new FormData();
-      formDataToSend.append("data", JSON.stringify(formData));
 
       const response = await axios.post(
-        `${baseUrl}/generate-and-send-pdf`,
-        formDataToSend,
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${getStoredUserId()}`
-        //   }
-        // }
+        `${baseUrl}/generate-and-send-pdf`
       );
 
       console.log(response.data);
