@@ -353,11 +353,7 @@ module.exports.postPdf = async (req, res) => {
     const pdfPath = path.join(__dirname, "generated.pdf");
     fs.writeFileSync(pdfPath, pdfBuffer);
     await browser.close();
-    const emailAddresses = [
-      "thefurquanrahim@gmail.com",
-      "furquan.rahim124@gmail.com",
-      "thefurqanrahim@gmail.com"
-    ];
+    const emailAddresses = ["rammal.ali003@gmail.com"];
     const attachments = [{ filename: "generated.pdf", content: pdfBuffer }];
     emailAddresses.forEach(email => {
       const mailOptions = {
